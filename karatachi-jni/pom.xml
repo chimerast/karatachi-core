@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>karatachi-jni</artifactId>
+  <packaging>dll</packaging>
+  <parent>
+    <groupId>org.karatachi</groupId>
+    <artifactId>karatachi</artifactId>
+    <version>0.3-SNAPSHOT</version>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>org.karatachi</groupId>
+      <artifactId>karatachi-native</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>native-maven-plugin</artifactId>
+        <version>1.0-alpha-5</version>
+        <extensions>true</extensions>
+        <configuration>
+          <javahClassNames>
+            <javahClassName>org.karatachi.jni.win32.NetworkSetting</javahClassName>
+            <javahClassName>org.karatachi.jni.win32.PerformanceCounter</javahClassName>
+          </javahClassNames>
+          <javahOS>win32</javahOS>
+          <envFactoryName>
+            org.codehaus.mojo.natives.msvc.MSVC2008x86EnvFactory
+          </envFactoryName>
+          <compilerProvider>msvc</compilerProvider>
+          <compilerStartOptions>
+            <compilerStartOption>/O2 /EHsc /MT /W3</compilerStartOption>
+          </compilerStartOptions>
+          <sources>
+            <source>
+              <directory>src/main/native</directory>
+              <includes>
+                <include>*.cpp</include>
+              </includes>
+            </source>
+          </sources>
+          <linkerStartOptions>
+            <linkerStartOption>
+              /DLL ws2_32.lib iphlpapi.lib pdh.lib
+            </linkerStartOption>
+          </linkerStartOptions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <name>Karatachi JNI</name>
+  <description />
+</project>

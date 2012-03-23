@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<wicket:head>
+<style>
+td {
+  border: solid 1px #CCCCCC;
+  text-align: center;
+}
+</style>
+</wicket:head>
+</head>
+<body>
+<wicket:extend>
+  <h2>ウィンドウ固定グリッドパネル</h2>
+  <p>対応ブラウザ：IE6 以上, Firefox3 以上, Google Chrome (のはず;;)</p>
+  <p>マウスドラッグで表の一部を固定して動きます。セルにスタイルを指定するときは、
+  すべてのセルのpadding, margin, borderの大きさが同じになるようにしないとずれますので注意して下さい。</p>
+  <p><a wicket:id="update" href="#">更新</a></p>
+  <div wicket:id="grid" style="width: 100%; height: 400px;" />
+</wicket:extend>
+</body>
+</html>

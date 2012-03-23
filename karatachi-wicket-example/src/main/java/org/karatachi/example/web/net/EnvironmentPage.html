@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:extend>
+  <p>主にお客さんの環境を確かめるために使用しているページです。</p>
+  <p><button wicket:id="download">内容のダウンロード</button></p>
+
+  <h2>HTTP Headers</h2>
+  <dl wicket:id="httpHeader" class="list2">
+    <dt wicket:id="key" />
+    <dd wicket:id="value"/>
+  </dl>
+
+  <h2>Client Informations</h2>
+  <dl wicket:id="clientInfo" class="list2">
+    <dt wicket:id="key" />
+    <dd wicket:id="value" />
+  </dl>
+</wicket:extend>
+</body>
+</html>

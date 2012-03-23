@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:extend>
+　<h2>MBeanツリー</h2>
+  <p>JavaVMに登録されているMBeanの一覧を表示します。フルに機能を使用するにはtomcat等
+  Webコンテナの起動オプションとして"-Dcom.sun.management.jmxremote"を指定します。
+  メソッドの実行とboolean値の切り替えができます。落ちることはないと思いますがいじらないでください。</p>
+  <div wicket:id="mbean" />
+</wicket:extend>
+</body>
+</html>

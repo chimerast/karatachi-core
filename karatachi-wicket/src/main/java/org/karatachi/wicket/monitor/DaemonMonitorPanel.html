@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:panel>
+  <div class="karatachi">
+  <h2 wicket:id="groupName" />
+  <p>
+    <wicket:message key="daemon.statusLabel" />
+    <span wicket:id="status" />
+  </p>
+  <p>
+    <wicket:message key="daemon.controlLabel" />
+    <input wicket:id="startup" type="button" wicket:message="value:daemon.startup" />
+    <input wicket:id="shutdown" type="button" wicket:message="value:daemon.shutdown" />
+    <input wicket:id="upCount" type="button" wicket:message="value:daemon.up" />
+    <input wicket:id="downCount" type="button" wicket:message="value:daemon.down" />
+  </p>
+  <table wicket:id="daemonMonitor" class="monitor">
+    <thead>
+      <tr>
+        <th><wicket:message key="daemon.name" /></th>
+        <th><wicket:message key="daemon.status" /></th>
+        <th><wicket:message key="daemon.nextrun" /></th>
+        <th><wicket:message key="daemon.laststarted" /></th>
+        <th><wicket:message key="daemon.exectime" /></th>
+        <th><wicket:message key="daemon.detail" /></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr wicket:id="daemons">
+        <th wicket:id="name" />
+        <td wicket:id="status" />
+        <td wicket:id="nextRun" />
+        <td wicket:id="lastStarted" />
+        <td wicket:id="lastExecutionTime" style="text-align: right;" />
+        <td wicket:id="detailText" />
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</wicket:panel>
+</body>
+</html>

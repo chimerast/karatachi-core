@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:panel>
+  <div class="karatachi">
+    <table class="outer">
+      <tr class="outer_row">
+        <td class="outer_cell">
+          <div wicket:id="grid_tl">
+            <table class="inner">
+              <tr wicket:id="rows"><td wicket:id="cols"><div wicket:id="cell" /></td></tr>
+            </table>
+          </div>
+        </td>
+        <td class="outer_cell">
+          <div wicket:id="grid_tr" style="width: 0px; overflow: hidden;">
+            <table class="inner">
+              <tr wicket:id="rows"><td wicket:id="cols"><div wicket:id="cell" /></td></tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr class="outer_row">
+        <td class="outer_cell">
+          <div wicket:id="grid_bl" style="height: 0px; overflow: hidden;">
+            <table class="inner">
+              <tr wicket:id="rows"><td wicket:id="cols"><div wicket:id="cell" /></td></tr>
+            </table>
+          </div>
+        </td>
+        <td class="outer_cell">
+          <div wicket:id="grid_br" style="width: 0px; height: 0px; overflow: auto;">
+            <table class="inner">
+              <tr wicket:id="rows"><td wicket:id="cols"><div wicket:id="cell" /></td></tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div wicket:id="menu" class="contextmenu">
+      <div class="copy"><a href="#copy">Copy</a></div>
+    </div>
+  </div>
+</wicket:panel>
+</body>
+</html>

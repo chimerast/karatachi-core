@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:extend>
+  <h2>プログレスバーコンポーネント</h2>
+  <p>処理の進行状況をプログレスバーで表示するコンポーネント。下のは秒数%100を表示しています。</p>
+  <div wicket:id="progress" />
+  <h2>ダイアログ + スレッドによる処理経過表示</h2>
+  <p>別スレッドを走らせてその進行状況をプログレスバーで表示するポップアップを表示します。</p>
+  <p><button wicket:id="link">表示する</button></p>
+  <div wicket:id="dialog" />
+</wicket:extend>
+</body>
+</html>
