@@ -9,8 +9,8 @@ import org.karatachi.exception.IncompatiblePlatformException;
 
 public class ResourceResolver {
     public static File getBaseDir(Class<?> clazz) {
-        String classFile =
-                clazz.getCanonicalName().replace(".", "/") + ".class";
+        String classFile = clazz.getCanonicalName().replace(".", "/")
+                + ".class";
         URL url = clazz.getClassLoader().getResource(classFile);
         String path = url.toExternalForm();
 
@@ -29,8 +29,8 @@ public class ResourceResolver {
     }
 
     public static URL getClassURL(Class<?> clazz) {
-        String classFile =
-                clazz.getCanonicalName().replace(".", "/") + ".class";
+        String classFile = clazz.getCanonicalName().replace(".", "/")
+                + ".class";
         return clazz.getClassLoader().getResource(classFile);
     }
 }

@@ -1,74 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:wicket="http://wicket.sourceforge.net/">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
 <wicket:extend>
-  <h2>このサイトは</h2>
-  <p>たけうち(chimerast)が自由気ままに作っているWicket用ライブラリのサンプルページです。
-  Wicketを使うとこんなこともできるよというサンプルになればと思っています。
-  ライブラリおよびサンプルにはソースコードも含まれているため、自由に中身を見ることもできますが、
-  右上にソース表示リンクがついているので、利用してみてください。</p>
-  
-  <h2>ライブラリおよびサイトのライセンスについて</h2>
-  <p>
-    org.karatachi以下のパッケージについては、TAKEUCHI Hideyuki (chimerast)が著作権を保持し、
-    <a href="http://www.opensource.org/licenses/cpl1.0.php">CPLライセンス</a>の元に配布します。
-    ライブラリに含まれている、prototype.js、script.aculo.us、syntaxhilighterについては、
-    それぞれのライセンスが適用されます。
-  </p>
-
-  <h2>このサイトのソースとか（現在メンテナンス中）</h2>
-  <p>
-    <a href="http://repo.karatachi.org/mvn/org/karatachi/karatachi-wicket-example/latest.sh?type=sources">ソース</a>
-    <a href="http://repo.karatachi.org/mvn/org/karatachi/karatachi-wicket-example/latest.sh">WARファイル</a>
-  </p>
-
-  <h2>Wicketとは</h2>
-  <p>ソースコードが美しくなるWebアプリケーションフレームワーク　（説明する気無し</p>
-  <p>S2Wicketを使うと美しさが倍増</p>
-  <ul>
-    <li><a href="http://wicket.apache.org/">総本山</a> (英語)</li>
-    <li><a href="http://cwiki.apache.org/WICKET/newuserguide.html">使い方</a> (英語)</li>
-    <li><a href="http://cwiki.apache.org/WICKET/reference-library.html">ネタ帳</a> (英語)</li>
-    <li><a href="http://gihyo.jp/dev/feature/01/wicket/0001">矢野さんの解説</a></li>
-  </ul>
-
-  <h2>ライブラリ取得使用方法</h2>
-  <p>一応下記URLをたどればjarファイルのダウンロードを行うことができますが、
-  依存しているjarファイルが多いのでMaven2を使用してライブラリの取得を
-  行うことを推奨します。Maven2の使用方法は他のサイトを参照してください。</p>
-  <div wicket:id="url" />
-
-  <h2>Maven2用設定</h2>
-  <h3>レポジトリ</h3>
-  <p>Mavenレポジトリとして下記を追加することで、karatachi.orgが管理する
-  ライブラリをMavenを通して使用可能な状態になります。</p>
-  <script type="syntaxhighlighter" class="brush: xml">
-  <![CDATA[
-    <repository>
-      <id>karatachi.org</id>
-      <name>Karatachi Maven2 Repository</name>
-      <url>http://repo.karatachi.org/mvn</url>
-    </repository>
-  ]]>
-  </script>
-  <h3>karatachi-wicket</h3>
-  <p>Wicket用の便利なコンポーネント集です。最新バージョンは0.3-SNAPSHOTになっていますが、
-  SNAPSHOTは気が向いたときにアップデートされ、クラス名などもがんがん変わるため、
-  気になる場合は0.2.25を使用してください。</p>
-  <script type="syntaxhighlighter" class="brush: xml">
-  <![CDATA[
-    <dependency>
-      <groupId>org.karatachi</groupId>
-      <artifactId>karatachi-wicket</artifactId>
-      <version>0.3-SNAPSHOT</version>
-    </dependency>
-  ]]>
-  </script>
-  <p>依存でkartachi-*がいくつか入ります。</p>
 </wicket:extend>
 </body>
 </html>

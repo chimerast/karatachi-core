@@ -16,7 +16,7 @@ public class BarChartImage extends ChartImage {
 
     private final IModel<Map<String, ? extends Number>> model;
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     public BarChartImage(String id, TreeMap<String, ? extends Number> map,
             int width, int height) {
         this(id, new Model(map), width, height);

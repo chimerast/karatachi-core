@@ -5,7 +5,7 @@ CREATE TABLE todo (
   message VARCHAR(255)
 );
 
-CREATE TABLE monitor (
+CREATE TABLE mbean (
   time BIGINT NOT NULL,
   host VARCHAR(64) NOT NULL,
   title VARCHAR(64) NOT NULL,

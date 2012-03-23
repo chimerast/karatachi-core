@@ -6,14 +6,12 @@ public class DataSizeTranslator {
     public static final String[] UNIT_SUFFIX = { "", "K", "M", "G", "T", "P" };
     public static final long DEFAULT_BINARY_UNITS = 1024;
 
-    public static final DecimalFormat DECIMAL_FORMAT =
-            new DecimalFormat("0.00");
+    public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     public static long toLong(String value) {
         value = value.trim();
-        if (value.length() == 0) {
+        if (value.length() == 0)
             return -1;
-        }
 
         try {
             int exp;
@@ -38,14 +36,12 @@ public class DataSizeTranslator {
                 break;
             }
 
-            if (exp != 0) {
+            if (exp != 0)
                 value = value.substring(0, value.length() - 1).trim();
-            }
 
             double ret = Double.parseDouble(value);
-            for (int i = 0; i < exp; ++i) {
+            for (int i = 0; i < exp; ++i)
                 ret *= DEFAULT_BINARY_UNITS;
-            }
 
             return (long) ret;
         } catch (Exception e) {
@@ -65,7 +61,7 @@ public class DataSizeTranslator {
         if (exp != 0) {
             return DECIMAL_FORMAT.format(ret) + " " + UNIT_SUFFIX[exp];
         } else {
-            return Long.toString((long) ret);
+            return DECIMAL_FORMAT.format(ret);
         }
     }
 }

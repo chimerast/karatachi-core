@@ -1,20 +1,15 @@
 package org.karatachi.wicket.auto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.IComponentBorder;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.behavior.IBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.ComponentFeedbackPanel;
@@ -24,31 +19,15 @@ import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.validator.PatternValidator;
-import org.karatachi.wicket.form.behavior.CheckBoxLabel;
-import org.karatachi.wicket.form.behavior.ErrorHighlighter;
-import org.karatachi.wicket.form.behavior.Placeholder;
-import org.karatachi.wicket.form.behavior.ValidationMessage;
-import org.karatachi.wicket.script.AjaxLibrariesReference;
+import org.karatachi.wicket.form.behavior.ErrorHighlightBehavior;
+import org.karatachi.wicket.form.behavior.ValidationMessageBehavior;
 
-public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
-        IHeaderContributor {
+public class AutoResolveForm<T> extends Form<T> implements IComponentResolver {
     private static final long serialVersionUID = 1L;
 
-    public static interface IFormComponentCustomizer extends
-            IVisitor<FormComponent<?>>, Serializable {
-    }
-
-    public static interface IResolvedFormComponentCustomizer extends
-            Serializable {
-        public <T> void component(FormComponent<T> formComponent,
-                MarkupContainer container, MarkupStream markupStream);
-    }
-
     private boolean confirm;
-    private IBehavior requiredComponentBorder;
-    private IFormComponentCustomizer formComponentCustomizer;
-    private List<IResolvedFormComponentCustomizer> resolvedFormComponentCustomizers =
-            new ArrayList<IResolvedFormComponentCustomizer>();
+    private IComponentBorder requiredComponentBorder;
+    private IVisitor<FormComponent<?>> formVisitor;
     private FeedbackPanel feedback;
 
     public AutoResolveForm(String id) {
@@ -79,6 +58,7 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
 
     private void commonInit(String feedbackId) {
         this.confirm = false;
+        this.formVisitor = new FormVisitor();
         if (feedbackId != null) {
             add(feedback = new ComponentFeedbackPanel(feedbackId, this));
         }
@@ -103,25 +83,12 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         }
     }
 
-    public FeedbackPanel getFeedback() {
-        return feedback;
-    }
-
-    public void setRequiredComponentBorder(IBehavior requiredComponentBorder) {
+    public void setRequiredComponentBorder(
+            IComponentBorder requiredComponentBorder) {
         this.requiredComponentBorder = requiredComponentBorder;
     }
 
-    public void setFormComponentCustomizer(
-            IFormComponentCustomizer formComponentCustomizer) {
-        this.formComponentCustomizer = formComponentCustomizer;
-    }
-
-    public void addResolvedFormComponentCustomizer(
-            IResolvedFormComponentCustomizer resolvedFormComponentCustomizer) {
-        this.resolvedFormComponentCustomizers.add(resolvedFormComponentCustomizer);
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     public boolean resolve(MarkupContainer container,
             MarkupStream markupStream, ComponentTag tag) {
         if (tag.isAutoComponentTag()) {
@@ -130,12 +97,12 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
 
         String tagId = tag.getId();
         String tagName = tag.getName();
-        String type = tag.getAttribute("type");
+        String type = tag.getAttributes().getString("type");
 
         String wicketType = null, wicketKey = null;
         if (tag.getAttributes().containsKey("wicket:type")) {
             String[] wicketTypeValue =
-                    tag.getAttribute("wicket:type").split(":");
+                    tag.getAttributes().getString("wicket:type").split(":");
             wicketType = wicketTypeValue[0];
             if (wicketTypeValue.length > 1) {
                 wicketKey = wicketTypeValue[1];
@@ -188,39 +155,26 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         FormComponent<?> formcomponent =
                 resolver.createFormComponent(tag.getId());
 
-        String label = tag.getAttribute("wicket:label");
+        String label = tag.getAttributes().getString("wicket:label");
         if (label == null) {
             label = tagId;
         }
         label = container.getString(label, null, label);
         formcomponent.setLabel(new Model<String>(label));
 
-        if (formcomponent instanceof CheckBox) {
-            formcomponent.add(new CheckBoxLabel(label));
-        }
-
-        String placeholder = tag.getAttribute("wicket:placeholder");
-        if (placeholder != null) {
-            formcomponent.add(new Placeholder(placeholder));
-        }
-
-        String required = tag.getAttribute("wicket:required");
+        String required = tag.getAttributes().getString("wicket:required");
         if (required != null) {
             formcomponent.setRequired(Boolean.parseBoolean(required));
             if (requiredComponentBorder != null) {
-                formcomponent.add(requiredComponentBorder);
+                formcomponent.setComponentBorder(requiredComponentBorder);
             }
         }
 
-        String pattern = tag.getAttribute("wicket:validate");
+        String pattern = tag.getAttributes().getString("wicket:validate");
         if (pattern != null) {
             pattern = container.getString(pattern, null, pattern);
             ((FormComponent<String>) formcomponent).add(new PatternValidator(
                     pattern));
-        }
-
-        for (IResolvedFormComponentCustomizer customizer : resolvedFormComponentCustomizers) {
-            customizer.component(formcomponent, container, markupStream);
         }
 
         return addForRender(formcomponent, container, markupStream);
@@ -229,13 +183,11 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
     @Override
     protected void onBeforeRender() {
         super.onBeforeRender();
-        if (formComponentCustomizer != null) {
-            visitChildren(FormComponent.class, formComponentCustomizer);
-        }
+        visitChildren(FormComponent.class, formVisitor);
     }
 
-    private boolean addForRender(Component component,
-            MarkupContainer container, MarkupStream markupStream) {
+    public boolean addForRender(Component component, MarkupContainer container,
+            MarkupStream markupStream) {
         container.internalAdd(component);
         component.prepareForRender();
         try {
@@ -250,15 +202,8 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         return true;
     }
 
-    @Override
-    public void renderHead(IHeaderResponse response) {
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery);
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery_placeholder);
-        response.renderOnDomReadyJavascript("jQuery(':input[placeholder]').placeholder({ blankSubmit: true });");
-    }
-
-    public static class ErrorMessageAppendingCustomizer implements
-            IFormComponentCustomizer {
+    private static class FormVisitor implements IVisitor<FormComponent<?>>,
+            Serializable {
         private static final long serialVersionUID = 1L;
 
         private Set<FormComponent<?>> visited = new HashSet<FormComponent<?>>();
@@ -266,8 +211,8 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         public Object component(FormComponent<?> component) {
             if (!visited.contains(component)) {
                 visited.add(component);
-                component.add(new ValidationMessage());
-                component.add(new ErrorHighlighter());
+                component.add(new ValidationMessageBehavior());
+                component.add(new ErrorHighlightBehavior());
             }
             return IVisitor.CONTINUE_TRAVERSAL;
         }

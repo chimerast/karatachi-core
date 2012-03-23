@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import org.karatachi.exception.IncompatiblePlatformException;
 
 public class DigestUtils {
-    public static final String DEFAULT_DIGEST = "SHA1";
+    public static final String DEFAULT_DIGEST = "MD5";
 
     public static MessageDigest createDigest() {
         try {

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public final class DataSourceWrapper implements DataSource,
         Comparable<DataSourceWrapper> {
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String name;
     private final DataSource dataSource;

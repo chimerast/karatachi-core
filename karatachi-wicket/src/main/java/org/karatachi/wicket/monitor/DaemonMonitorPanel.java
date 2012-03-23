@@ -15,8 +15,8 @@ import org.karatachi.daemon.Daemon;
 import org.karatachi.daemon.DaemonGroup;
 import org.karatachi.daemon.DaemonManager;
 import org.karatachi.daemon.producer.ProducerDaemon;
-import org.karatachi.wicket.auto.AutoResolveListView;
 import org.karatachi.wicket.label.DateLabel;
+import org.karatachi.wicket.listview.SimpleListView;
 import org.karatachi.wicket.util.BehaviorUtil;
 
 public class DaemonMonitorPanel extends Panel {
@@ -92,7 +92,7 @@ public class DaemonMonitorPanel extends Panel {
 
         add(BehaviorUtil.setSelfUpdate(daemonMonitor =
                 new WebMarkupContainer("daemonMonitor"), 1));
-        daemonMonitor.add(new AutoResolveListView<Daemon>("daemons") {
+        daemonMonitor.add(new SimpleListView<Daemon>("daemons") {
             private static final long serialVersionUID = 1L;
 
             @Override

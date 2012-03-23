@@ -3,7 +3,7 @@
 #include <winsock2.h>
 #include <iphlpapi.h>
 
-#include "org_karatachi_jni_win32_NetworkSetting.h"
+#include "karatachi_jni.h"
 
 DWORD GetInterfaceIndexByAddress(DWORD dwAddr)
 {

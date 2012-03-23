@@ -7,7 +7,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.karatachi.db.DataSourceManager;
 import org.karatachi.db.DataSourceWrapper;
-import org.karatachi.wicket.auto.AutoResolveListView;
+import org.karatachi.wicket.listview.SimpleListView;
 
 public class DataSourceMonitorPanel extends Panel {
     private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class DataSourceMonitorPanel extends Panel {
         });
         setRenderBodyOnly(true);
 
-        add(new AutoResolveListView<DataSourceWrapper>("jndi", getModel()) {
+        add(new SimpleListView<DataSourceWrapper>("jndi", getModel()) {
             private static final long serialVersionUID = 1L;
 
             @Override

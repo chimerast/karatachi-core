@@ -61,9 +61,8 @@ public class InstanceDelegator {
         Class<?>[][] paramTypesList = new Class<?>[methods.length][];
 
         for (int i = 0; i < methods.length; ++i) {
-            if (methods[i].getName().equals(name)) {
+            if (methods[i].getName().equals(name))
                 paramTypesList[i] = methods[i].getParameterTypes();
-            }
         }
 
         int index = getMachedParametersIndex(paramTypesList, args);
@@ -81,9 +80,8 @@ public class InstanceDelegator {
         Constructor<?>[] constructors = clazz.getConstructors();
         Class<?>[][] paramTypesList = new Class<?>[constructors.length][];
 
-        for (int i = 0; i < constructors.length; ++i) {
+        for (int i = 0; i < constructors.length; ++i)
             paramTypesList[i] = constructors[i].getParameterTypes();
-        }
 
         int index = getMachedParametersIndex(paramTypesList, initargs);
         if (index >= 0) {
@@ -97,23 +95,20 @@ public class InstanceDelegator {
             Object[] args) {
         method: for (int i = 0; i < paramTypesList.length; ++i) {
             Class<?>[] paramTypes = paramTypesList[i];
-            if (paramTypes == null) {
+            if (paramTypes == null)
                 continue;
-            }
             for (int j = 0;; ++j) {
-                if (j == args.length && j == paramTypes.length) {
+                if (j == args.length && j == paramTypes.length)
                     break;
-                }
-                if (j == args.length || j == paramTypes.length) {
+                if (j == args.length || j == paramTypes.length)
                     continue method;
-                }
-                if (!PrimitiveTranslator.toWrapperClass(paramTypes[j]).isAssignableFrom(
-                        args[j].getClass())) {
+                if (!PrimitiveTranslator.toWrapperClass(paramTypes[j])
+                        .isAssignableFrom(args[j].getClass()))
                     continue method;
-                }
             }
             return i;
         }
         return -1;
     }
+
 }

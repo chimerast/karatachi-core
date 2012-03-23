@@ -25,7 +25,6 @@ public class PackageDir {
 
     private final TreeSet<String> packages;
     private final TreeSet<String> classes;
-    private final TreeSet<String> resources;
 
     public PackageDir(String packageName) {
         this(PackageDir.class.getClassLoader(), packageName);
@@ -37,7 +36,6 @@ public class PackageDir {
         this.packagePath = packageName.replace('.', '/') + "/";
         this.packages = new TreeSet<String>();
         this.classes = new TreeSet<String>();
-        this.resources = new TreeSet<String>();
 
         try {
             load();
@@ -94,14 +92,14 @@ public class PackageDir {
                 if (name.indexOf('/') >= 0) {
                     continue;
                 }
-                if (name.endsWith(CLASS_SUFFIX)) {
-                    if (name.indexOf('$') < 0) {
-                        classes.add(name.substring(0, name.length()
-                                - CLASS_SUFFIX.length()));
-                    }
-                } else {
-                    resources.add(name);
+                if (!name.endsWith(CLASS_SUFFIX)) {
+                    continue;
                 }
+                if (name.indexOf('$') >= 0) {
+                    continue;
+                }
+                classes.add(name.substring(0, name.length()
+                        - CLASS_SUFFIX.length()));
             }
         }
     }
@@ -111,15 +109,15 @@ public class PackageDir {
             if (file.isDirectory()) {
                 packages.add(file.getName());
             } else {
-                if (file.getName().endsWith(CLASS_SUFFIX)) {
-                    if (file.getName().indexOf('$') < 0) {
-                        String name = file.getName();
-                        classes.add(name.substring(0, name.length()
-                                - CLASS_SUFFIX.length()));
-                    }
-                } else {
-                    resources.add(file.getName());
+                if (!file.getName().endsWith(CLASS_SUFFIX)) {
+                    continue;
                 }
+                if (file.getName().indexOf('$') >= 0) {
+                    continue;
+                }
+                String name = file.getName();
+                classes.add(name.substring(0, name.length()
+                        - CLASS_SUFFIX.length()));
             }
         }
     }
@@ -130,10 +128,6 @@ public class PackageDir {
 
     public List<String> getClassNames() {
         return new ArrayList<String>(classes);
-    }
-
-    public List<String> getResourceNames() {
-        return new ArrayList<String>(resources);
     }
 
     public List<Class<?>> getClasses() {

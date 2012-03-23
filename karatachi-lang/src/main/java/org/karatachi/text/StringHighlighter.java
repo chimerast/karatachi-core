@@ -19,7 +19,7 @@ public class StringHighlighter {
     private final int marginSize;
 
     public StringHighlighter(String keyword) {
-        this(getHighlighterPattern(keyword), "<span class=\"highlight\">",
+        this(getHighlighterPatter(keyword), "<span class=\"highlight\">",
                 "</span>");
     }
 
@@ -34,6 +34,16 @@ public class StringHighlighter {
         this.suffix = suffix;
         this.fragmentSize = fragmentSize;
         this.marginSize = marginSize;
+    }
+
+    public String getText(String content) {
+        Matcher matcher = pattern.matcher(content);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, prefix + matcher.group() + suffix);
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
     public String getSummary(String content) {
@@ -87,7 +97,7 @@ public class StringHighlighter {
         return ret.toString();
     }
 
-    public static Pattern getHighlighterPattern(String str) {
+    public static Pattern getHighlighterPatter(String str) {
         String search = str;
         search = NON_LETTER.matcher(search).replaceAll("|");
         if (search.startsWith("|")) {

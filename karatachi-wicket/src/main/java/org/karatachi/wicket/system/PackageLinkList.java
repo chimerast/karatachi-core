@@ -42,16 +42,15 @@ public class PackageLinkList extends WebComponent {
 
         sb.append("<dt>");
         sb.append(packageName);
+        for (ClassTreeNode child : node.packages) {
+            writeTree(sb, child);
+        }
         sb.append("</dt>");
 
         for (Class<? extends Page> clazz : node.classes) {
             sb.append("<dd>");
-            sb.append(String.format("<a href=\"%s\">", urlFor(
-                    getPage().getPageMap(), clazz, null)));
+            sb.append(String.format("<a href=\"%s\">", urlFor(clazz, null)));
             String className = clazz.getSimpleName();
-            if (className.endsWith("Page")) {
-                className = className.substring(0, className.length() - 4);
-            }
             if (clazz.isAnnotationPresent(PackageLinkName.class)) {
                 className = clazz.getAnnotation(PackageLinkName.class).value();
             }
@@ -61,10 +60,6 @@ public class PackageLinkList extends WebComponent {
         }
 
         sb.append("</dl>");
-
-        for (ClassTreeNode child : node.packages) {
-            writeTree(sb, child);
-        }
     }
 
     @Override

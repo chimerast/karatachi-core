@@ -12,15 +12,27 @@
     <property name="fetchSize">100</property>
   </component>
 
-  <!-- for H2 -->
+  <!-- for Postgres -->
   <component name="xaDataSource" class="org.seasar.extension.dbcp.impl.XADataSourceImpl">
-    <property name="driverClassName">"org.h2.Driver"</property>
+    <property name="driverClassName">"org.postgresql.Driver"
+    </property>
     <property name="URL">
-      "jdbc:h2:mem:?ignorecase=true" </property>
-    <property name="user">"sa"</property>
-    <property name="password">""</property>
+      "jdbc:postgresql://strength/karatachi"
+    </property>
+    <property name="user">"chimera"</property>
+    <property name="password">"chimera"</property>
   </component>
 
+  <!-- for H2 -->
+  <!--
+    <component name="xaDataSource"
+    class="org.seasar.extension.dbcp.impl.XADataSourceImpl"> <property
+    name="driverClassName">"org.h2.Driver"</property> <property name="URL">
+    "jdbc:h2:mem:?ignorecase=true" </property> <property
+    name="user">"sa"</property> <property name="password">""</property>
+    </component>
+  -->
+  
   <component name="connectionPool" class="org.seasar.extension.dbcp.impl.ConnectionPoolImpl">
     <property name="timeout">600</property>
     <property name="maxPoolSize">10</property>

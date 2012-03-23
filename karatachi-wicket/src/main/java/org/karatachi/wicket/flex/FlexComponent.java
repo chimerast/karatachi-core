@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
@@ -36,38 +36,13 @@ public class FlexComponent extends WebMarkupContainer implements
     private String height;
 
     public <T extends Map<String, String> & Serializable> FlexComponent(
-            String id, ResourceReference reference) {
-        this(id, reference, (IModel<? extends Map<String, String>>) null);
-    }
-
-    public <T extends Map<String, String> & Serializable> FlexComponent(
-            String id, String src) {
-        this(id, src, (IModel<? extends Map<String, String>>) null);
-    }
-
-    public <T extends Map<String, String> & Serializable> FlexComponent(
-            String id, ResourceReference reference, T params) {
-        this(id, reference, new Model<T>(params));
-    }
-
-    public <T extends Map<String, String> & Serializable> FlexComponent(
             String id, String src, T params) {
         this(id, src, new Model<T>(params));
-    }
-
-    public FlexComponent(String id, ResourceReference reference,
-            IModel<? extends Map<String, String>> model) {
-        super(id, model);
-        commonInit(urlFor(reference).toString());
     }
 
     public FlexComponent(String id, String src,
             IModel<? extends Map<String, String>> model) {
         super(id, model);
-        commonInit(src);
-    }
-
-    private void commonInit(String src) {
         this.src = src;
         setOutputMarkupId(true);
         add(new FlexAppender());
@@ -141,19 +116,15 @@ public class FlexComponent extends WebMarkupContainer implements
             response.write("<script type=\"text/javascript\">");
 
             response.write("var flashvars = {};");
-            if (getModelObject() != null) {
-                for (Entry<String, String> entry : getModelObject().entrySet()) {
-                    response.write(String.format("flashvars.%s = '%s';",
-                            escape(entry.getKey()), escape(entry.getValue())));
-                }
+            for (Entry<String, String> entry : getModelObject().entrySet()) {
+                response.write(String.format("flashvars.%s = '%s';",
+                        escape(entry.getKey()), escape(entry.getValue())));
             }
 
-            if (getParameter() != null) {
-                response.write("var params = {};");
-                for (Entry<String, String> param : getParameter().entrySet()) {
-                    response.write(String.format("params.%s = '%s';",
-                            param.getKey(), param.getValue()));
-                }
+            response.write("var params = {};");
+            for (Entry<String, String> param : getParameter().entrySet()) {
+                response.write(String.format("params.%s = '%s';",
+                        param.getKey(), param.getValue()));
             }
 
             response.write("var attributes = {};");

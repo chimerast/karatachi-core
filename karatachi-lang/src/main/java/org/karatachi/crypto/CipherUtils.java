@@ -20,45 +20,22 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.karatachi.exception.IncompatiblePlatformException;
-import org.karatachi.translator.ByteArrayTranslator;
 
 public class CipherUtils {
     public static final String DEFAULT_SYMMETRIC_CIPHER_ALGORITHM = "AES";
-    public static final String DEFAULT_SYMMETRIC_CIPHER =
-            "AES/CBC/PKCS5Padding";
+    public static final String DEFAULT_SYMMETRIC_CIPHER = "AES/CBC/PKCS5Padding";
 
     public static final String DEFAULT_ASYMMETRIC_CIPHER_ALGORITHM = "RSA";
-    public static final String DEFAULT_ASYMMETRIC_CIPHER =
-            "RSA/ECB/PKCS1Padding";
+    public static final String DEFAULT_ASYMMETRIC_CIPHER = "RSA/ECB/PKCS1Padding";
 
     public static class Symmetric {
-        public static void main(String[] args) {
-            byte[] key = generateKey();
-            byte[] params = generateParams(key);
-            System.out.println("key=" + ByteArrayTranslator.toBase64(key));
-            System.out.println("params=" + ByteArrayTranslator.toBase64(params));
-        }
-
         public static byte[] generateKey() {
             try {
-                KeyGenerator keygen =
-                        KeyGenerator.getInstance(DEFAULT_SYMMETRIC_CIPHER_ALGORITHM);
+                KeyGenerator keygen = KeyGenerator
+                        .getInstance(DEFAULT_SYMMETRIC_CIPHER_ALGORITHM);
                 SecretKey key = keygen.generateKey();
                 return key.getEncoded();
             } catch (NoSuchAlgorithmException e) {
-                throw new IncompatiblePlatformException(e);
-            }
-        }
-
-        public static byte[] generateParams(byte[] key) {
-            try {
-                Cipher cipher = createEncrypter(key, null);
-                return cipher.getParameters().getEncoded();
-            } catch (IOException e) {
-                throw new IncompatiblePlatformException(e);
-            } catch (InvalidKeyException e) {
-                throw new IncompatiblePlatformException(e);
-            } catch (InvalidAlgorithmParameterException e) {
                 throw new IncompatiblePlatformException(e);
             }
         }
@@ -76,13 +53,12 @@ public class CipherUtils {
         private static Cipher createCipher(int mode, byte[] key, byte[] params)
                 throws InvalidKeyException, InvalidAlgorithmParameterException {
             try {
-                Key keyspec =
-                        new SecretKeySpec(key,
-                                DEFAULT_SYMMETRIC_CIPHER_ALGORITHM);
+                Key keyspec = new SecretKeySpec(key,
+                        DEFAULT_SYMMETRIC_CIPHER_ALGORITHM);
                 Cipher cipher = Cipher.getInstance(DEFAULT_SYMMETRIC_CIPHER);
                 if (params != null) {
-                    AlgorithmParameters algoparams =
-                            AlgorithmParameters.getInstance(keyspec.getAlgorithm());
+                    AlgorithmParameters algoparams = AlgorithmParameters
+                            .getInstance(keyspec.getAlgorithm());
                     algoparams.init(params);
                     cipher.init(mode, keyspec, algoparams);
                 } else {
@@ -118,18 +94,10 @@ public class CipherUtils {
     }
 
     public static class ASymmetric {
-        public static void main(String[] args) {
-            ASymmetricKey[] key = generateKey();
-            System.out.println("private="
-                    + ByteArrayTranslator.toBase64(key[0].getKey()));
-            System.out.println("public="
-                    + ByteArrayTranslator.toBase64(key[1].getKey()));
-        }
-
         public static ASymmetricKey[] generateKey() {
             try {
-                KeyPairGenerator keygen =
-                        KeyPairGenerator.getInstance(DEFAULT_ASYMMETRIC_CIPHER_ALGORITHM);
+                KeyPairGenerator keygen = KeyPairGenerator
+                        .getInstance(DEFAULT_ASYMMETRIC_CIPHER_ALGORITHM);
                 KeyPair pair = keygen.generateKeyPair();
                 return new ASymmetricKey[] {
                         new ASymmetricKey(true, pair.getPrivate().getEncoded()),
@@ -141,30 +109,30 @@ public class CipherUtils {
 
         public static Cipher createEncrypter(ASymmetricKey key)
                 throws InvalidKeyException, InvalidAlgorithmParameterException {
-            return createCipher(Cipher.ENCRYPT_MODE, key.isPrivate(),
-                    key.getKey());
+            return createCipher(Cipher.ENCRYPT_MODE, key.isPrivate(), key
+                    .getKey());
         }
 
         public static Cipher createDecrypter(ASymmetricKey key)
                 throws InvalidKeyException, InvalidAlgorithmParameterException {
-            return createCipher(Cipher.DECRYPT_MODE, key.isPrivate(),
-                    key.getKey());
+            return createCipher(Cipher.DECRYPT_MODE, key.isPrivate(), key
+                    .getKey());
         }
 
         private static Cipher createCipher(int mode, boolean isPrivate,
                 byte[] key) throws InvalidKeyException,
                 InvalidAlgorithmParameterException {
             try {
-                KeyFactory factory =
-                        KeyFactory.getInstance(DEFAULT_ASYMMETRIC_CIPHER_ALGORITHM);
+                KeyFactory factory = KeyFactory
+                        .getInstance(DEFAULT_ASYMMETRIC_CIPHER_ALGORITHM);
 
                 Key keyspec;
                 if (isPrivate) {
-                    keyspec =
-                            factory.generatePrivate(new PKCS8EncodedKeySpec(key));
+                    keyspec = factory.generatePrivate(new PKCS8EncodedKeySpec(
+                            key));
                 } else {
-                    keyspec =
-                            factory.generatePublic(new X509EncodedKeySpec(key));
+                    keyspec = factory
+                            .generatePublic(new X509EncodedKeySpec(key));
                 }
 
                 Cipher cipher = Cipher.getInstance(DEFAULT_ASYMMETRIC_CIPHER);

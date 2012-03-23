@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>karatachi-jni</artifactId>
@@ -7,13 +6,13 @@
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.2.25</version>
   </parent>
   <dependencies>
     <dependency>
       <groupId>org.karatachi</groupId>
       <artifactId>karatachi-native</artifactId>
-      <version>${project.version}</version>
+      <version>${version}</version>
     </dependency>
   </dependencies>
 
@@ -22,21 +21,16 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>native-maven-plugin</artifactId>
-        <version>1.0-alpha-5</version>
         <extensions>true</extensions>
         <configuration>
-          <javahClassNames>
-            <javahClassName>org.karatachi.jni.win32.NetworkSetting</javahClassName>
-            <javahClassName>org.karatachi.jni.win32.PerformanceCounter</javahClassName>
-          </javahClassNames>
-          <javahOS>win32</javahOS>
+          <compilerProvider>msvc</compilerProvider>
           <envFactoryName>
             org.codehaus.mojo.natives.msvc.MSVC2008x86EnvFactory
           </envFactoryName>
-          <compilerProvider>msvc</compilerProvider>
           <compilerStartOptions>
             <compilerStartOption>/O2 /EHsc /MT /W3</compilerStartOption>
           </compilerStartOptions>
+          <javahOS>win32</javahOS>
           <sources>
             <source>
               <directory>src/main/native</directory>
@@ -51,6 +45,18 @@
             </linkerStartOption>
           </linkerStartOptions>
         </configuration>
+        <executions>
+          <execution>
+            <id>javah</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>javah</goal>
+            </goals>
+            <configuration>
+              <outputFileName>karatachi_jni.h</outputFileName>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

@@ -15,7 +15,7 @@ function promptText(id, value) {
 
   field.observe('blur', function(e) {
     if (field.value == '') {
-      field.value = value;
+      field.value = value
       field.addClassName('prompt');
     }
   });

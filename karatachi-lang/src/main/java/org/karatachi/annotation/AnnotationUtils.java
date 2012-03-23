@@ -8,12 +8,10 @@ public class AnnotationUtils {
             Method method, Class<T> annotationClass) {
         for (Class<?> iface : method.getDeclaringClass().getInterfaces()) {
             try {
-                Method m =
-                        iface.getMethod(method.getName(),
-                                method.getParameterTypes());
+                Method m = iface.getMethod(method.getName(), method
+                        .getParameterTypes());
                 return m.getAnnotation(annotationClass);
-            } catch (NoSuchMethodException ignore) {
-            }
+            } catch (NoSuchMethodException ignore) {}
         }
         return null;
     }

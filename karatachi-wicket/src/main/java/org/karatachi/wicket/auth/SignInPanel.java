@@ -1,5 +1,8 @@
 package org.karatachi.wicket.auth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.karatachi.wicket.auto.SelfResolveForm;
@@ -31,8 +34,11 @@ public class SignInPanel extends Panel {
 
         @Override
         protected void onSubmit() {
-            if (AuthenticatedWebSession.getSession().authenticate(username,
-                    password)) {
+            Map<String, String> parameters = new HashMap<String, String>();
+            parameters.put("username", username);
+            parameters.put("password", password);
+
+            if (AuthenticatedWebSession.getSession().authenticate(parameters)) {
                 if (!rememberMe) {
                     getPage().removePersistedFormData(SignInForm.class, true);
                 }

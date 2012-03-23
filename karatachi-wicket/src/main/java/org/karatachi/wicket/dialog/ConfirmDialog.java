@@ -40,7 +40,6 @@ public class ConfirmDialog extends ModalWindow {
                 } else {
                     params.onCancel(target);
                 }
-                params.onClosed(target);
             }
         });
     }
@@ -68,7 +67,6 @@ public class ConfirmDialog extends ModalWindow {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     ConfirmDialog.this.params.result = true;
-                    ConfirmDialog.this.params.onClosing(target);
                     ConfirmDialog.this.close(target);
                 }
             });
@@ -79,7 +77,6 @@ public class ConfirmDialog extends ModalWindow {
                 @Override
                 public void onClick(AjaxRequestTarget target) {
                     ConfirmDialog.this.params.result = false;
-                    ConfirmDialog.this.params.onClosing(target);
                     ConfirmDialog.this.close(target);
                 }
             });

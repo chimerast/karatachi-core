@@ -6,13 +6,13 @@
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.2.25</version>
   </parent>
   <dependencies>
     <dependency>
       <groupId>org.karatachi</groupId>
       <artifactId>karatachi-lang</artifactId>
-      <version>${project.version}</version>
+      <version>${version}</version>
     </dependency>
   </dependencies>
 

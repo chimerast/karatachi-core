@@ -12,8 +12,8 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.karatachi.wicket.auto.AutoResolveListView;
 import org.karatachi.wicket.label.FormattedLabel;
+import org.karatachi.wicket.listview.SimpleListView;
 
 public class MemoryMonitorPanel extends Panel {
     private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class MemoryMonitorPanel extends Panel {
             }
         });
 
-        add(new AutoResolveListView<MemorySpace>("data", getModel()) {
+        add(new SimpleListView<MemorySpace>("data", getModel()) {
             private static final long serialVersionUID = 1L;
 
             @Override

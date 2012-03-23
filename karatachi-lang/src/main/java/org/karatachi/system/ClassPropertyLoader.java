@@ -62,23 +62,16 @@ public class ClassPropertyLoader {
     }
 
     public void setClassProperties(Class<?> clazz) {
-        String canonicalPrefix = clazz.getCanonicalName() + ".";
-        String simplePrefix = clazz.getSimpleName() + ".";
-
+        String target = clazz.getCanonicalName() + ".";
         InstanceDelegator iface = InstanceDelegator.getStaticInterface(clazz);
 
         for (Object k : properties.keySet()) {
             try {
                 String key = (String) k;
-                if (key.startsWith(canonicalPrefix)) {
-                    iface.setAsString(key.substring(canonicalPrefix.length()),
-                            properties.getProperty(key));
-                } else if (key.startsWith(simplePrefix)) {
-                    iface.setAsString(key.substring(simplePrefix.length()),
+                if (key.startsWith(target)) {
+                    iface.setAsString(key.substring(target.length()),
                             properties.getProperty(key));
                 }
-            } catch (NoSuchFieldException e) {
-                ;
             } catch (Exception e) {
                 logger.warn("Fail to set property", e);
             }
@@ -90,8 +83,8 @@ public class ClassPropertyLoader {
             StringWriter buffer = new StringWriter();
             Set<Object> keys = new TreeSet<Object>(properties.keySet());
             for (Object key : keys) {
-                buffer.write(String.format("%s=%s\n", key,
-                        properties.getProperty((String) key)));
+                buffer.write(String.format("%s=%s\n", key, properties
+                        .getProperty((String) key)));
             }
             logger.debug(buffer.getBuffer().toString());
         }

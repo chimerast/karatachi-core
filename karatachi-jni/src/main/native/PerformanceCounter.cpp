@@ -6,7 +6,7 @@
 #include <pdh.h>
 #include <pdhmsg.h>
 
-#include "org_karatachi_jni_win32_PerformanceCounter.h"
+#include "karatachi_jni.h"
 
 typedef std::vector<PDH_HQUERY> QueryList;
 typedef std::vector<PDH_HCOUNTER> CounterList;

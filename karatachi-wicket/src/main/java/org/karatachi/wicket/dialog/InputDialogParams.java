@@ -32,10 +32,4 @@ public abstract class InputDialogParams implements Serializable {
 
     public void onCancel(AjaxRequestTarget target) {
     }
-
-    public void onClosing(AjaxRequestTarget target) {
-    }
-
-    public void onClosed(AjaxRequestTarget target) {
-    }
 }

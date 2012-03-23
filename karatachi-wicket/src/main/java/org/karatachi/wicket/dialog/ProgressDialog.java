@@ -42,11 +42,14 @@ public class ProgressDialog extends ModalWindow {
                 } else {
                     if (params.thread != null) {
                         params.thread.interrupt();
+                        params.thread = null;
+                        /*
                         try {
                             params.thread.join();
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
+                        */
                     }
                     params.onCancel(target);
                 }

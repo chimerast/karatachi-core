@@ -4,34 +4,35 @@
 
   <artifactId>karatachi-wicket</artifactId>
   <packaging>jar</packaging>
+  <version>0.2.25.29</version>
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.2.25</version>
   </parent>
   <properties>
-    <wicket.version>1.4.18</wicket.version>
+    <wicket.version>1.4.19</wicket.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.karatachi</groupId>
       <artifactId>karatachi-lang</artifactId>
-      <version>${project.version}</version>
+      <version>0.2.25.11</version>
     </dependency>
     <dependency>
       <groupId>org.karatachi</groupId>
       <artifactId>karatachi-database</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.karatachi</groupId>
       <artifactId>karatachi-daemon</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
     <dependency>
       <groupId>org.karatachi</groupId>
       <artifactId>karatachi-native</artifactId>
-      <version>${project.version}</version>
+      <version>${parent.version}</version>
     </dependency>
 
     <dependency>
@@ -51,16 +52,31 @@
     </dependency>
 
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
-      <scope>provided</scope>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.1</version>
     </dependency>
 
     <dependency>
       <groupId>jfree</groupId>
+      <artifactId>jcommon</artifactId>
+      <version>1.0.15</version>
+    </dependency>
+    <dependency>
+      <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
-      <version>1.0.12</version>
+      <version>1.0.13</version>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.jexcelapi</groupId>
+      <artifactId>jxl</artifactId>
+      <version>2.6.10</version>
     </dependency>
   </dependencies>
 

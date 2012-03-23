@@ -34,7 +34,8 @@ public abstract class MBeanMonitorDaemon extends MonitorDaemon {
     @Override
     protected void collectData() throws SQLException {
         for (MBeanAccessor accessor : accessors.values()) {
-            storeValue(accessor.getTitle(), accessor.getValue());
+            storeValue(System.currentTimeMillis(), accessor.getTitle(),
+                    accessor.getValue());
         }
     }
 

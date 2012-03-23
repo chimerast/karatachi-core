@@ -9,13 +9,17 @@
   <form wicket:id="form">
   <dl>
     <dt><wicket:message key="username" /></dt>
-    <dd><input wicket:id="username" type="text" wicket:required="true" /></dd>
+    <dd><input wicket:id="username" type="text" size="30"
+      wicket:required="true" /></dd>
     <dt><wicket:message key="password" /></dt>
-    <dd><input wicket:id="password" type="password" wicket:required="true" /></dd>
-    <dd><input wicket:id="rememberMe" type="checkbox" /></dd>
+    <dd><input wicket:id="password" type="password" size="30"
+      wicket:required="true" /></dd>
+    <dd><input wicket:id="rememberMe" type="checkbox" /> <wicket:message
+      key="rememberMe" /></dd>
     <dd><span wicket:id="feedback" /></dd>
-    <dd><input type="submit" name="submit" wicket:message="value:signin" />
-    <input type="reset" wicket:message="value:reset" /></dd>
+    <dd><input type="submit" name="submit"
+      wicket:message="value:signin" /> <input type="reset"
+      wicket:message="value:reset" /></dd>
   </dl>
   </form>
 </wicket:panel>

@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.2.25-SNAPSHOT</version>
   </parent>
 
   <build>
@@ -16,7 +16,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.5</version>
         <configuration>
           <file>${basedir}/lib/${upload.file}.jar</file>
           <pomFile>${basedir}/lib/${upload.file}.pom</pomFile>

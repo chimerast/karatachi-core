@@ -1,27 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.karatachi</groupId>
   <artifactId>karatachi</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.2.25</version>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.6.2</version>
+      <version>1.5.8</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-ext</artifactId>
-      <version>1.6.2</version>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
+      <version>1.5.8</version>
     </dependency>
   </dependencies>
   <modules>
@@ -30,9 +23,8 @@
     <module>karatachi-net</module>
     <module>karatachi-database</module>
     <module>karatachi-native</module>
-    <!--module>karatachi-jni</module-->
+    <module>karatachi-jni</module>
     <module>karatachi-wicket</module>
-    <module>karatachi-wicket-example</module>
   </modules>
 
   <build>
@@ -43,6 +35,9 @@
       </resource>
       <resource>
         <directory>src/main/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
@@ -52,7 +47,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
         <configuration>
           <encoding>UTF-8</encoding>
           <source>1.6</source>
@@ -61,13 +55,7 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.6</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
-        <version>2.1.2</version>
         <executions>
           <execution>
             <id>attach-sources</id>
@@ -81,7 +69,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.1</version>
         <configuration>
           <addMavenDescriptor>false</addMavenDescriptor>
           <archive>
@@ -91,25 +78,23 @@
           </archive>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <useReleaseProfile>false</useReleaseProfile>
+        </configuration>
+      </plugin>
     </plugins>
-    <extensions>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-webdav-jackrabbit</artifactId>
-        <version>1.0-beta-7</version>
-      </extension>
-    </extensions>
   </build>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  
+  <reporting />
+
   <name>Karatachi</name>
   <description />
   <scm>
-    <developerConnection>scm:svn:https://repo.karatachi.org/svn</developerConnection>
-    <url>http://karatachi.org/</url>
+    <developerConnection>scm:svn:https://repo.karatachi.org/svn/tags/karatachi-0.2.25</developerConnection>
+    <url>http://karatachi.org/tags/karatachi-0.2.25</url>
   </scm>
   <repositories>
     <repository>
@@ -120,16 +105,9 @@
   </repositories>
   <distributionManagement>
     <repository>
-      <uniqueVersion>false</uniqueVersion>
       <id>karatachi-repository</id>
       <name>Karatachi Project Repository</name>
       <url>dav:https://repo.karatachi.org/mvn</url>
     </repository>
-    <snapshotRepository>
-      <uniqueVersion>false</uniqueVersion>
-      <id>karatachi-repository</id>
-      <name>Karatachi Project Repository</name>
-      <url>dav:https://repo.karatachi.org/mvn</url>
-    </snapshotRepository>
   </distributionManagement>
 </project>

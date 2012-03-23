@@ -11,7 +11,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
-import org.karatachi.wicket.script.AjaxLibrariesReference;
 
 public class InputDialog extends ModalWindow {
     private static final long serialVersionUID = 1L;
@@ -45,7 +44,6 @@ public class InputDialog extends ModalWindow {
                 } else {
                     params.onCancel(target);
                 }
-                params.onClosed(target);
             }
         });
     }
@@ -82,7 +80,6 @@ public class InputDialog extends ModalWindow {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     InputDialog.this.params.result = true;
-                    InputDialog.this.params.onClosing(target);
                     InputDialog.this.close(target);
                 }
             });
@@ -94,16 +91,14 @@ public class InputDialog extends ModalWindow {
                 @Override
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     InputDialog.this.params.result = false;
-                    InputDialog.this.params.onClosing(target);
                     InputDialog.this.close(target);
                 }
             });
         }
 
         public void renderHead(IHeaderResponse response) {
-            response.renderJavascriptReference(AjaxLibrariesReference.jquery);
-            response.renderOnDomReadyJavascript(String.format(
-                    "jQuery('#%s').focus();", input.getMarkupId()));
+            response.renderOnLoadJavascript("Wicket.Focus.setFocusOnId('"
+                    + input.getMarkupId() + "')");
         }
     }
 }

@@ -1,0 +1,29 @@
+.karatachi table {
+  border-collapse: collapse !important;
+  /*table-layout: fixed !important;*/
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.karatachi .outer_row {
+  background: transparent !important;
+}
+
+.karatachi .outer_cell {
+  background: transparent !important;
+  border: none 0px transparent !important;
+  text-align: left !important;
+  vertical-align: top !important; 
+}
+
+.karatachi td {
+  white-space: nowrap !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  border-top: none 0px transparent !important; 
+  border-left: none 0px transparent !important; 
+}
+
+.karatachi .contextmenu {
+  display: none;
+}

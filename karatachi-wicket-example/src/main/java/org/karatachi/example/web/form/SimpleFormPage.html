@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:extend>
+  <form wicket:id="form">
+  <dl>
+    <dt>TextField</dt>
+    <dd><input wicket:id="form1" type="text" wicket:required="true" wicket:label="TextField" /></dd>
+  </dl>
+  <dl>
+    <dt>PasswordField</dt>
+    <dd><input wicket:id="form2" type="password" wicket:required="true" /></dd>
+  </dl>
+  <dl>
+    <dt>IpAddressField</dt>
+    <dd><input wicket:id="addr" type="text" wicket:type="ipaddress" /></dd>
+  </dl>
+  <dl>
+    <dt>DateField</dt>
+    <dd><input wicket:id="date" type="text" wicket:type="date" /></dd>
+  </dl>
+  <dl>
+    <dt>CheckBox</dt>
+    <dd><input wicket:id="check" type="checkbox" /></dd>
+  </dl>
+  <dl>
+    <dt>Submit</dt>
+    <dd><input type="submit" value="送信" /></dd>
+  </dl>
+  </form>
+</wicket:extend>
+</body>
+</html>

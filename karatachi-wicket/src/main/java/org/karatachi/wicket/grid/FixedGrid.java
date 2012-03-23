@@ -21,8 +21,8 @@ class FixedGrid extends Loop {
             "width: %dpx !important; height: %dpx !important; overflow: hidden !important;";
     private static final String SPACER_IMG_FORMAT =
             "<img src=\"%s\" style=\"width: %dpx; height: %dpx\" />";
-    private static final ResourceReference SPACER =
-            new ResourceReference(FixedGrid.class, "spacer.gif");
+    private static final ResourceReference SPACER = new ResourceReference(
+            FixedGrid.class, "spacer.gif");
 
     private final IModel<Cells> model;
     private final FixedGridPanel owner;

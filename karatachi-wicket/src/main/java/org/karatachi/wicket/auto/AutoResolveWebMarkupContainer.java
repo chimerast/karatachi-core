@@ -42,12 +42,12 @@ public class AutoResolveWebMarkupContainer<T extends Serializable> extends
         }
 
         String tagId = tag.getId();
-        String type = tag.getAttribute("type");
+        String type = tag.getAttributes().getString("type");
 
         String wicketType = null;
         if (tag.getAttributes().containsKey("wicket:type")) {
             String[] wicketTypeValue =
-                    tag.getAttribute("wicket:type").split(":");
+                    tag.getAttributes().getString("wicket:type").split(":");
             wicketType = wicketTypeValue[0];
         }
 

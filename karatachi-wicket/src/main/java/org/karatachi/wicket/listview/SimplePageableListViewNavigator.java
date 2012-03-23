@@ -2,21 +2,22 @@ package org.karatachi.wicket.listview;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.PageableListView;
-import org.apache.wicket.markup.html.navigation.paging.IPageable;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.model.PropertyModel;
 
-public class SimplePageableListViewNavigator extends PagingNavigator {
+public class SimplePageableListViewNavigator<T> extends PagingNavigator {
     private static final long serialVersionUID = 1L;
 
-    public SimplePageableListViewNavigator(String id, IPageable pageable) {
-        super(id, pageable);
+    public SimplePageableListViewNavigator(String id,
+            PageableListView<T> pageableListView) {
+        super(id, pageableListView);
         add(new Label("headline", new PropertyModel<String>(this,
                 "headlineText")));
     }
 
+    @SuppressWarnings("unchecked")
     public String getHeadlineText() {
-        PageableListView<?> pageable = (PageableListView<?>) getPageable();
+        PageableListView pageable = (PageableListView) getPageable();
         int firstListItem =
                 pageable.getCurrentPage() * pageable.getRowsPerPage();
         int endListItem = pageable.getList().size();

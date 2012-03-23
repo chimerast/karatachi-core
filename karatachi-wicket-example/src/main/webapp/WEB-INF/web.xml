@@ -2,6 +2,7 @@
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
   version="2.4">
+
   <filter>
     <filter-name>s2wicketfilter</filter-name>
     <filter-class>org.seasar.wicket.S2WicketFilter</filter-class>
@@ -10,19 +11,13 @@
       <param-value>org.karatachi.example.web.ExampleApplication</param-value>
     </init-param>
     <init-param>
-      <param-name>configuration</param-name>
-      <param-value>development</param-value>
-    </init-param>
-    <init-param>
       <param-name>debug</param-name>
       <param-value>/debug</param-value>
     </init-param>
-    <!--
     <init-param>
       <param-name>reloadingClassPattern</param-name>
       <param-value>org.karatachi.example.**,org.karatachi.wicket.**</param-value>
     </init-param>
-    -->
   </filter>
   <filter-mapping>
     <filter-name>s2wicketfilter</filter-name>

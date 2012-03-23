@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%-5p %c - %m%ex%n</pattern>
-    </encoder>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%-5p %c - %m%ex%n</Pattern>
+    </layout>
   </appender>
   <logger name="org.seasar">
     <level value="INFO" />

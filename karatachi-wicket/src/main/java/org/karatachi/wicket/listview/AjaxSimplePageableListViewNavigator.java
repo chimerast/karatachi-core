@@ -15,8 +15,9 @@ public class AjaxSimplePageableListViewNavigator extends AjaxPagingNavigator {
                 "headlineText")));
     }
 
+    @SuppressWarnings("unchecked")
     public String getHeadlineText() {
-        PageableListView<?> pageable = (PageableListView<?>) getPageable();
+        PageableListView pageable = (PageableListView) getPageable();
         int firstListItem =
                 pageable.getCurrentPage() * pageable.getRowsPerPage();
         int endListItem = pageable.getList().size();

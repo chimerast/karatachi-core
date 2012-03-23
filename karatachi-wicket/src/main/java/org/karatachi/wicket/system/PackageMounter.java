@@ -9,6 +9,8 @@ import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.karatachi.classloader.PackageDir;
 
 public class PackageMounter {
+    private static final long serialVersionUID = 1L;
+
     public static void mount(String packageName) {
         WebApplication application = WebApplication.get();
         if (application != null) {
@@ -19,9 +21,7 @@ public class PackageMounter {
     private static void loadClasses(WebApplication application,
             String packageName, String path) {
 
-        PackageDir packageDir =
-                new PackageDir(Thread.currentThread().getContextClassLoader(),
-                        packageName);
+        PackageDir packageDir = new PackageDir(packageName);
         for (Class<? extends WebPage> clazz : packageDir.getClasses(WebPage.class)) {
             if ((clazz.getModifiers() & Modifier.ABSTRACT) == 0) {
                 String pageName =
@@ -30,7 +30,7 @@ public class PackageMounter {
                     pageName = pageName.substring(0, pageName.length() - 4);
                 }
                 application.mount(new HybridUrlCodingStrategy(path + pageName,
-                        clazz, true));
+                        clazz));
             }
         }
 
