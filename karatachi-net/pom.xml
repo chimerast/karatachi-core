@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>karatachi-net</artifactId>
+  <packaging>jar</packaging>
+  <parent>
+    <groupId>org.karatachi</groupId>
+    <artifactId>karatachi</artifactId>
+    <version>0.3-SNAPSHOT</version>
+  </parent>
+  <dependencies>
+    <dependency>
+      <groupId>org.karatachi</groupId>
+      <artifactId>karatachi-lang</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <name>Karatachi Net</name>
+  <description />
+</project>

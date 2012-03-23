@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>karatachi-upload</artifactId>
+  <packaging>jar</packaging>
+  <parent>
+    <groupId>org.karatachi</groupId>
+    <artifactId>karatachi</artifactId>
+    <version>0.3-SNAPSHOT</version>
+  </parent>
+
+  <build>
+    <defaultGoal>deploy:deploy-file</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <file>${basedir}/lib/${upload.file}.jar</file>
+          <pomFile>${basedir}/lib/${upload.file}.pom</pomFile>
+          <repositoryId>karatachi-repository</repositoryId>
+          <url>dav:https://repo.karatachi.org/mvn</url>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <name>Karatachi Upload</name>
+  <description />
+</project>

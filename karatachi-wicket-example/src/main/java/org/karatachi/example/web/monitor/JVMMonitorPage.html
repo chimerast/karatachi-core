@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:extend>
+  <h2>JVM監視(MBean監視)</h2>
+  <p>MBeanの値を監視しプロットします。使用するにはデータベースが必要です。このサンプルのように
+  h2database等のオンメモリデータベースでも可。デーモンのセットアップはExampleApplication.setupMonitor()を参照。
+  古いデータを順次削除していくのでデータベースがパンクすることは無いです。</p>
+  <p>
+    <a wicket:id="level0" href="#">15sec</a>
+    <a wicket:id="level1" href="#">1min</a>
+    <a wicket:id="level2" href="#">5min</a>
+    <a wicket:id="level3" href="#">1hour</a>
+    <a wicket:id="level4" href="#">1day</a>
+  </p>
+  <img wicket:id="chart1" />
+  <img wicket:id="chart2" />
+  <img wicket:id="chart3" />
+  <img wicket:id="chart4" />
+</wicket:extend>
+</body>
+</html>

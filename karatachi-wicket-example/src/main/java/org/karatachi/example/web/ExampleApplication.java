@@ -1,0 +1,95 @@
+package org.karatachi.example.web;
+
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.wicket.markup.html.WebPage;
+import org.h2.tools.RunScript;
+import org.karatachi.daemon.monitor.MBeanMonitorDaemon;
+import org.karatachi.example.component.SourceViewPage;
+import org.karatachi.example.web.net.DownloadTestPage;
+import org.karatachi.wicket.system.PackageMounter;
+import org.seasar.framework.container.SingletonS2Container;
+import org.seasar.wicket.S2WebApplication;
+
+public class ExampleApplication extends S2WebApplication {
+    @Override
+    protected void init() {
+        getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
+        getRequestCycleSettings().setGatherExtendedBrowserInfo(true);
+
+        getMarkupSettings().setDefaultMarkupEncoding("UTF-8");
+
+        getDebugSettings().setAjaxDebugModeEnabled(false);
+
+        PackageMounter.mount("org.karatachi.example.web");
+        mountBookmarkablePage("/source", SourceViewPage.class);
+        mountBookmarkablePage("/env", DownloadTestPage.class);
+
+        initializeDatabase();
+
+        setupMonitor();
+    }
+
+    private void initializeDatabase() {
+        // オンメモリデータベースの作成
+        DataSource dataSource =
+                SingletonS2Container.getComponent(DataSource.class);
+        try {
+            Connection conn = dataSource.getConnection();
+            try {
+                RunScript.execute(
+                        conn,
+                        new InputStreamReader(
+                                getClass().getClassLoader().getResourceAsStream(
+                                        "init.sql"), "UTF-8"));
+            } finally {
+                conn.close();
+            }
+        } catch (Exception ignore) {
+            ignore.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void setupMonitor() {
+        // MBeanDaemon(<デーモン名>, <DBテーブル名>)
+        // DBのテーブルはinit.sqlを参照
+        MBeanMonitorDaemon monitor =
+                new MBeanMonitorDaemon("MBeanMonitor", "monitor") {
+                    @Override
+                    protected Connection getConnection() throws SQLException {
+                        // DBアクセスに使用するConnectionオブジェクトを
+                        DataSource dataSource =
+                                SingletonS2Container.getComponent(DataSource.class);
+                        return dataSource.getConnection();
+                    }
+                };
+
+        // monitor.mbeanファイルから監視を行うMBeanを設定する
+        try {
+            List<String> lines =
+                    IOUtils.readLines(getClass().getResourceAsStream(
+                            "monitor.mbean"));
+            for (String line : lines) {
+                monitor.addAccessor(line.substring(line.lastIndexOf(":") + 1),
+                        line);
+            }
+        } catch (Exception e) {
+            System.out.println("error: " + e.getMessage());
+        }
+
+        // モニタリング開始
+        monitor.startup();
+    }
+
+    @Override
+    public Class<? extends WebPage> getHomePage() {
+        return IndexPage.class;
+    }
+}

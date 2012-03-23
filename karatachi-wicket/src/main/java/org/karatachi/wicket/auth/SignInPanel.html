@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:panel>
+  <form wicket:id="form">
+  <dl>
+    <dt><wicket:message key="username" /></dt>
+    <dd><input wicket:id="username" type="text" wicket:required="true" /></dd>
+    <dt><wicket:message key="password" /></dt>
+    <dd><input wicket:id="password" type="password" wicket:required="true" /></dd>
+    <dd><input wicket:id="rememberMe" type="checkbox" /></dd>
+    <dd><span wicket:id="feedback" /></dd>
+    <dd><input type="submit" name="submit" wicket:message="value:signin" />
+    <input type="reset" wicket:message="value:reset" /></dd>
+  </dl>
+  </form>
+</wicket:panel>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<wicket:panel>
+  <div class="karatachi">
+  <table class="monitor">
+    <thead>
+      <tr>
+        <th>[ <a wicket:id="gc" href="#">Exec GC</a> ]</th>
+        <th>Init</th>
+        <th>Used</th>
+        <th>Committed</th>
+        <th>Max</th>
+        <th>Ratio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr wicket:id="data">
+        <th wicket:id="name" style="text-align: left"></th>
+        <td wicket:id="init" style="text-align: right"></td>
+        <td wicket:id="used" style="text-align: right"></td>
+        <td wicket:id="committed" style="text-align: right"></td>
+        <td wicket:id="max" style="text-align: right"></td>
+        <th wicket:id="ratio" style="text-align: right; font-weight: bold"></th>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</wicket:panel>
+</body>
+</html>
