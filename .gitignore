@@ -1,0 +1,4 @@
+.*
+!.gitignore
+target
+/karatachi-upload/lib/

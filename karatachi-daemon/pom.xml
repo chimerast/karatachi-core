@@ -1,13 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- The Basics -->
   <artifactId>karatachi-daemon</artifactId>
   <packaging>jar</packaging>
-  <parent>
-    <groupId>org.karatachi</groupId>
-    <artifactId>karatachi</artifactId>
-    <version>0.3-SNAPSHOT</version>
-  </parent>
   <dependencies>
     <dependency>
       <groupId>org.karatachi</groupId>
@@ -15,7 +12,12 @@
       <version>${project.version}</version>
     </dependency>
   </dependencies>
+  <parent>
+    <groupId>org.karatachi</groupId>
+    <artifactId>karatachi</artifactId>
+    <version>0.4-SNAPSHOT</version>
+  </parent>
 
-  <name>Karatachi Daemon</name>
-  <description />
+  <!-- More Project Information -->
+  <name>Karatachi Daemon-${project.version}</name>
 </project>

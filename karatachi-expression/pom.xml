@@ -3,13 +3,26 @@
   <modelVersion>4.0.0</modelVersion>
 
   <!-- The Basics -->
-  <artifactId>karatachi-native</artifactId>
+  <artifactId>karatachi-expression</artifactId>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
-      <groupId>org.karatachi</groupId>
-      <artifactId>karatachi-lang</artifactId>
-      <version>${project.version}</version>
+      <groupId>jparsec</groupId>
+      <artifactId>jparsec</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <parent>
@@ -19,5 +32,5 @@
   </parent>
 
   <!-- More Project Information -->
-  <name>Karatachi Native-${project.version}</name>
+  <name>Karatachi Expression-${project.version}</name>
 </project>
