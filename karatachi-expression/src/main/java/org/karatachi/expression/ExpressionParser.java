@@ -7,6 +7,9 @@ import org.codehaus.jparsec.Parser;
 import org.codehaus.jparsec.Parsers;
 import org.codehaus.jparsec.Scanners;
 import org.codehaus.jparsec.Terminals;
+import org.codehaus.jparsec.Tokens;
+import org.codehaus.jparsec.Tokens.Fragment;
+import org.codehaus.jparsec.Tokens.Tag;
 import org.codehaus.jparsec.functors.Binary;
 import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.functors.Map4;
@@ -100,6 +103,13 @@ public class ExpressionParser {
         }
     }
 
+    private static final Parser<Fragment> NAN_TOKENIZER = Scanners.string(
+            "NaN", "NaN").source().map(new Map<String, Fragment>() {
+        public Fragment map(String text) {
+            return Tokens.fragment(text, Tag.DECIMAL);
+        }
+    });
+
     private static final Parser<Expression> LITERAL =
             Terminals.DecimalLiteral.PARSER.map(new Map<String, Expression>() {
                 public Literal map(String s) {
@@ -119,12 +129,10 @@ public class ExpressionParser {
             ":", ",");
 
     private static final Parser<?> TOKENIZER = Parsers.or(
-            Terminals.DecimalLiteral.TOKENIZER, Terminals.Identifier.TOKENIZER,
-            OPERATORS.tokenizer());
+            Terminals.DecimalLiteral.TOKENIZER, NAN_TOKENIZER,
+            Terminals.Identifier.TOKENIZER, OPERATORS.tokenizer());
 
-    private static final Parser<Void> IGNORED = Parsers.or(
-            Scanners.JAVA_LINE_COMMENT, Scanners.JAVA_BLOCK_COMMENT,
-            Scanners.WHITESPACES).skipMany();
+    private static final Parser<Void> IGNORED = Scanners.JAVA_DELIMITER;
 
     private static Parser<?> term(String... names) {
         return OPERATORS.token(names);

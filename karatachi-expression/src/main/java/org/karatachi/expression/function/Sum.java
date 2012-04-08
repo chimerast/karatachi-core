@@ -13,14 +13,15 @@ public class Sum extends AbstractFunction {
     @Override
     public double evaluate(IEnvironment env, List<Double> args) {
         double sum = 0.0;
-        for (Double e : args) {
-            sum += e;
+        for (Double arg : args) {
+            sum += arg;
         }
         return sum;
     }
 
     @Override
-    public String represent(IEnvironment env, List<String> args) {
+    public String represent(IEnvironment env, List<String> args,
+            List<Double> values) {
         StringBuilder sb = new StringBuilder();
         sb.append("(");
         for (String arg : args) {

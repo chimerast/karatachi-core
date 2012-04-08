@@ -36,8 +36,11 @@ public interface IFunction {
      *            環境
      * @param args
      *            引数の文字列表現
+     * @param values
+     *            引数
      * @return 文字列表現
      */
-    public String represent(IEnvironment env, List<String> args);
+    public String represent(IEnvironment env, List<String> args,
+            List<Double> values);
 
 }
