@@ -103,12 +103,12 @@ public class ExpressionParser {
         }
     }
 
-    private static final Parser<Fragment> NAN_TOKENIZER = Scanners.string(
-            "NaN", "NaN").source().map(new Map<String, Fragment>() {
-        public Fragment map(String text) {
-            return Tokens.fragment(text, Tag.DECIMAL);
-        }
-    });
+    private static final Parser<Fragment> NAN_TOKENIZER =
+            Scanners.string("NaN").source().map(new Map<String, Fragment>() {
+                public Fragment map(String text) {
+                    return Tokens.fragment(text, Tag.DECIMAL);
+                }
+            });
 
     private static final Parser<Expression> LITERAL =
             Terminals.DecimalLiteral.PARSER.map(new Map<String, Expression>() {
