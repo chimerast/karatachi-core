@@ -78,4 +78,10 @@ public class ExpressionParserTest {
         Set<String> variables = env.getUsedVariables(a);
         assertEquals(4, variables.size());
     }
+
+    @Test
+    public void NaNの動作() {
+        Expression a = ExpressionParser.parse("NaN");
+        assertEquals(Double.NaN, a.value(env), 0.0);
+    }
 }

@@ -34,7 +34,8 @@ public abstract class AbstractFunction implements IFunction {
      * @see com.uzabase.speeda.expression.IFunction#represent(com.uzabase.speeda.expression.IEnvironment, java.util.List)
      */
     @Override
-    public String represent(IEnvironment env, List<String> args) {
+    public String represent(IEnvironment env, List<String> args,
+            List<Double> values) {
         throw new UnsupportedOperationException();
     }
 }
