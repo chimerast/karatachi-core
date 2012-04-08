@@ -2,26 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <!-- The Basics -->
   <artifactId>karatachi-wicket-example</artifactId>
   <packaging>war</packaging>
-  <parent>
-    <groupId>org.karatachi</groupId>
-    <artifactId>karatachi</artifactId>
-    <version>0.3-SNAPSHOT</version>
-  </parent>
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
   <dependencies>
     <dependency>
       <groupId>org.karatachi</groupId>
@@ -72,7 +55,32 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <parent>
+    <groupId>org.karatachi</groupId>
+    <artifactId>karatachi</artifactId>
+    <version>0.3-SNAPSHOT</version>
+  </parent>
 
+  <!-- Build Settings -->
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+  <!-- More Project Information -->
+  <name>Karatachi Wicket Example-${project.version}</name>
+  <description />
+
+  <!-- Environment Settings -->
   <repositories>
     <repository>
       <id>maven.seasar.org</id>
@@ -80,7 +88,4 @@
       <url>http://maven.seasar.org/maven2</url>
     </repository>
   </repositories>
-
-  <name>Karatachi Wicket Example</name>
-  <description />
 </project>
