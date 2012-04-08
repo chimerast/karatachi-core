@@ -47,7 +47,7 @@ public abstract class AbstractEnvironment implements IEnvironment {
     @Override
     public final double evaluateFunction(String name, List<Expression> args) {
         if (!functions.containsKey(name)) {
-            throw new UnsupportedOperationException();
+            throw new UnknownIdentifierException();
         }
 
         // 高速化する際は関数内での遅延評価にするべき
@@ -65,7 +65,7 @@ public abstract class AbstractEnvironment implements IEnvironment {
     @Override
     public final String representFunction(String name, List<Expression> args) {
         if (!functions.containsKey(name)) {
-            throw new UnsupportedOperationException();
+            throw new UnknownIdentifierException();
         }
 
         // 高速化する際は関数内での遅延評価にするべき

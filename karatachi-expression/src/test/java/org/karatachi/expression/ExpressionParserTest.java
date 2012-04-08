@@ -4,8 +4,11 @@ import static org.junit.Assert.*;
 
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.karatachi.expression.ast.Expression;
+import org.karatachi.expression.function.IfNaN;
+import org.karatachi.expression.function.IfZero;
 import org.karatachi.expression.function.Sum;
 
 public class ExpressionParserTest {
@@ -13,6 +16,8 @@ public class ExpressionParserTest {
     private static class BaseEnvironment extends AbstractEnvironment {
         {
             addFunction(new Sum());
+            addFunction(new IfNaN());
+            addFunction(new IfZero());
         }
 
         @Override
@@ -26,6 +31,11 @@ public class ExpressionParserTest {
     };
 
     private static final BaseEnvironment env = new BaseEnvironment();
+
+    @Before
+    public void before() {
+        env.setRepresentationExpanded(false);
+    }
 
     @Test
     public void 数値演算() {
@@ -54,14 +64,15 @@ public class ExpressionParserTest {
     @Test
     public void 式の展開() {
         env.setRepresentationExpanded(true);
+
         Expression a = ExpressionParser.parse("sum(sum(a, 8, 9), 3)");
         assertEquals("((2 + 8 + 9) + 3)", a.represent(env));
-        env.setRepresentationExpanded(false);
     }
 
     @Test
     public void 単純な条件式() {
         env.setRepresentationExpanded(true);
+
         Expression a = ExpressionParser.parse("1 > 2 ? 3 + 2 : 4 + 5");
         assertEquals(9.0, a.value(env), 0.01);
         assertEquals("4 + 5", a.represent(env));
@@ -69,7 +80,6 @@ public class ExpressionParserTest {
         Expression b = ExpressionParser.parse("(1 > 2 ? 3 + 2 : 4 + 5) + 5");
         assertEquals(14.0, b.value(env), 0.01);
         assertEquals("(4 + 5) + 5", b.represent(env));
-        env.setRepresentationExpanded(false);
     }
 
     @Test
@@ -83,5 +93,18 @@ public class ExpressionParserTest {
     public void NaNの動作() {
         Expression a = ExpressionParser.parse("NaN");
         assertEquals(Double.NaN, a.value(env), 0.0);
+    }
+
+    @Test
+    public void 関数の動作() {
+        env.setRepresentationExpanded(true);
+
+        Expression a = ExpressionParser.parse("ifnan(0.0 / 0.0, 1.0)");
+        assertEquals(1.0, a.value(env), 0.01);
+        assertEquals("1", a.represent(env));
+
+        Expression b = ExpressionParser.parse("ifzero(0.0 / 10.0, 1.0)");
+        assertEquals(1.0, b.value(env), 0.01);
+        assertEquals("1", b.represent(env));
     }
 }
