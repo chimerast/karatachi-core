@@ -11,19 +11,6 @@
       <artifactId>jparsec</artifactId>
       <version>2.0.1</version>
     </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hamcrest</groupId>
-      <artifactId>hamcrest-all</artifactId>
-      <version>1.1</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <parent>
     <groupId>org.karatachi</groupId>
