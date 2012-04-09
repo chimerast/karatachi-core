@@ -83,6 +83,19 @@ public class ExpressionParserTest {
     }
 
     @Test
+    public void ブール演算子() {
+        Expression a =
+                ExpressionParser.parse("4.0 > 2.0 && 3.0 > 2.0 ? 1.0 : 0.0");
+        assertEquals(1.0, a.value(env), 0.01);
+        Expression b =
+                ExpressionParser.parse("4.0 < 2.0 && 3.0 > 2.0 ? 1.0 : 0.0");
+        assertEquals(0.0, b.value(env), 0.01);
+        Expression c =
+                ExpressionParser.parse("4.0 < 2.0 || 3.0 > 2.0 ? 1.0 : 0.0");
+        assertEquals(1.0, c.value(env), 0.01);
+    }
+
+    @Test
     public void 変数の数() {
         Expression a = ExpressionParser.parse("a + b + c / d");
         Set<String> variables = env.getUsedVariables(a);

@@ -1,5 +1,6 @@
 package org.karatachi.expression;
 
+import org.karatachi.expression.ast.Bool;
 import org.karatachi.expression.ast.Calculator;
 import org.karatachi.expression.ast.Calculator.Negative;
 import org.karatachi.expression.ast.Calculator.Parentheses;
@@ -21,6 +22,8 @@ public interface IVisitor {
     public void visit(Calculator calculator);
 
     public void visit(Comparator comparator);
+
+    public void visit(Bool bool);
 
     public void visit(Negative negative);
 
