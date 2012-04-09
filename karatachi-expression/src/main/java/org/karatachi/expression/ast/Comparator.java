@@ -30,8 +30,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) > right.value(env) ? Boolean.TRUE
-                    : Boolean.FALSE;
+            return left.value(env) > right.value(env) ? Bool.TRUE
+                    : Bool.FALSE;
         }
 
         @Override
@@ -49,8 +49,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) < right.value(env) ? Boolean.TRUE
-                    : Boolean.FALSE;
+            return left.value(env) < right.value(env) ? Bool.TRUE
+                    : Bool.FALSE;
         }
 
         @Override
@@ -68,8 +68,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) >= right.value(env) ? Boolean.TRUE
-                    : Boolean.FALSE;
+            return left.value(env) >= right.value(env) ? Bool.TRUE
+                    : Bool.FALSE;
         }
 
         @Override
@@ -87,8 +87,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) <= right.value(env) ? Boolean.TRUE
-                    : Boolean.FALSE;
+            return left.value(env) <= right.value(env) ? Bool.TRUE
+                    : Bool.FALSE;
         }
 
         @Override
@@ -106,8 +106,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) == right.value(env) ? Boolean.TRUE
-                    : Boolean.FALSE;
+            return left.value(env) == right.value(env) ? Bool.TRUE
+                    : Bool.FALSE;
         }
 
         @Override
@@ -125,8 +125,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) != right.value(env) ? Boolean.TRUE
-                    : Boolean.FALSE;
+            return left.value(env) != right.value(env) ? Bool.TRUE
+                    : Bool.FALSE;
         }
 
         @Override
@@ -146,8 +146,8 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return Boolean.test(expression.value(env)) ? Boolean.FALSE
-                    : Boolean.TRUE;
+            return Bool.test(expression.value(env)) ? Bool.FALSE
+                    : Bool.TRUE;
         }
 
         @Override

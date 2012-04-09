@@ -19,7 +19,7 @@ public class ConditionalExpression implements Expression {
 
     @Override
     public double value(IEnvironment env) {
-        return Boolean.test(cond.value(env)) ? consequence.value(env)
+        return Bool.test(cond.value(env)) ? consequence.value(env)
                 : alternative.value(env);
     }
 
@@ -30,7 +30,7 @@ public class ConditionalExpression implements Expression {
                     + " : " + alternative.represent(env);
         } else {
 
-            return Boolean.test(cond.value(env)) ? consequence.represent(env)
+            return Bool.test(cond.value(env)) ? consequence.represent(env)
                     : alternative.represent(env);
         }
     }

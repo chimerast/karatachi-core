@@ -15,6 +15,8 @@ import org.codehaus.jparsec.functors.Map;
 import org.codehaus.jparsec.functors.Map4;
 import org.codehaus.jparsec.functors.Unary;
 import org.codehaus.jparsec.misc.Mapper;
+import org.karatachi.expression.ast.Bool.And;
+import org.karatachi.expression.ast.Bool.Or;
 import org.karatachi.expression.ast.Calculator.Add;
 import org.karatachi.expression.ast.Calculator.Divide;
 import org.karatachi.expression.ast.Calculator.Multiply;
@@ -88,6 +90,16 @@ public class ExpressionParser {
                 return new NotEqual(left, right);
             }
         },
+        AND {
+            public Expression map(Expression left, Expression right) {
+                return new And(left, right);
+            }
+        },
+        OR {
+            public Expression map(Expression left, Expression right) {
+                return new Or(left, right);
+            }
+        }
     }
 
     private enum UnaryOperator implements Unary<Expression> {
@@ -125,8 +137,8 @@ public class ExpressionParser {
             });
 
     private static final Terminals OPERATORS = Terminals.operators("+", "-",
-            "*", "/", "(", ")", ">", "<", ">=", "<=", "==", "!=", "!", "?",
-            ":", ",");
+            "*", "/", "(", ")", ">", "<", ">=", "<=", "==", "!=", "&&", "||",
+            "!", "?", ":", ",");
 
     private static final Parser<?> TOKENIZER = Parsers.or(
             Terminals.DecimalLiteral.TOKENIZER, NAN_TOKENIZER,
@@ -188,18 +200,20 @@ public class ExpressionParser {
         Parser<Expression> unit = parenetheses.or(atom);
 
         Parser<Expression> parser = new OperatorTable<Expression>() //
-        .prefix(op("!", UnaryOperator.NOT), 60) //
-        .prefix(op("-", UnaryOperator.NEG), 60) //
-        .infixl(op("*", BinaryOperator.MUL), 50) //
-        .infixl(op("/", BinaryOperator.DIV), 50) //
-        .infixl(op("+", BinaryOperator.PLUS), 40) //
-        .infixl(op("-", BinaryOperator.MINUS), 40) //
-        .infixl(op(">", BinaryOperator.GT), 30) //
-        .infixl(op("<", BinaryOperator.LT), 30) //
-        .infixl(op(">=", BinaryOperator.GE), 30) //
-        .infixl(op("<=", BinaryOperator.LE), 30) //
-        .infixl(op("==", BinaryOperator.EQ), 20) //
-        .infixl(op("!=", BinaryOperator.NE), 20) //
+        .prefix(op("!", UnaryOperator.NOT), 80) //
+        .prefix(op("-", UnaryOperator.NEG), 80) //
+        .infixl(op("*", BinaryOperator.MUL), 70) //
+        .infixl(op("/", BinaryOperator.DIV), 70) //
+        .infixl(op("+", BinaryOperator.PLUS), 60) //
+        .infixl(op("-", BinaryOperator.MINUS), 60) //
+        .infixl(op(">", BinaryOperator.GT), 50) //
+        .infixl(op("<", BinaryOperator.LT), 50) //
+        .infixl(op(">=", BinaryOperator.GE), 50) //
+        .infixl(op("<=", BinaryOperator.LE), 50) //
+        .infixl(op("==", BinaryOperator.EQ), 40) //
+        .infixl(op("!=", BinaryOperator.NE), 40) //
+        .infixl(op("&&", BinaryOperator.AND), 30) //
+        .infixl(op("||", BinaryOperator.OR), 20) //
         .infixr(conditionalOperator(CALCULATOR_REF.lazy()), 10) //
         .build(unit);
 
