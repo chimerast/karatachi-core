@@ -7,7 +7,7 @@ import org.karatachi.expression.IEnvironment;
 
 public class IfNaN extends AbstractFunction {
     public IfNaN() {
-        super("ifnan");
+        super("ifNaN");
     }
 
     @Override
@@ -25,7 +25,7 @@ public class IfNaN extends AbstractFunction {
             List<Double> values) {
         for (int i = 0; i < values.size(); ++i) {
             if (!Double.isNaN(values.get(i))) {
-                return args.get(i);
+                return "(" + args.get(i) + ")";
             }
         }
         return "NaN";
