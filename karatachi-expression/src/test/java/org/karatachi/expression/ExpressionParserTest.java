@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.function.IfNaN;
 import org.karatachi.expression.function.IfZero;
+import org.karatachi.expression.function.Max;
 import org.karatachi.expression.function.Sum;
 
 public class ExpressionParserTest {
@@ -16,6 +17,7 @@ public class ExpressionParserTest {
     private static class BaseEnvironment extends AbstractEnvironment {
         {
             addFunction(new Sum());
+            addFunction(new Max());
             addFunction(new IfNaN());
             addFunction(new IfZero());
         }
@@ -112,12 +114,16 @@ public class ExpressionParserTest {
     public void 関数の動作() {
         env.setRepresentationExpanded(true);
 
-        Expression a = ExpressionParser.parse("ifnan(0.0 / 0.0, 1.0)");
+        Expression a = ExpressionParser.parse("ifNaN(0.0 / 0.0, 1.0)");
         assertEquals(1.0, a.value(env), 0.01);
-        assertEquals("1", a.represent(env));
+        assertEquals("(1)", a.represent(env));
 
-        Expression b = ExpressionParser.parse("ifzero(0.0 / 10.0, 1.0)");
+        Expression b = ExpressionParser.parse("ifZero(0.0 / 10.0, 1.0)");
         assertEquals(1.0, b.value(env), 0.01);
-        assertEquals("1", b.represent(env));
+        assertEquals("(1)", b.represent(env));
+
+        Expression c = ExpressionParser.parse("max(NaN, 10.0, 20.0, 5.0)");
+        assertEquals(20.0, c.value(env), 0.01);
+        assertEquals("(20)", c.represent(env));
     }
 }
