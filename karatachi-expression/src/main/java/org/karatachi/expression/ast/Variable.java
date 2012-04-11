@@ -1,5 +1,6 @@
 package org.karatachi.expression.ast;
 
+import org.karatachi.expression.IConverter;
 import org.karatachi.expression.IEnvironment;
 import org.karatachi.expression.IVisitor;
 
@@ -34,5 +35,10 @@ public class Variable implements Expression {
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public Expression convert(IConverter converter) {
+        return converter.convert(this);
     }
 }

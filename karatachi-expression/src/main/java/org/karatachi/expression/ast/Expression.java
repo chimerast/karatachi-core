@@ -2,6 +2,7 @@ package org.karatachi.expression.ast;
 
 import java.io.Serializable;
 
+import org.karatachi.expression.IConverter;
 import org.karatachi.expression.IEnvironment;
 import org.karatachi.expression.IVisitor;
 
@@ -32,4 +33,12 @@ public interface Expression extends Serializable {
      *            Visitor
      */
     public void accept(IVisitor visitor);
+
+    /**
+     * Converter。converterを呼び出し新しい木を返す。
+     * 
+     * @param converter
+     * @return
+     */
+    public Expression convert(IConverter converter);
 }

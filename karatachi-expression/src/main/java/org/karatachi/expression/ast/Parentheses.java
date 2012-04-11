@@ -1,5 +1,6 @@
 package org.karatachi.expression.ast;
 
+import org.karatachi.expression.IConverter;
 import org.karatachi.expression.IEnvironment;
 import org.karatachi.expression.IVisitor;
 
@@ -10,6 +11,10 @@ public class Parentheses implements Expression {
 
     public Parentheses(Expression expression) {
         this.expression = expression;
+    }
+
+    public Expression getExpression() {
+        return expression;
     }
 
     @Override
@@ -26,5 +31,10 @@ public class Parentheses implements Expression {
     public void accept(IVisitor visitor) {
         visitor.visit(this);
         expression.accept(visitor);
+    }
+
+    @Override
+    public Expression convert(IConverter converter) {
+        return converter.convert(this);
     }
 }

@@ -1,5 +1,6 @@
 package org.karatachi.expression.ast;
 
+import org.karatachi.expression.IConverter;
 import org.karatachi.expression.IVisitor;
 
 public abstract class UnaryOperator implements Expression {
@@ -11,9 +12,18 @@ public abstract class UnaryOperator implements Expression {
         this.expression = expression;
     }
 
+    public Expression getExpression() {
+        return expression;
+    }
+
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
         expression.accept(visitor);
+    }
+
+    @Override
+    public Expression convert(IConverter converter) {
+        return converter.convert(this);
     }
 }
