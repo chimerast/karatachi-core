@@ -1,5 +1,6 @@
 package org.karatachi.expression.function;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.karatachi.expression.AbstractFunction;
@@ -18,6 +19,11 @@ public class IfZero extends AbstractFunction {
             }
         }
         return Double.NaN;
+    }
+
+    @Override
+    public List<String> getInternallyUsedVariables() {
+        return new ArrayList<String>();
     }
 
     @Override
