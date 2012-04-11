@@ -1,14 +1,11 @@
 package org.karatachi.expression;
 
-import org.karatachi.expression.ast.Bool;
-import org.karatachi.expression.ast.Calculator;
-import org.karatachi.expression.ast.Calculator.Negative;
-import org.karatachi.expression.ast.Calculator.Parentheses;
-import org.karatachi.expression.ast.Comparator;
-import org.karatachi.expression.ast.Comparator.Not;
+import org.karatachi.expression.ast.BinaryOperator;
 import org.karatachi.expression.ast.ConditionalExpression;
 import org.karatachi.expression.ast.Function;
 import org.karatachi.expression.ast.Literal;
+import org.karatachi.expression.ast.Parentheses;
+import org.karatachi.expression.ast.UnaryOperator;
 import org.karatachi.expression.ast.Variable;
 
 public interface IVisitor {
@@ -19,15 +16,9 @@ public interface IVisitor {
 
     public void visit(Function function);
 
-    public void visit(Calculator calculator);
+    public void visit(BinaryOperator operator);
 
-    public void visit(Comparator comparator);
-
-    public void visit(Bool bool);
-
-    public void visit(Negative negative);
-
-    public void visit(Not not);
+    public void visit(UnaryOperator operator);
 
     public void visit(Parentheses parentheses);
 

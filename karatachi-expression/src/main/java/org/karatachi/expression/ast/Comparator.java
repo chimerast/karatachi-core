@@ -1,24 +1,12 @@
 package org.karatachi.expression.ast;
 
 import org.karatachi.expression.IEnvironment;
-import org.karatachi.expression.IVisitor;
 
-public abstract class Comparator implements Expression {
+public abstract class Comparator extends BinaryOperator {
     private static final long serialVersionUID = 1L;
 
-    protected final Expression left;
-    protected final Expression right;
-
     public Comparator(Expression left, Expression right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visit(this);
-        left.accept(visitor);
-        right.accept(visitor);
+        super(left, right);
     }
 
     public static class GreaterThan extends Comparator {
@@ -30,8 +18,7 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) > right.value(env) ? Bool.TRUE
-                    : Bool.FALSE;
+            return left.value(env) > right.value(env) ? Bool.TRUE : Bool.FALSE;
         }
 
         @Override
@@ -49,8 +36,7 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) < right.value(env) ? Bool.TRUE
-                    : Bool.FALSE;
+            return left.value(env) < right.value(env) ? Bool.TRUE : Bool.FALSE;
         }
 
         @Override
@@ -68,8 +54,7 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) >= right.value(env) ? Bool.TRUE
-                    : Bool.FALSE;
+            return left.value(env) >= right.value(env) ? Bool.TRUE : Bool.FALSE;
         }
 
         @Override
@@ -87,8 +72,7 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) <= right.value(env) ? Bool.TRUE
-                    : Bool.FALSE;
+            return left.value(env) <= right.value(env) ? Bool.TRUE : Bool.FALSE;
         }
 
         @Override
@@ -106,8 +90,7 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) == right.value(env) ? Bool.TRUE
-                    : Bool.FALSE;
+            return left.value(env) == right.value(env) ? Bool.TRUE : Bool.FALSE;
         }
 
         @Override
@@ -125,8 +108,7 @@ public abstract class Comparator implements Expression {
 
         @Override
         public double value(IEnvironment env) {
-            return left.value(env) != right.value(env) ? Bool.TRUE
-                    : Bool.FALSE;
+            return left.value(env) != right.value(env) ? Bool.TRUE : Bool.FALSE;
         }
 
         @Override
@@ -135,30 +117,21 @@ public abstract class Comparator implements Expression {
         }
     }
 
-    public static class Not implements Expression {
+    public static class Not extends UnaryOperator {
         private static final long serialVersionUID = 1L;
 
-        private final Expression expression;
-
         public Not(Expression expression) {
-            this.expression = expression;
+            super(expression);
         }
 
         @Override
         public double value(IEnvironment env) {
-            return Bool.test(expression.value(env)) ? Bool.FALSE
-                    : Bool.TRUE;
+            return Bool.test(expression.value(env)) ? Bool.FALSE : Bool.TRUE;
         }
 
         @Override
         public String represent(IEnvironment env) {
             return "!" + expression.represent(env);
-        }
-
-        @Override
-        public void accept(IVisitor visitor) {
-            visitor.visit(this);
-            expression.accept(visitor);
         }
     }
 }

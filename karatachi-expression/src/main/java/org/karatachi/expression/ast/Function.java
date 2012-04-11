@@ -1,5 +1,6 @@
 package org.karatachi.expression.ast;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.karatachi.expression.IEnvironment;
@@ -13,7 +14,7 @@ public class Function implements Expression {
 
     public Function(Identifier identifier, List<Expression> args) {
         this.identifier = identifier;
-        this.args = args;
+        this.args = Collections.unmodifiableList(args);
     }
 
     public Identifier getIdentifier() {
