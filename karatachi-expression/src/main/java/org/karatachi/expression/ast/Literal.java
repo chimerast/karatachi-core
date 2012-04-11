@@ -1,5 +1,6 @@
 package org.karatachi.expression.ast;
 
+import org.karatachi.expression.IConverter;
 import org.karatachi.expression.IEnvironment;
 import org.karatachi.expression.IVisitor;
 
@@ -10,6 +11,10 @@ public class Literal implements Expression {
 
     public Literal(double value) {
         this.value = value;
+    }
+
+    public double getValue() {
+        return value;
     }
 
     @Override
@@ -25,5 +30,10 @@ public class Literal implements Expression {
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public Expression convert(IConverter converter) {
+        return converter.convert(this);
     }
 }
