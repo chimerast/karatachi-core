@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.karatachi.classloader.PackageDir;
 import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.ast.Function;
 import org.karatachi.expression.ast.Variable;
@@ -17,6 +18,17 @@ public abstract class AbstractEnvironment implements IEnvironment {
     private boolean representationExpanded;
     /** 関数 */
     private Map<String, IFunction> functions = new HashMap<String, IFunction>();
+
+    public AbstractEnvironment() {
+        for (Class<? extends IFunction> clazz : new PackageDir(
+                "org.karatachi.expression.function").getClasses(IFunction.class)) {
+            try {
+                addFunction(clazz.newInstance());
+            } catch (IllegalAccessException ignore) {
+            } catch (InstantiationException ignore) {
+            }
+        }
+    }
 
     /*
      * (non-Javadoc)
