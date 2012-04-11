@@ -7,21 +7,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.karatachi.expression.ast.Expression;
-import org.karatachi.expression.function.IfNaN;
-import org.karatachi.expression.function.IfZero;
-import org.karatachi.expression.function.Max;
-import org.karatachi.expression.function.Sum;
 
 public class ExpressionParserTest {
 
     private static class BaseEnvironment extends AbstractEnvironment {
-        {
-            addFunction(new Sum());
-            addFunction(new Max());
-            addFunction(new IfNaN());
-            addFunction(new IfZero());
-        }
-
         @Override
         public double getVariableValue(String name) {
             if (name.equals("a")) {

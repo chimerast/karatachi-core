@@ -1,24 +1,12 @@
 package org.karatachi.expression.ast;
 
 import org.karatachi.expression.IEnvironment;
-import org.karatachi.expression.IVisitor;
 
-public abstract class Calculator implements Expression {
+public abstract class Calculator extends BinaryOperator {
     private static final long serialVersionUID = 1L;
 
-    protected final Expression left;
-    protected final Expression right;
-
     public Calculator(Expression left, Expression right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visit(this);
-        left.accept(visitor);
-        right.accept(visitor);
+        super(left, right);
     }
 
     public static class Add extends Calculator {
@@ -93,13 +81,11 @@ public abstract class Calculator implements Expression {
         }
     }
 
-    public static class Negative implements Expression {
+    public static class Negative extends UnaryOperator {
         private static final long serialVersionUID = 1L;
 
-        private final Expression expression;
-
         public Negative(Expression expression) {
-            this.expression = expression;
+            super(expression);
         }
 
         @Override
@@ -110,38 +96,6 @@ public abstract class Calculator implements Expression {
         @Override
         public String represent(IEnvironment env) {
             return "-" + expression.represent(env);
-        }
-
-        @Override
-        public void accept(IVisitor visitor) {
-            visitor.visit(this);
-            expression.accept(visitor);
-        }
-    }
-
-    public static class Parentheses implements Expression {
-        private static final long serialVersionUID = 1L;
-
-        private final Expression expression;
-
-        public Parentheses(Expression expression) {
-            this.expression = expression;
-        }
-
-        @Override
-        public double value(IEnvironment env) {
-            return expression.value(env);
-        }
-
-        @Override
-        public String represent(IEnvironment env) {
-            return "(" + expression.represent(env) + ")";
-        }
-
-        @Override
-        public void accept(IVisitor visitor) {
-            visitor.visit(this);
-            expression.accept(visitor);
         }
     }
 }

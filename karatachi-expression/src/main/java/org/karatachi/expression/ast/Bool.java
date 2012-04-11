@@ -1,9 +1,8 @@
 package org.karatachi.expression.ast;
 
 import org.karatachi.expression.IEnvironment;
-import org.karatachi.expression.IVisitor;
 
-public abstract class Bool implements Expression {
+public abstract class Bool extends BinaryOperator {
     private static final long serialVersionUID = 1L;
 
     public static final double TRUE = 1.0;
@@ -13,19 +12,8 @@ public abstract class Bool implements Expression {
         return !Double.isNaN(value);
     }
 
-    protected final Expression left;
-    protected final Expression right;
-
     public Bool(Expression left, Expression right) {
-        this.left = left;
-        this.right = right;
-    }
-
-    @Override
-    public void accept(IVisitor visitor) {
-        visitor.visit(this);
-        left.accept(visitor);
-        right.accept(visitor);
+        super(left, right);
     }
 
     public static class And extends Bool {

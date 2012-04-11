@@ -21,7 +21,6 @@ import org.karatachi.expression.ast.Calculator.Add;
 import org.karatachi.expression.ast.Calculator.Divide;
 import org.karatachi.expression.ast.Calculator.Multiply;
 import org.karatachi.expression.ast.Calculator.Negative;
-import org.karatachi.expression.ast.Calculator.Parentheses;
 import org.karatachi.expression.ast.Calculator.Subtract;
 import org.karatachi.expression.ast.Comparator.Equal;
 import org.karatachi.expression.ast.Comparator.GreaterEqual;
@@ -35,6 +34,7 @@ import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.ast.Function;
 import org.karatachi.expression.ast.Identifier;
 import org.karatachi.expression.ast.Literal;
+import org.karatachi.expression.ast.Parentheses;
 import org.karatachi.expression.ast.Variable;
 
 public class ExpressionParser {
