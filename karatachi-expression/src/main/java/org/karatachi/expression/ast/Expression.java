@@ -40,5 +40,5 @@ public interface Expression extends Serializable {
      * @param converter
      * @return
      */
-    public Expression convert(IConverter converter);
+    public Expression accept(IConverter converter);
 }

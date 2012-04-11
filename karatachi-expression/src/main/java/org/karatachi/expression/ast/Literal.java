@@ -33,7 +33,7 @@ public class Literal implements Expression {
     }
 
     @Override
-    public Expression convert(IConverter converter) {
+    public Expression accept(IConverter converter) {
         return converter.convert(this);
     }
 }
