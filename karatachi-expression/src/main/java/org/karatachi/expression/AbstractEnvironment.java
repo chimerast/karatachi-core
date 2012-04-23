@@ -149,7 +149,7 @@ public abstract class AbstractEnvironment implements IEnvironment {
         Set<String> ret = getVariables(expression);
         for (String name : getFunctions(expression)) {
             if (!functions.containsKey(name)) {
-                throw new UnknownIdentifierException();
+                throw new UnknownIdentifierException(name);
             }
             ret.addAll(functions.get(name).getInternallyUsedVariables());
         }
