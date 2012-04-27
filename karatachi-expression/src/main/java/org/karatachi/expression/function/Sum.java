@@ -7,8 +7,10 @@ import org.karatachi.expression.AbstractFunction;
 import org.karatachi.expression.IEnvironment;
 
 public class Sum extends AbstractFunction {
+    public static final String FUNCTION_NAME = "sum";
+
     public Sum() {
-        super("sum");
+        super(FUNCTION_NAME);
     }
 
     @Override

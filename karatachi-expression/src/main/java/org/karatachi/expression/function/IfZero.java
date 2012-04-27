@@ -7,8 +7,10 @@ import org.karatachi.expression.AbstractFunction;
 import org.karatachi.expression.IEnvironment;
 
 public class IfZero extends AbstractFunction {
+    public static final String FUNCTION_NAME = "ifzero";
+
     public IfZero() {
-        super("ifZero");
+        super(FUNCTION_NAME);
     }
 
     @Override

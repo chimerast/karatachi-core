@@ -7,8 +7,10 @@ import org.karatachi.expression.AbstractFunction;
 import org.karatachi.expression.IEnvironment;
 
 public class IfNaN extends AbstractFunction {
+    public static final String FUNCTION_NAME = "ifnan";
+
     public IfNaN() {
-        super("ifNaN");
+        super(FUNCTION_NAME);
     }
 
     @Override

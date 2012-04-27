@@ -7,8 +7,10 @@ import org.karatachi.expression.AbstractFunction;
 import org.karatachi.expression.IEnvironment;
 
 public class Max extends AbstractFunction {
+    public static final String FUNCTION_NAME = "max";
+
     public Max() {
-        super("max");
+        super(FUNCTION_NAME);
     }
 
     @Override
