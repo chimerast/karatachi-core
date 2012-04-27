@@ -103,11 +103,11 @@ public class ExpressionParserTest {
     public void 関数の動作() {
         env.setRepresentationExpanded(true);
 
-        Expression a = ExpressionParser.parse("ifNaN(0.0 / 0.0, 1.0)");
+        Expression a = ExpressionParser.parse("ifnan(0.0 / 0.0, 1.0)");
         assertEquals(1.0, a.value(env), 0.01);
         assertEquals("(1)", a.represent(env));
 
-        Expression b = ExpressionParser.parse("ifZero(0.0 / 10.0, 1.0)");
+        Expression b = ExpressionParser.parse("ifzero(0.0 / 10.0, 1.0)");
         assertEquals(1.0, b.value(env), 0.01);
         assertEquals("(1)", b.represent(env));
 
