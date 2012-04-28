@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.karatachi.expression.AbstractFunction;
 import org.karatachi.expression.IEnvironment;
+import org.karatachi.expression.ast.Expression;
+import org.karatachi.expression.ast.Literal;
 
 public class IfNaN extends AbstractFunction {
     public static final String FUNCTION_NAME = "ifnan";
@@ -37,5 +39,16 @@ public class IfNaN extends AbstractFunction {
             }
         }
         return "NaN";
+    }
+
+    @Override
+    public Expression extract(IEnvironment env, List<Expression> args,
+            List<Double> values) {
+        for (int i = 0; i < values.size(); ++i) {
+            if (!Double.isNaN(values.get(i))) {
+                return args.get(i);
+            }
+        }
+        return Literal.NaN;
     }
 }

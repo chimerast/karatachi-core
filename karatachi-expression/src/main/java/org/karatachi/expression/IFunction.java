@@ -2,6 +2,8 @@ package org.karatachi.expression;
 
 import java.util.List;
 
+import org.karatachi.expression.ast.Expression;
+
 public interface IFunction {
 
     /**
@@ -41,6 +43,20 @@ public interface IFunction {
      * @return 文字列表現
      */
     public String represent(IEnvironment env, List<String> args,
+            List<Double> values);
+
+    /**
+     * 関数の評価後の式。
+     * 
+     * @param env
+     *            環境
+     * @param args
+     *            引数の文字列表現
+     * @param values
+     *            引数
+     * @return 評価後の式
+     */
+    public Expression extract(IEnvironment env, List<Expression> args,
             List<Double> values);
 
 }

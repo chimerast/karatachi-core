@@ -7,6 +7,8 @@ import org.karatachi.expression.IVisitor;
 public class Literal implements Expression {
     private static final long serialVersionUID = 1L;
 
+    public static final Literal NaN = new Literal(Double.NaN);
+
     private final double value;
 
     public Literal(double value) {
