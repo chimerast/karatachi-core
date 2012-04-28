@@ -38,7 +38,7 @@ public class ConditionalExpression implements Expression {
 
     @Override
     public String represent(IEnvironment env) {
-        if (!env.isRepresentationExpanded()) {
+        if (!env.isFunctionRepresentationExpanded()) {
             return condition.represent(env) + " ? "
                     + consequence.represent(env) + " : "
                     + alternative.represent(env);

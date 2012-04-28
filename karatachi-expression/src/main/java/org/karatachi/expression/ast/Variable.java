@@ -24,7 +24,7 @@ public class Variable implements Expression {
 
     @Override
     public String represent(IEnvironment env) {
-        if (!env.isRepresentationExpanded()) {
+        if (!env.isVariableRepresentationExpanded()) {
             return identifier.getName();
         } else {
             return env.representVariable(identifier.getName(),
