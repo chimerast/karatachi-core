@@ -14,8 +14,10 @@ import org.karatachi.expression.ast.Variable;
 
 public abstract class AbstractEnvironment implements IEnvironment {
 
-    /** 文字列表現時に式を展開するか */
-    private boolean representationExpanded;
+    /** 文字列表現時に変数を展開するか */
+    private boolean variableRepresentationExpanded;
+    /** 文字列表現時に関数を展開するか */
+    private boolean functionRepresentationExpanded;
     /** 関数 */
     private Map<String, IFunction> functions = new HashMap<String, IFunction>();
 
@@ -35,12 +37,30 @@ public abstract class AbstractEnvironment implements IEnvironment {
      * @see com.uzabase.speeda.expression.IEnvironment#isRepresentationExpanded()
      */
     @Override
-    public boolean isRepresentationExpanded() {
-        return representationExpanded;
+    public boolean isVariableRepresentationExpanded() {
+        return variableRepresentationExpanded;
+    }
+
+    public void setVariableRepresentationExpanded(boolean expanded) {
+        this.variableRepresentationExpanded = expanded;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.uzabase.speeda.expression.IEnvironment#isRepresentationExpanded()
+     */
+    @Override
+    public boolean isFunctionRepresentationExpanded() {
+        return functionRepresentationExpanded;
+    }
+
+    public void setFunctionRepresentationExpanded(boolean expanded) {
+        this.functionRepresentationExpanded = expanded;
     }
 
     public void setRepresentationExpanded(boolean expanded) {
-        this.representationExpanded = expanded;
+        setVariableRepresentationExpanded(expanded);
+        setFunctionRepresentationExpanded(expanded);
     }
 
     /*
@@ -90,7 +110,7 @@ public abstract class AbstractEnvironment implements IEnvironment {
             evaluated.add(expression.value(this));
         }
 
-        if (!isRepresentationExpanded()) {
+        if (!isFunctionRepresentationExpanded()) {
             StringBuilder sb = new StringBuilder();
             for (String arg : represented) {
                 sb.append(arg);

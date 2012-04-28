@@ -8,9 +8,15 @@ public interface IEnvironment {
 
     /**
      * Expression.represent()の文字列表現を展開するかどうか。
-     * 変数、関数および三項演算子?:が展開される
+     * 変数が展開される
      */
-    public boolean isRepresentationExpanded();
+    public boolean isVariableRepresentationExpanded();
+
+    /**
+     * Expression.represent()の文字列表現を展開するかどうか。
+     * 関数および三項演算子?:が展開される
+     */
+    public boolean isFunctionRepresentationExpanded();
 
     /**
      * 変数の値を取得する。
