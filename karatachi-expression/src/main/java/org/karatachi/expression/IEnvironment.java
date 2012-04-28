@@ -50,6 +50,17 @@ public interface IEnvironment {
     public String representFunction(String name, List<Expression> args);
 
     /**
+     * 関数の評価後の式にする。
+     * 
+     * @param name
+     *            関数名
+     * @param args
+     *            引数の式
+     * @return 関数の評価後の式
+     */
+    public Expression extractFunction(String name, List<Expression> args);
+
+    /**
      * 直定数を文字列に変換する。
      * 
      * @param value

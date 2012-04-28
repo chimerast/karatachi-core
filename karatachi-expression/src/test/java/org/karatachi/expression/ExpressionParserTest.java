@@ -114,11 +114,9 @@ public class ExpressionParserTest {
         Expression c = ExpressionParser.parse("max(NaN, 10.0, 20.0, 5.0)");
         assertEquals(20.0, c.value(env), 0.01);
         assertEquals("(20)", c.represent(env));
-    }
 
-    @Test
-    public void 関数の定義() {
-        Expression c = ExpressionParser.parse("_1 + _2");
-        System.out.println(c.represent(env));
+        Expression e = c.accept(new Extractor(env));
+        assertEquals(20.0, e.value(env), 0.01);
+        assertEquals("20", e.represent(env));
     }
 }

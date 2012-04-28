@@ -128,6 +128,28 @@ public abstract class AbstractEnvironment implements IEnvironment {
 
     /*
      * (non-Javadoc)
+     * @see com.uzabase.speeda.expression.IEnvironment#extractFunction(java.lang.String, java.util.List)
+     */
+    @Override
+    public final Expression extractFunction(String name, List<Expression> args) {
+        if (!functions.containsKey(name)) {
+            throw new UnknownIdentifierException();
+        }
+
+        List<Expression> represented = new ArrayList<Expression>();
+        for (Expression expression : args) {
+            represented.add(expression);
+        }
+        List<Double> evaluated = new ArrayList<Double>();
+        for (Expression expression : args) {
+            evaluated.add(expression.value(this));
+        }
+
+        return functions.get(name).extract(this, represented, evaluated);
+    }
+
+    /*
+     * (non-Javadoc)
      * @see com.uzabase.speeda.expression.IEnvironment#representLiteral(double)
      */
     @Override

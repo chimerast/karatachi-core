@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.karatachi.expression.AbstractFunction;
 import org.karatachi.expression.IEnvironment;
+import org.karatachi.expression.ast.Expression;
+import org.karatachi.expression.ast.Literal;
 
 public class Max extends AbstractFunction {
     public static final String FUNCTION_NAME = "max";
@@ -54,6 +56,30 @@ public class Max extends AbstractFunction {
             return "(" + args.get(imax) + ")";
         } else {
             return "NaN";
+        }
+    }
+
+    @Override
+    public Expression extract(IEnvironment env, List<Expression> args,
+            List<Double> values) {
+        int imax = -1;
+        double max = Double.NaN;
+        for (int i = 0; i < values.size(); ++i) {
+            Double value = values.get(i);
+            if (Double.isNaN(value)) {
+                continue;
+            }
+
+            if (Double.isNaN(max) || value > max) {
+                max = value;
+                imax = i;
+            }
+        }
+
+        if (imax >= 0) {
+            return args.get(imax);
+        } else {
+            return Literal.NaN;
         }
     }
 }
