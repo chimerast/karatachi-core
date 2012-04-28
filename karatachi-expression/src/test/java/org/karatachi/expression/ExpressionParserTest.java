@@ -25,7 +25,7 @@ public class ExpressionParserTest {
 
     @Before
     public void before() {
-        env.setFunctionRepresentationExpanded(false);
+        env.setRepresentationExpanded(false);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ExpressionParserTest {
 
     @Test
     public void 式の展開() {
-        env.setFunctionRepresentationExpanded(true);
+        env.setRepresentationExpanded(true);
 
         Expression a = ExpressionParser.parse("sum(sum(a, 8, 9), 3)");
         assertEquals("((2 + 8 + 9) + 3)", a.represent(env));
@@ -62,7 +62,7 @@ public class ExpressionParserTest {
 
     @Test
     public void 単純な条件式() {
-        env.setFunctionRepresentationExpanded(true);
+        env.setRepresentationExpanded(true);
 
         Expression a = ExpressionParser.parse("1 > 2 ? 3 + 2 : 4 + 5");
         assertEquals(9.0, a.value(env), 0.01);
@@ -101,7 +101,7 @@ public class ExpressionParserTest {
 
     @Test
     public void 関数の動作() {
-        env.setFunctionRepresentationExpanded(true);
+        env.setRepresentationExpanded(true);
 
         Expression a = ExpressionParser.parse("ifnan(0.0 / 0.0, 1.0)");
         assertEquals(1.0, a.value(env), 0.01);
