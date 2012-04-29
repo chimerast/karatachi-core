@@ -1,19 +1,21 @@
-package org.karatachi.expression;
+package org.karatachi.expression.converter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.karatachi.expression.AbstractConverter;
+import org.karatachi.expression.IEnvironment;
 import org.karatachi.expression.ast.Bool;
 import org.karatachi.expression.ast.ConditionalExpression;
 import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.ast.Function;
 import org.karatachi.expression.ast.Parentheses;
 
-public class Extractor extends AbstractConverter {
+public class ExpressionExtractor extends AbstractConverter {
 
     private final IEnvironment env;
 
-    public Extractor(IEnvironment env) {
+    public ExpressionExtractor(IEnvironment env) {
         this.env = env;
     }
 
