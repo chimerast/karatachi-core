@@ -7,6 +7,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.karatachi.expression.ast.Expression;
+import org.karatachi.expression.converter.ExpressionExtractor;
 
 public class ExpressionParserTest {
 
@@ -115,7 +116,7 @@ public class ExpressionParserTest {
         assertEquals(20.0, c.value(env), 0.01);
         assertEquals("(20)", c.represent(env));
 
-        Expression e = c.accept(new Extractor(env));
+        Expression e = c.accept(new ExpressionExtractor(env));
         assertEquals(20.0, e.value(env), 0.01);
         assertEquals("20", e.represent(env));
     }
