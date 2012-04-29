@@ -62,8 +62,6 @@ public class ParenthesesAdder extends AbstractConverter {
             return 30;
         } else if (operator == Or.class) {
             return 20;
-        } else if (operator == Parentheses.class) {
-            return 10;
         } else {
             return 80;
         }
