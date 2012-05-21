@@ -198,6 +198,8 @@ class FixedGrid extends Loop {
         if (className != null) {
             component.add(new SimpleAttributeModifier("class", className));
         }
+
+        cell.setupComponent(component);
     }
 
     public int getRows() {

@@ -2,6 +2,8 @@ package org.karatachi.wicket.grid;
 
 import java.io.Serializable;
 
+import org.apache.wicket.Component;
+
 public class DefaultCell implements ICell, Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -61,12 +63,18 @@ public class DefaultCell implements ICell, Serializable {
         this.rowspan = rowspan;
     }
 
+    @Override
     public int getColspan() {
         return colspan;
     }
 
+    @Override
     public void setColspan(int colspan) {
         this.colspan = colspan;
+    }
+
+    @Override
+    public void setupComponent(Component component) {
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.karatachi.wicket.grid;
 
+import org.apache.wicket.Component;
+
 public interface ICell {
     public Object getValue();
 
@@ -24,4 +26,6 @@ public interface ICell {
     public void setColspan(int colspan);
 
     public int getColspan();
+
+    public void setupComponent(Component component);
 }
