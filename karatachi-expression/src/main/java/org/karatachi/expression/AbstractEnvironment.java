@@ -105,10 +105,6 @@ public abstract class AbstractEnvironment implements IEnvironment {
         for (Expression expression : args) {
             represented.add(expression.represent(this));
         }
-        List<Double> evaluated = new ArrayList<Double>();
-        for (Expression expression : args) {
-            evaluated.add(expression.value(this));
-        }
 
         if (!isFunctionRepresentationExpanded()) {
             StringBuilder sb = new StringBuilder();
@@ -121,6 +117,11 @@ public abstract class AbstractEnvironment implements IEnvironment {
             }
             return functions.get(name).getName() + "(" + sb.toString() + ")";
         } else {
+            List<Double> evaluated = new ArrayList<Double>();
+            for (Expression expression : args) {
+                evaluated.add(expression.value(this));
+            }
+
             // 展開するときはIFunctionに任せる
             return functions.get(name).represent(this, represented, evaluated);
         }
