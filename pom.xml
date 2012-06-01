@@ -106,9 +106,9 @@
 
   <!-- Environment Settings -->
   <scm>
-    <connection>git://github.com/chimerast/karatachi-core.git</connection>
-    <developerConnection>git@github.com:chimerast/karatachi-core.git</developerConnection>
-    <url>http://karatachi.org/</url>
+    <connection>scm:git:git://github.com/chimerast/karatachi-core.git</connection>
+    <developerConnection>scm:git:git://github.com/chimerast/karatachi-core.git</developerConnection>
+    <url>https://github.com/chimerast/karatachi-core</url>
   </scm>
   <repositories>
     <repository>
