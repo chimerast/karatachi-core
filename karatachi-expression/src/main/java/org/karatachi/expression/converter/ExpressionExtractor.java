@@ -13,7 +13,7 @@ import org.karatachi.expression.ast.Parentheses;
 
 public class ExpressionExtractor extends AbstractExpressionConverter {
 
-    private final IEnvironment env;
+    protected final IEnvironment env;
 
     public ExpressionExtractor(IEnvironment env) {
         this.env = env;
