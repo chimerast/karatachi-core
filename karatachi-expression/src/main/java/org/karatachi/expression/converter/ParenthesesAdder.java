@@ -1,6 +1,6 @@
 package org.karatachi.expression.converter;
 
-import org.karatachi.expression.AbstractConverter;
+import org.karatachi.expression.AbstractExpressionConverter;
 import org.karatachi.expression.ast.BinaryOperator;
 import org.karatachi.expression.ast.Bool.And;
 import org.karatachi.expression.ast.Bool.Or;
@@ -17,7 +17,7 @@ import org.karatachi.expression.ast.Comparator.NotEqual;
 import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.ast.Parentheses;
 
-public class ParenthesesAdder extends AbstractConverter {
+public class ParenthesesAdder extends AbstractExpressionConverter {
     @Override
     public Expression convert(BinaryOperator operator) {
         Class<?> clazz = operator.getClass();

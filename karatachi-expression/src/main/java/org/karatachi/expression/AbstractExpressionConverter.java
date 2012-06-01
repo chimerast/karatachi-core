@@ -12,7 +12,7 @@ import org.karatachi.expression.ast.Parentheses;
 import org.karatachi.expression.ast.UnaryOperator;
 import org.karatachi.expression.ast.Variable;
 
-public abstract class AbstractConverter implements IConverter {
+public abstract class AbstractExpressionConverter implements IConverter<Expression> {
 
     @Override
     public Expression convert(Literal literal) {

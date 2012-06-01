@@ -35,7 +35,7 @@ public class Literal implements Expression {
     }
 
     @Override
-    public Expression accept(IConverter converter) {
+    public <T> T accept(IConverter<T> converter) {
         return converter.convert(this);
     }
 }

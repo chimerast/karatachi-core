@@ -2,27 +2,26 @@ package org.karatachi.expression;
 
 import org.karatachi.expression.ast.BinaryOperator;
 import org.karatachi.expression.ast.ConditionalExpression;
-import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.ast.Function;
 import org.karatachi.expression.ast.Literal;
 import org.karatachi.expression.ast.Parentheses;
 import org.karatachi.expression.ast.UnaryOperator;
 import org.karatachi.expression.ast.Variable;
 
-public interface IConverter {
+public interface IConverter<T> {
 
-    public Expression convert(Literal literal);
+    public T convert(Literal literal);
 
-    public Expression convert(Variable variable);
+    public T convert(Variable variable);
 
-    public Expression convert(Function function);
+    public T convert(Function function);
 
-    public Expression convert(BinaryOperator operator);
+    public T convert(BinaryOperator operator);
 
-    public Expression convert(UnaryOperator operator);
+    public T convert(UnaryOperator operator);
 
-    public Expression convert(Parentheses parentheses);
+    public T convert(Parentheses parentheses);
 
-    public Expression convert(ConditionalExpression conditionalExpression);
+    public T convert(ConditionalExpression conditionalExpression);
 
 }

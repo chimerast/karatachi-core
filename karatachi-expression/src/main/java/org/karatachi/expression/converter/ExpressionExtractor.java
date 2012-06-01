@@ -3,7 +3,7 @@ package org.karatachi.expression.converter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.karatachi.expression.AbstractConverter;
+import org.karatachi.expression.AbstractExpressionConverter;
 import org.karatachi.expression.IEnvironment;
 import org.karatachi.expression.ast.Bool;
 import org.karatachi.expression.ast.ConditionalExpression;
@@ -11,7 +11,7 @@ import org.karatachi.expression.ast.Expression;
 import org.karatachi.expression.ast.Function;
 import org.karatachi.expression.ast.Parentheses;
 
-public class ExpressionExtractor extends AbstractConverter {
+public class ExpressionExtractor extends AbstractExpressionConverter {
 
     private final IEnvironment env;
 
