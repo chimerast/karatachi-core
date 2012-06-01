@@ -1,14 +1,13 @@
 package org.karatachi.example.web;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
-import javax.management.JMException;
 import javax.sql.DataSource;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.wicket.markup.html.WebPage;
 import org.h2.tools.RunScript;
 import org.karatachi.daemon.monitor.MBeanMonitorDaemon;
@@ -25,7 +24,7 @@ public class ExampleApplication extends S2WebApplication {
 
         getRequestLoggerSettings().setRequestLoggerEnabled(true);
 
-        // initializeDatabase();
+        initializeDatabase();
 
         setupMonitor();
     }
@@ -37,9 +36,11 @@ public class ExampleApplication extends S2WebApplication {
         try {
             Connection conn = dataSource.getConnection();
             try {
-                RunScript.execute(conn, new InputStreamReader(
-                        getClass().getClassLoader().getResourceAsStream(
-                                "init.sql"), "UTF-8"));
+                RunScript.execute(
+                        conn,
+                        new InputStreamReader(
+                                getClass().getClassLoader().getResourceAsStream(
+                                        "init.sql"), "UTF-8"));
             } finally {
                 conn.close();
             }
@@ -48,6 +49,7 @@ public class ExampleApplication extends S2WebApplication {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void setupMonitor() {
         MBeanMonitorDaemon monitor =
                 new MBeanMonitorDaemon("MBeanMonitor", "monitor") {
@@ -60,19 +62,14 @@ public class ExampleApplication extends S2WebApplication {
                 };
 
         try {
-            BufferedReader in =
-                    new BufferedReader(new InputStreamReader(
-                            getClass().getResourceAsStream("monitor.mbean")));
-            String line;
-            while ((line = in.readLine()) != null) {
-                try {
-                    monitor.addAccessor(
-                            line.substring(line.lastIndexOf(":") + 1), line);
-                } catch (JMException e) {
-                    System.out.println("error: " + e.getMessage());
-                }
+            List<String> lines =
+                    IOUtils.readLines(getClass().getResourceAsStream(
+                            "monitor.mbean"));
+            for (String line : lines) {
+                monitor.addAccessor(line.substring(line.lastIndexOf(":") + 1),
+                        line);
             }
-        } catch (IOException ignore) {
+        } catch (Exception ignore) {
             System.out.println("error: " + ignore.getMessage());
         }
 

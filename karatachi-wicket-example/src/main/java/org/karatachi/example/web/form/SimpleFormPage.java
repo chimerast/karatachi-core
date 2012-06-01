@@ -13,6 +13,7 @@ public class SimpleFormPage extends WebBasePage {
         add(new SimpleExampleForm("form"));
     }
 
+    @SuppressWarnings("unused")
     private class SimpleExampleForm extends SelfResolveForm {
         private static final long serialVersionUID = 1L;
 
