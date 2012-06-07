@@ -21,8 +21,8 @@ public class ParenthesesAdder extends AbstractExpressionConverter {
     @Override
     public Expression convert(BinaryOperator operator) {
         Class<?> clazz = operator.getClass();
-        boolean l = compare(clazz, operator.getLeft().getClass());
-        boolean r = compare(clazz, operator.getRight().getClass());
+        boolean l = compareLeft(clazz, operator.getLeft().getClass());
+        boolean r = compareRight(clazz, operator.getRight().getClass());
         if (l || r) {
             try {
                 Expression left = operator.getLeft().accept(this);
@@ -43,8 +43,12 @@ public class ParenthesesAdder extends AbstractExpressionConverter {
         }
     }
 
-    private boolean compare(Class<?> parent, Class<?> child) {
+    private boolean compareLeft(Class<?> parent, Class<?> child) {
         return getPriority(parent) > getPriority(child);
+    }
+
+    private boolean compareRight(Class<?> parent, Class<?> child) {
+        return getPriority(parent) >= getPriority(child);
     }
 
     private int getPriority(Class<?> operator) {
