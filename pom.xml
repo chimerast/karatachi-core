@@ -4,7 +4,7 @@
   <!-- The Basics -->
   <groupId>org.karatachi</groupId>
   <artifactId>karatachi</artifactId>
-  <version>0.4.4-SNAPSHOT</version>
+  <version>0.4.4</version>
   <packaging>pom</packaging>
   <dependencies>
     <dependency>
@@ -116,7 +116,7 @@
     <connection>scm:git:git://github.com/chimerast/karatachi-core.git</connection>
     <developerConnection>scm:git:git@github.com:chimerast/karatachi-core.git</developerConnection>
     <url>https://github.com/chimerast/karatachi-core</url>
-    <tag>HEAD</tag>
+    <tag>v0.4.4</tag>
   </scm>
   <repositories>
     <repository>
