@@ -54,8 +54,8 @@ public class Grid extends Loop {
                     ICell cell = cells.getObject().getCell(row, col);
                     item.add(createCellComponent("cell", row, col, cell).setRenderBodyOnly(
                             true));
-                    setCellAttribute(item, row, col, cells.getObject().getCell(
-                            row, col));
+                    setCellAttribute(item, row, col,
+                            cells.getObject().getCell(row, col));
                     if (cell != null && cell.getColspan() > 1) {
                         item.add(new SimpleAttributeModifier("colspan",
                                 Integer.toString(cell.getColspan())));
@@ -109,5 +109,7 @@ public class Grid extends Loop {
         if (className != null) {
             component.add(new SimpleAttributeModifier("class", className));
         }
+
+        cell.setupComponent(component);
     }
 }
