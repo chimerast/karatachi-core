@@ -1,7 +1,7 @@
 var KaratachiGrid = Class.create();
 
 KaratachiGrid.prototype = {
-  initialize : function(owner, id, fixedheader, rowheader, colheader) {
+  initialize : function(owner, id, fixedheader, rowheader, colheader, align) {
     this.parent = $(owner);
     this.container = $(id);
     this.fixedcontainer = $(fixedheader);
@@ -9,11 +9,20 @@ KaratachiGrid.prototype = {
     this.colcontainer = $(colheader);
     this.dragging = false;
 
-    this.container.style.width = (this.parent.clientWidth - this.rowcontainer.offsetWidth) + 'px';
-    this.container.style.height = (this.parent.clientHeight - this.colcontainer.offsetHeight) + 'px';
+    this.container.style.width = (this.parent.clientWidth - this.rowcontainer.offsetWidth)
+        + 'px';
+    this.container.style.height = (this.parent.clientHeight - this.colcontainer.offsetHeight)
+        + 'px';
 
     this.colcontainer.style.width = this.container.style.width;
     this.rowcontainer.style.height = this.container.style.height;
+
+    var scrollLeft = this.container.firstChild.rows[0].cells[align].offsetLeft
+        - this.container.clientWidth;
+    if (scrollLeft < 0)
+      scrollLeft = 0;
+    this.container.scrollLeft = scrollLeft;
+    this.colcontainer.scrollLeft = scrollLeft;
 
     var func = function(e) {
       this.dragging = true;
@@ -56,8 +65,10 @@ KaratachiGrid.prototype = {
     }.bind(this));
 
     var resize = function(e) {
-      this.container.style.width = (this.parent.clientWidth - this.rowcontainer.offsetWidth) + 'px';
-      this.container.style.height = (this.parent.clientHeight - this.colcontainer.offsetHeight) + 'px';
+      this.container.style.width = (this.parent.clientWidth - this.rowcontainer.offsetWidth)
+          + 'px';
+      this.container.style.height = (this.parent.clientHeight - this.colcontainer.offsetHeight)
+          + 'px';
 
       this.colcontainer.style.width = this.container.style.width;
       this.rowcontainer.style.height = this.container.style.height;

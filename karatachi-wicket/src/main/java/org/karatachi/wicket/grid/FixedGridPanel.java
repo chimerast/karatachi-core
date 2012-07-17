@@ -168,10 +168,10 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
                     String.format("var %1$s; var %1$s_pos;", getMarkupId()),
                     null);
             response.renderOnDomReadyJavascript(String.format(
-                    "%s = new KaratachiGrid('%s', '%s', '%s', '%s', '%s')",
+                    "%s = new KaratachiGrid('%s', '%s', '%s', '%s', '%s', %d)",
                     getMarkupId(), getMarkupId(), grid_br.getMarkupId(),
                     grid_tl.getMarkupId(), grid_bl.getMarkupId(),
-                    grid_tr.getMarkupId()));
+                    grid_tr.getMarkupId(), alignCol));
         } else {
             response.renderCSSReference(CSS);
             response.renderJavascriptReference(AjaxLibrariesReference.jquery);
