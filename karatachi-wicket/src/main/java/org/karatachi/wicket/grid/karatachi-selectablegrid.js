@@ -6,7 +6,8 @@
       bl_id : this.attr("id") + "_bl",
       br_id : this.attr("id") + "_br",
       menu_id : this.attr("id") + "_menu",
-      selected_color : "#e0e0ff"
+      selected_color : "#e0e0ff",
+      align : 0
     }, options);
 
     var self = this;
@@ -32,7 +33,11 @@
       var scrollLeft = $(document).data(self.attr("id") + "_scrollLeft");
       var scrollTop = $(document).data(self.attr("id") + "_scrollTop");
       if (scrollLeft == undefined || scrollTop == undefined) {
-        return;
+        scrollLeft = br.find("td").eq(settings.align).prop("offsetLeft")
+            - br.prop("clientWidth");
+        if (scrollLeft < 0)
+          scrollLeft = 0;
+        scrollTop = 0;
       }
       tr.scrollLeft(scrollLeft);
       bl.scrollTop(scrollTop);

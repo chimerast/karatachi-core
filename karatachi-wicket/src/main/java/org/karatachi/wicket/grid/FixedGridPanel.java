@@ -43,6 +43,8 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
     private int fixedRow = 0;
     private int fixedCol = 0;
 
+    private int alignCol = 0;
+
     private Map<Integer, Integer> widths = new HashMap<Integer, Integer>();
     private Map<Integer, Integer> heights = new HashMap<Integer, Integer>();
 
@@ -82,6 +84,11 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
 
     public int getFixedCol() {
         return fixedCol;
+    }
+
+    public FixedGridPanel align(int col) {
+        this.alignCol = col;
+        return this;
     }
 
     public void setDefalutWidth(int defalutWidth) {
@@ -173,9 +180,9 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
             response.renderJavascriptReference(FlexComponent.SWFOBJECT_JS);
             response.renderJavascriptReference(SCRIPT);
             response.renderOnDomReadyJavascript(String.format(
-                    "jQuery('#%s').fixedgrid({ zclip_swf : '%s' });",
+                    "jQuery('#%s').fixedgrid({ zclip_swf : '%s', align : %d });",
                     getMarkupId(),
-                    urlFor(AjaxLibrariesReference.jquery_zclip_swf)));
+                    urlFor(AjaxLibrariesReference.jquery_zclip_swf), alignCol));
         }
     }
 }
