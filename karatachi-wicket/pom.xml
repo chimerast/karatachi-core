@@ -4,7 +4,7 @@
 
   <artifactId>karatachi-wicket</artifactId>
   <packaging>jar</packaging>
-  <version>0.2.25.33</version>
+  <version>0.2.25.34</version>
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
