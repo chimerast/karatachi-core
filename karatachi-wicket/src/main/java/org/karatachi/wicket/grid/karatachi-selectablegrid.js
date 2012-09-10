@@ -6,7 +6,8 @@
       bl_id : this.attr("id") + "_bl",
       br_id : this.attr("id") + "_br",
       menu_id : this.attr("id") + "_menu",
-      selected_color : "#e0e0ff"
+      selected_color : "#e0e0ff",
+      align : 0
     }, options);
 
     var self = this;
@@ -32,7 +33,11 @@
       var scrollLeft = $(document).data(self.attr("id") + "_scrollLeft");
       var scrollTop = $(document).data(self.attr("id") + "_scrollTop");
       if (scrollLeft == undefined || scrollTop == undefined) {
-        return;
+        scrollLeft = br.find("td").eq(settings.align).prop("offsetLeft")
+            - br.prop("clientWidth");
+        if (scrollLeft < 0)
+          scrollLeft = 0;
+        scrollTop = 0;
       }
       tr.scrollLeft(scrollLeft);
       bl.scrollTop(scrollTop);
@@ -64,35 +69,12 @@
       var bl_table = bl.find("table.inner")[0];
       var br_table = br.find("table.inner")[0];
 
-      var rows = 0;
-      var cols = 0;
-
-      var countRow = function(table) {
-        for ( var i = 0, max = table.rows.length - 1; i < max; ++i) {
-          if (table.rows[i].cells[0].rowSpan != 1) {
-            rows += table.rows[i].cells[0].rowSpan;
-          } else {
-            rows += 1;
-          }
-        }
-      };
-      var countCol = function(row) {
-        for ( var i = 0, max = row.cells.length - 1; i < max; ++i) {
-          if (row.cells[i].colSpan != 1) {
-            cols += row.cells[i].colSpan;
-          } else {
-            cols += 1;
-          }
-        }
-      };
-
-      countRow(tl_table);
-      countRow(bl_table);
-      countCol(tl_table.rows[0]);
-      countCol(tr_table.rows[0]);
+      var rows = (tl_table.rows.length - 1) + (bl_table.rows.length - 1);
+      var cols = (tl_table.rows[0].cells.length - 1)
+          + (tr_table.rows[0].cells.length - 1);
 
       var cells = new Array(rows);
-      for ( var i = 0, max = cells.length; i < max; ++i) {
+      for ( var i = 0; i < rows; ++i) {
         cells[i] = new Array(cols);
       }
 
