@@ -414,21 +414,34 @@
           scrolled = true;
         }
 
+        var top, left;
         var wrect = windowRect();
         if (mouse.pageY < wrect.top) {
-          w.scrollTop(wrect.top + (mouse.pageY - wrect.top) * delta);
+          top = wrect.top + (mouse.pageY - wrect.top) * delta;
+          if (top < bl.offset().top + bl.height() - w.height())
+            top = bl.offset().top + bl.height() - w.height();
+          w.scrollTop(top);
           scrolled = true;
         }
         if (mouse.pageY > wrect.bottom) {
-          w.scrollTop(wrect.top + (mouse.pageY - wrect.bottom) * delta);
+          top = wrect.top + (mouse.pageY - wrect.bottom) * delta;
+          if (top > tl.offset().top)
+            top = tl.offset().top;
+          w.scrollTop(top);
           scrolled = true;
         }
         if (mouse.pageX < wrect.left) {
-          w.scrollLeft(wrect.left + (mouse.pageX - wrect.left) * delta);
+          left = wrect.left + (mouse.pageX - wrect.left) * delta;
+          if (left < tr.offset().left + tr.width() - w.width())
+            left = tr.offset().left + tr.width() - w.width();
+          w.scrollLeft(left);
           scrolled = true;
         }
         if (mouse.pageX > wrect.right) {
-          w.scrollLeft(wrect.left + (mouse.pageX - wrect.right) * delta);
+          left = wrect.left + (mouse.pageX - wrect.right) * delta;
+          if (left > tl.offset().left)
+            left = tl.offset().left;
+          w.scrollLeft(left);
           scrolled = true;
         }
       }
