@@ -14,14 +14,10 @@ import org.karatachi.expression.ast.Variable;
 
 public abstract class AbstractEnvironment implements IEnvironment {
 
-    /** 文字列表現時に変数を展開するか */
-    private boolean variableRepresentationExpanded;
-    /** 文字列表現時に関数を展開するか */
-    private boolean functionRepresentationExpanded;
     /** 関数 */
-    private Map<String, IFunction> functions = new HashMap<String, IFunction>();
-
-    public AbstractEnvironment() {
+    private static Map<String, IFunction> functions =
+            new HashMap<String, IFunction>();
+    static {
         for (Class<? extends IFunction> clazz : new PackageDir(
                 "org.karatachi.expression.function").getClasses(IFunction.class)) {
             try {
@@ -31,6 +27,21 @@ public abstract class AbstractEnvironment implements IEnvironment {
             }
         }
     }
+
+    /**
+     * 関数の追加
+     * 
+     * @param function
+     *            追加する関数
+     */
+    public static void addFunction(IFunction function) {
+        functions.put(function.getName(), function);
+    }
+
+    /** 文字列表現時に変数を展開するか */
+    private boolean variableRepresentationExpanded;
+    /** 文字列表現時に関数を展開するか */
+    private boolean functionRepresentationExpanded;
 
     /*
      * (non-Javadoc)
@@ -169,16 +180,6 @@ public abstract class AbstractEnvironment implements IEnvironment {
     @Override
     public String representVariable(String name, double value) {
         return representLiteral(value);
-    }
-
-    /**
-     * 関数の追加
-     * 
-     * @param function
-     *            追加する関数
-     */
-    public void addFunction(IFunction function) {
-        functions.put(function.getName(), function);
     }
 
     /**
