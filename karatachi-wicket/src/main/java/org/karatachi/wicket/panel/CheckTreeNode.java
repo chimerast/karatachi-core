@@ -1,14 +1,17 @@
 package org.karatachi.wicket.panel;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.karatachi.collections.TreeNode;
 
-public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
-        TreeNode<T> {
+public class CheckTreeNode<T extends Serializable & Comparable<? super T>>
+        extends TreeNode<T> {
     private static final long serialVersionUID = 1L;
 
     private boolean check = false;
@@ -16,12 +19,13 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
     private boolean visible = true;
     private boolean leaf = false;
 
-    public CheckTreeNode() {
-        super(null);
-    }
-
     public CheckTreeNode(T value) {
         super(value);
+    }
+
+    @Override
+    public String toString() {
+        return "CheckTreeNode(value='" + getValue() + "')";
     }
 
     public boolean isCheck() {
@@ -29,6 +33,7 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
     }
 
     public CheckTreeNode<T> setCheck(boolean check) {
+        checkModifiable();
         this.check = check;
         return this;
     }
@@ -38,6 +43,7 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
     }
 
     public CheckTreeNode<T> setOpen(boolean open) {
+        checkModifiable();
         this.open = open;
         return this;
     }
@@ -47,6 +53,7 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
     }
 
     public CheckTreeNode<T> setVisible(boolean visible) {
+        checkModifiable();
         this.visible = visible;
         return this;
     }
@@ -56,8 +63,18 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
     }
 
     public CheckTreeNode<T> setLeaf(boolean leaf) {
+        checkModifiable();
         this.leaf = leaf;
         return this;
+    }
+
+    public boolean hasVisibleChild() {
+        for (TreeNode<T> child : getChildren()) {
+            if (((CheckTreeNode<T>) child).isVisible()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void select(final Selector<T> selector) {
@@ -130,16 +147,7 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
         visitor.up();
     }
 
-    public static <S extends Serializable & Comparable<S>> CheckTreeNode<S> duplicateTree(
-            TreeNode<S> node) {
-        CheckTreeNode<S> newnode = new CheckTreeNode<S>(node.getValue());
-        for (TreeNode<S> child : node.getChildren()) {
-            newnode.addChild(duplicateTree(child));
-        }
-        return newnode;
-    }
-
-    public static abstract class Visitor<S extends Serializable & Comparable<S>> {
+    public static abstract class Visitor<S extends Serializable & Comparable<? super S>> {
         public abstract boolean visit(CheckTreeNode<S> node);
 
         public void down() {
@@ -149,7 +157,7 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
         }
     }
 
-    public static abstract class Selector<S extends Serializable & Comparable<S>> {
+    public static abstract class Selector<S extends Serializable & Comparable<? super S>> {
         public abstract boolean select(CheckTreeNode<S> node);
 
         public void down() {
@@ -159,11 +167,12 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
         }
     }
 
-    public static abstract class Acceptor<S extends Serializable & Comparable<S>, R>
+    public static abstract class Acceptor<S extends Serializable & Comparable<? super S>, R>
             extends Selector<S> {
         private R[] criterias;
         private Set<Integer> sets = new TreeSet<Integer>();
-        private LinkedList<Integer> acceptor = new LinkedList<Integer>();
+        private LinkedList<List<Integer>> acceptor =
+                new LinkedList<List<Integer>>();
 
         public Acceptor(R[] criterias) {
             this.criterias = criterias;
@@ -177,29 +186,82 @@ public class CheckTreeNode<T extends Serializable & Comparable<T>> extends
 
         @Override
         public final boolean select(CheckTreeNode<S> node) {
-            acceptor.set(0, -1);
+            acceptor.get(0).clear();
             for (int i = 0; i < criterias.length; ++i) {
                 if (accept(node.getValue(), criterias[i])) {
-                    acceptor.set(0, i);
-                    break;
+                    acceptor.get(0).add(i);
                 }
             }
+            return accepted();
+        }
 
-            if (acceptor.containsAll(sets)) {
-                return true;
+        private boolean accepted() {
+            List<Integer> all = new ArrayList<Integer>();
+            for (List<Integer> l : acceptor) {
+                all.addAll(l);
             }
-
-            return false;
+            return all.containsAll(sets);
         }
 
         @Override
         public final void down() {
-            acceptor.push(-1);
+            acceptor.push(new ArrayList<Integer>());
         }
 
         @Override
         public final void up() {
             acceptor.pop();
+        }
+    }
+
+    /**
+     * ツリーのshallow copyを生成する
+     */
+    public static <S extends Serializable & Comparable<? super S>> CheckTreeNode<S> duplicateTree(
+            TreeNode<S> node) {
+        return duplicateTree(node, new NodeFactory<S, CheckTreeNode<S>>() {
+            public CheckTreeNode<S> newInstance(S value) {
+                return new CheckTreeNode<S>(value);
+            };
+        });
+    }
+
+    /**
+     * ツリーのdeep copyを生成する
+     */
+    public static <S extends Serializable & Comparable<? super S>> CheckTreeNode<S> duplicateTreeDeep(
+            TreeNode<S> node) {
+        return duplicateTree(node, new NodeFactory<S, CheckTreeNode<S>>() {
+            public CheckTreeNode<S> newInstance(S value) {
+                return new CheckTreeNode<S>(cloneNodeValue(value));
+            };
+        });
+    }
+
+    /**
+     * ツリーのshallow copyを生成する（ノードの重複を許す）
+     */
+    public static <S extends Serializable & Comparable<? super S>> CheckTreeNode<S> duplicateTreeFlat(
+            TreeNode<S> node) {
+        return duplicateTreeFlat(node, new NodeFactory<S, CheckTreeNode<S>>() {
+            public CheckTreeNode<S> newInstance(S value) {
+                return new CheckTreeNode<S>(value);
+            };
+        });
+    }
+
+    /**
+     * ノードの値のclone()を行う
+     */
+    @SuppressWarnings("unchecked")
+    private static <S extends Serializable & Comparable<? super S>> S cloneNodeValue(
+            S value) {
+        try {
+            Method clone = value.getClass().getDeclaredMethod("clone");
+            clone.setAccessible(true);
+            return (S) clone.invoke(value);
+        } catch (Exception e) {
+            throw new IllegalStateException("cannot clone value.");
         }
     }
 }

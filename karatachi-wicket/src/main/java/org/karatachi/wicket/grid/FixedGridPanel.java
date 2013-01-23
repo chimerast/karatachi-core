@@ -29,6 +29,17 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
             new JavascriptResourceReference(FixedGridPanel.class,
                     "karatachi-selectablegrid.js");
 
+    private static final ResourceReference OLD_CSS = new ResourceReference(
+            FixedGridPanel.class, "old-karatachi-grid.css");
+    private static final JavascriptResourceReference OLD_SCRIPT =
+            new JavascriptResourceReference(FixedGridPanel.class,
+                    "old-karatachi-grid.js");
+
+    private final WebMarkupContainer grid_tl;
+    private final WebMarkupContainer grid_tr;
+    private final WebMarkupContainer grid_bl;
+    private final WebMarkupContainer grid_br;
+
     private int fixedRow = 0;
     private int fixedCol = 0;
 
@@ -49,10 +60,10 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
 
         setOutputMarkupId(true);
 
-        add(new GridContainer("grid_tl", Position.TOP_LEFT));
-        add(new GridContainer("grid_tr", Position.TOP_RIGHT));
-        add(new GridContainer("grid_bl", Position.BOTTOM_LEFT));
-        add(new GridContainer("grid_br", Position.BOTTOM_RIGHT));
+        add(grid_tl = new GridContainer("grid_tl", Position.TOP_LEFT));
+        add(grid_tr = new GridContainer("grid_tr", Position.TOP_RIGHT));
+        add(grid_bl = new GridContainer("grid_bl", Position.BOTTOM_LEFT));
+        add(grid_br = new GridContainer("grid_br", Position.BOTTOM_RIGHT));
         add(new MenuContainer("menu"));
     }
 
@@ -148,15 +159,30 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(CSS);
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery);
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery_textselection);
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery_zclip);
-        response.renderJavascriptReference(FlexComponent.SWFOBJECT_JS);
-        response.renderJavascriptReference(SCRIPT);
-        response.renderOnDomReadyJavascript(String.format(
-                "jQuery('#%s').fixedgrid({ zclip_swf : '%s', align : %d });",
-                getMarkupId(), urlFor(AjaxLibrariesReference.jquery_zclip_swf),
-                alignCol));
+        WebClientInfo info = (WebClientInfo) getSession().getClientInfo();
+        if (info.getUserAgent().indexOf("MSIE 6.0") != -1) {
+            response.renderCSSReference(OLD_CSS);
+            response.renderJavascriptReference(AjaxLibrariesReference.prototype);
+            response.renderJavascriptReference(OLD_SCRIPT);
+            response.renderJavascript(
+                    String.format("var %1$s; var %1$s_pos;", getMarkupId()),
+                    null);
+            response.renderOnDomReadyJavascript(String.format(
+                    "%s = new KaratachiGrid('%s', '%s', '%s', '%s', '%s', %d)",
+                    getMarkupId(), getMarkupId(), grid_br.getMarkupId(),
+                    grid_tl.getMarkupId(), grid_bl.getMarkupId(),
+                    grid_tr.getMarkupId(), alignCol));
+        } else {
+            response.renderCSSReference(CSS);
+            response.renderJavascriptReference(AjaxLibrariesReference.jquery);
+            response.renderJavascriptReference(AjaxLibrariesReference.jquery_textselection);
+            response.renderJavascriptReference(AjaxLibrariesReference.jquery_zclip);
+            response.renderJavascriptReference(FlexComponent.SWFOBJECT_JS);
+            response.renderJavascriptReference(SCRIPT);
+            response.renderOnDomReadyJavascript(String.format(
+                    "jQuery('#%s').fixedgrid({ zclip_swf : '%s', align : %d });",
+                    getMarkupId(),
+                    urlFor(AjaxLibrariesReference.jquery_zclip_swf), alignCol));
+        }
     }
 }

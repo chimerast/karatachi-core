@@ -14,12 +14,16 @@ public class NotifyDialog extends ModalWindow {
     private MessageDialogParams params;
 
     public NotifyDialog(String id) {
+        this(id, 400, 120);
+    }
+
+    public NotifyDialog(String id, int width, int height) {
         super(id);
 
         setCssClassName(ModalWindow.CSS_CLASS_GRAY);
         setResizable(false);
-        setInitialWidth(400);
-        setInitialHeight(120);
+        setInitialWidth(width);
+        setInitialHeight(height);
         setWidthUnit("px");
         setHeightUnit("px");
 
@@ -55,7 +59,8 @@ public class NotifyDialog extends ModalWindow {
         private NotifyDialogPage() {
             super(new CompoundPropertyModel<MessageDialogParams>(params));
 
-            add(new Label("message").setVisible(params.message != null));
+            add(new Label("message").setEscapeModelStrings(false).setVisible(
+                    params.message != null));
 
             add(new AjaxLink<Void>("ok") {
                 private static final long serialVersionUID = 1L;

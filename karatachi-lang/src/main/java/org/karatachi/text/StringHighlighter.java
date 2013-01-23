@@ -36,6 +36,16 @@ public class StringHighlighter {
         this.marginSize = marginSize;
     }
 
+    public String getText(String content) {
+        Matcher matcher = pattern.matcher(content);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, prefix + matcher.group() + suffix);
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
     public String getSummary(String content) {
         try {
             Matcher matcher = pattern.matcher(content);

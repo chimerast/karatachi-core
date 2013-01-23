@@ -1,5 +1,7 @@
 package org.karatachi.wicket.auth;
 
+import java.util.Map;
+
 import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
@@ -18,7 +20,7 @@ public abstract class AuthenticatedWebSession<R> extends WebSession {
         super(request);
     }
 
-    protected abstract boolean authenticate(String username, String password);
+    protected abstract boolean authenticate(Map<String, String> parameters);
 
     public abstract R getRole();
 
@@ -26,12 +28,11 @@ public abstract class AuthenticatedWebSession<R> extends WebSession {
         return signedIn;
     }
 
-    public final boolean signIn(final String username, final String password) {
-        return signedIn = authenticate(username, password);
+    public final boolean signIn(Map<String, String> parameters) {
+        return signedIn = authenticate(parameters);
     }
 
     public void signOut() {
         signedIn = false;
-        invalidate();
     }
 }
