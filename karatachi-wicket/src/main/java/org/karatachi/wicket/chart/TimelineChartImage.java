@@ -12,6 +12,7 @@ import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.axis.DateTickUnit;
+import org.jfree.chart.axis.DateTickUnitType;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -29,7 +30,7 @@ public abstract class TimelineChartImage extends ChartImage {
 
     public JFreeChart createChart() {
         DateAxis domainAxis = new DateAxis();
-        domainAxis.setTickUnit(new DateTickUnit(DateTickUnit.DAY, 7));
+        domainAxis.setTickUnit(new DateTickUnit(DateTickUnitType.DAY, 7));
         domainAxis.setTickMarkPosition(DateTickMarkPosition.START);
 
         Calendar cal = Calendar.getInstance();
