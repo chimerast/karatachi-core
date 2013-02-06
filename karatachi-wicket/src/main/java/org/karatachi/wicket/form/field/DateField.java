@@ -6,18 +6,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
-import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.FormComponentPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.IObjectClassAwareModel;
-import org.apache.wicket.util.string.AppendingStringBuffer;
 
 public class DateField extends FormComponentPanel<Date> {
     private static final long serialVersionUID = 1L;
@@ -197,81 +192,5 @@ public class DateField extends FormComponentPanel<Date> {
             days.add(i);
         }
         return days;
-    }
-
-    public static abstract class AjaxDateFieldUpdatingBehavior extends
-            AbstractDefaultAjaxBehavior {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public void renderHead(IHeaderResponse response) {
-            super.renderHead(response);
-
-            AppendingStringBuffer asb = new AppendingStringBuffer();
-            asb.append("function attachChoiceHandlers(markupId, callbackScript) {\n");
-            asb.append("  var selectNodes = wicketGet(markupId).getElementsByTagName('select');\n");
-            asb.append("  for (var i = 0 ; i < selectNodes.length ; i ++) {\n");
-            asb.append("    var selectNode = selectNodes[i];\n");
-            asb.append("    Wicket.Event.add(selectNode, 'change', callbackScript);\n");
-            asb.append("  }\n");
-            asb.append("}\n");
-
-            response.renderJavascript(asb, "attachChoice");
-
-            response.renderOnLoadJavascript("attachChoiceHandlers('"
-                    + getComponent().getMarkupId() + "', function() {"
-                    + getEventHandler() + "});");
-        }
-
-        protected abstract void onUpdate(AjaxRequestTarget target);
-
-        protected void onError(AjaxRequestTarget target, RuntimeException e) {
-            if (e != null) {
-                throw e;
-            }
-        }
-
-        @Override
-        protected void onBind() {
-            super.onBind();
-
-            if (!(getComponent() instanceof DateField)) {
-                throw new WicketRuntimeException("Behavior "
-                        + getClass().getName()
-                        + " can only be added to an instance of a DateField");
-            }
-
-            getComponent().setRenderBodyOnly(false);
-        }
-
-        protected final FormComponent<?> getFormComponent() {
-            return (FormComponent<?>) getComponent();
-        }
-
-        protected final CharSequence getEventHandler() {
-            return generateCallbackScript(new AppendingStringBuffer(
-                    "wicketAjaxPost('").append(getCallbackUrl()).append(
-                    "', wicketSerializeForm(document.getElementById('"
-                            + getComponent().getMarkupId() + "',false))"));
-        }
-
-        @Override
-        protected final void respond(final AjaxRequestTarget target) {
-            final FormComponent<?> formComponent = getFormComponent();
-            try {
-                formComponent.inputChanged();
-                formComponent.validate();
-                if (formComponent.hasErrorMessage()) {
-                    formComponent.invalid();
-                    onError(target, null);
-                } else {
-                    formComponent.valid();
-                    formComponent.updateModel();
-                    onUpdate(target);
-                }
-            } catch (RuntimeException e) {
-                onError(target, e);
-            }
-        }
     }
 }

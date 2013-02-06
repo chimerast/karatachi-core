@@ -2,6 +2,7 @@ package org.karatachi.wicket.auto;
 
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.ComponentTag;
@@ -33,8 +34,8 @@ public class AutoResolveListView<T> extends ListView<T> implements
     }
 
     @Override
-    protected ListItem<T> newItem(int index) {
-        final ListItem<T> ret = super.newItem(index);
+    protected ListItem<T> newItem(int index, IModel<T> itemModel) {
+        final ListItem<T> ret = super.newItem(index, itemModel);
         ret.add(new AttributeAppender("class",
                 new AbstractReadOnlyModel<String>() {
                     private static final long serialVersionUID = 1L;
@@ -59,10 +60,10 @@ public class AutoResolveListView<T> extends ListView<T> implements
                 listViewModel, index));
     }
 
-    public boolean resolve(MarkupContainer container,
+    public Component resolve(MarkupContainer container,
             MarkupStream markupStream, ComponentTag tag) {
         if (tag.isAutoComponentTag()) {
-            return false;
+            return null;
         }
 
         String tagId = tag.getId();
@@ -79,12 +80,10 @@ public class AutoResolveListView<T> extends ListView<T> implements
                 FormComponentResolver.getResolver(wicketType, type);
 
         if (resolver != null) {
-            return container.autoAdd(resolver.createViewComponent(tagId),
-                    markupStream);
+            return resolver.createViewComponent(tagId);
         } else {
-            return container.autoAdd(
-                    FormComponentResolver.getDefaultResolver().createViewComponent(
-                            tagId), markupStream);
+            return FormComponentResolver.getDefaultResolver().createViewComponent(
+                    tagId);
         }
     }
 

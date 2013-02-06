@@ -17,11 +17,11 @@ public class SimplePageableListViewNavigator extends PagingNavigator {
 
     public String getHeadlineText() {
         PageableListView<?> pageable = (PageableListView<?>) getPageable();
-        int firstListItem =
-                pageable.getCurrentPage() * pageable.getRowsPerPage();
-        int endListItem = pageable.getList().size();
-        if (firstListItem + pageable.getRowsPerPage() < endListItem) {
-            endListItem = firstListItem + pageable.getRowsPerPage();
+        long firstListItem =
+                pageable.getCurrentPage() * pageable.getItemsPerPage();
+        long endListItem = pageable.getList().size();
+        if (firstListItem + pageable.getItemsPerPage() < endListItem) {
+            endListItem = firstListItem + pageable.getItemsPerPage();
         }
 
         if (getLocale().getLanguage().equals("ja")) {
@@ -31,5 +31,10 @@ public class SimplePageableListViewNavigator extends PagingNavigator {
             return String.format("%d items found, displaying %d to %d.",
                     pageable.getList().size(), firstListItem + 1, endListItem);
         }
+    }
+
+    @Override
+    protected void onConfigure() {
+        setVisible(getPageable().getPageCount() > 1);
     }
 }

@@ -18,16 +18,13 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
-import org.apache.wicket.util.resource.IResourceStream;
+import org.apache.wicket.util.resource.AbstractResourceStream;
 import org.apache.wicket.util.resource.ResourceStreamNotFoundException;
-import org.apache.wicket.util.time.Time;
 
-public class ExcelResourceStream implements IResourceStream {
+public class ExcelResourceStream extends AbstractResourceStream {
     private static final long serialVersionUID = 1L;
 
     private Cells cells;
-
-    private Locale locale;
 
     public ExcelResourceStream(Cells cells) {
         this.cells = cells;
@@ -36,11 +33,6 @@ public class ExcelResourceStream implements IResourceStream {
     @Override
     public String getContentType() {
         return "application/vnd.ms-excel";
-    }
-
-    @Override
-    public long length() {
-        return -1;
     }
 
     @Override
@@ -104,20 +96,5 @@ public class ExcelResourceStream implements IResourceStream {
 
     @Override
     public void close() throws IOException {
-    }
-
-    @Override
-    public Locale getLocale() {
-        return locale;
-    }
-
-    @Override
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
-
-    @Override
-    public Time lastModifiedTime() {
-        return Time.now();
     }
 }

@@ -1,6 +1,6 @@
 package org.karatachi.wicket.grid;
 
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 
 public abstract class DefaultLinkCell extends DefaultCell implements ILinkCell {
     private static final long serialVersionUID = 1L;
@@ -13,7 +13,6 @@ public abstract class DefaultLinkCell extends DefaultCell implements ILinkCell {
     }
 
     @Override
-    public IAjaxCallDecorator getAjaxCallDecorator() {
-        return null;
+    public void updateAjaxAttributes(AjaxRequestAttributes attributes) {
     }
 }

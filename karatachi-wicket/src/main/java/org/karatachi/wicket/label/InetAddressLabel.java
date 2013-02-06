@@ -1,5 +1,7 @@
 package org.karatachi.wicket.label;
 
+import java.net.InetAddress;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
@@ -21,8 +23,13 @@ public class InetAddressLabel extends Label {
         super(id, model);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public IConverter getConverter(Class<?> type) {
-        return new InetAddressConverter();
+    public <C> IConverter<C> getConverter(Class<C> type) {
+        if (type == InetAddress.class) {
+            return (IConverter<C>) new InetAddressConverter();
+        } else {
+            return super.getConverter(type);
+        }
     }
 }

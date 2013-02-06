@@ -1,28 +1,30 @@
 package org.karatachi.wicket.grid;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.Loop;
+import org.apache.wicket.markup.html.list.LoopItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 class FixedGrid extends Loop {
     private static final long serialVersionUID = 1L;
 
-    private static final SimpleAttributeModifier NOBORDER =
-            new SimpleAttributeModifier("style",
+    private static final AttributeModifier NOBORDER =
+            new AttributeModifier("style",
                     "border: none 0px transparent !important; overflow: hidden !important;");
     private static final String CELL_FORMAT =
             "width: %dpx !important; height: %dpx !important; overflow: hidden !important;";
     private static final String SPACER_IMG_FORMAT =
             "<img src=\"%s\" style=\"width: %dpx; height: %dpx\" />";
-    private static final ResourceReference SPACER = new ResourceReference(
-            FixedGrid.class, "spacer.gif");
+    private static final ResourceReference SPACER =
+            new PackageResourceReference(FixedGrid.class, "spacer.gif");
 
     private final IModel<Cells> model;
     private final FixedGridPanel owner;
@@ -53,7 +55,7 @@ class FixedGrid extends Loop {
         final int adjustedRows = getRows();
         final int adjustedCols = getCols();
 
-        final int adjustedRow = item.getIteration() + 1;
+        final int adjustedRow = item.getIndex() + 1;
         final int row;
         switch (position) {
         case TOP_LEFT:
@@ -72,7 +74,7 @@ class FixedGrid extends Loop {
 
             @Override
             protected void populateItem(LoopItem item) {
-                final int adjustedCol = item.getIteration() + 1;
+                final int adjustedCol = item.getIndex() + 1;
                 final int col;
                 switch (position) {
                 case TOP_LEFT:
@@ -93,12 +95,12 @@ class FixedGrid extends Loop {
                         ICell cell = cells.getCell(row, col);
                         populateCell(item, row, col, cell);
                         if (cell != null && cell.getRowspan() > 1) {
-                            item.add(new SimpleAttributeModifier("rowspan",
+                            item.add(new AttributeModifier("rowspan",
                                     Integer.toString(cell.getRowspan())));
                             rowjoined[adjustedCol - 1] = cell.getRowspan() - 1;
                         }
                         if (cell != null && cell.getColspan() > 1) {
-                            item.add(new SimpleAttributeModifier("colspan",
+                            item.add(new AttributeModifier("colspan",
                                     Integer.toString(cell.getColspan())));
                             coljoined = cell.getColspan() - 1;
                         }
@@ -108,7 +110,7 @@ class FixedGrid extends Loop {
                     // 最後までスクロールをしたときの遊び
                     if (position == Position.TOP_RIGHT) {
                         sb.append(String.format(SPACER_IMG_FORMAT,
-                                urlFor(SPACER), 40, 0));
+                                urlFor(SPACER, null), 40, 0));
                     }
                     item.add(new Label("cell", sb.toString()).setEscapeModelStrings(
                             false).setRenderBodyOnly(true));
@@ -118,7 +120,7 @@ class FixedGrid extends Loop {
                     // 最後までスクロールをしたときの遊び
                     if (position == Position.BOTTOM_LEFT) {
                         sb.append(String.format(SPACER_IMG_FORMAT,
-                                urlFor(SPACER), 0, 40));
+                                urlFor(SPACER, null), 0, 40));
                     }
                     item.add(new Label("cell", sb.toString()).setEscapeModelStrings(
                             false).setRenderBodyOnly(true));
@@ -158,10 +160,10 @@ class FixedGrid extends Loop {
                 height = owner.getHeight(r);
             }
 
-            component.add(new SimpleAttributeModifier("style", String.format(
+            component.add(new AttributeModifier("style", String.format(
                     CELL_FORMAT, width, height)));
         } else {
-            component.add(new SimpleAttributeModifier("style", String.format(
+            component.add(new AttributeModifier("style", String.format(
                     CELL_FORMAT, owner.getWidth(c), owner.getHeight(r))));
         }
 
@@ -171,8 +173,11 @@ class FixedGrid extends Loop {
                 private static final long serialVersionUID = 1L;
 
                 @Override
-                protected IAjaxCallDecorator getAjaxCallDecorator() {
-                    return link.getAjaxCallDecorator();
+                protected void updateAjaxAttributes(
+                        AjaxRequestAttributes attributes) {
+                    super.updateAjaxAttributes(attributes);
+
+                    link.updateAjaxAttributes(attributes);
                 }
 
                 @Override
@@ -188,8 +193,8 @@ class FixedGrid extends Loop {
         StringBuilder sb = new StringBuilder();
         if (cell != null) {
             if (cell.getIndent() != 0) {
-                sb.append(String.format(SPACER_IMG_FORMAT, urlFor(SPACER),
-                        cell.getIndent(), 0));
+                sb.append(String.format(SPACER_IMG_FORMAT,
+                        urlFor(SPACER, null), cell.getIndent(), 0));
             }
             sb.append(cell.toString());
         } else {
@@ -206,12 +211,12 @@ class FixedGrid extends Loop {
 
         String style = cell.getStyle();
         if (style != null) {
-            component.add(new SimpleAttributeModifier("style", style));
+            component.add(new AttributeModifier("style", style));
         }
 
         String className = cell.getClassName();
         if (className != null) {
-            component.add(new SimpleAttributeModifier("class", className));
+            component.add(new AttributeModifier("class", className));
         }
 
         cell.setupComponent(component);

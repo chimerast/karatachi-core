@@ -1,6 +1,7 @@
 package org.karatachi.wicket.util;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.RuntimeConfigurationType;
 
 public class ApplicationSettings {
     private static Boolean isDevelopmentMode;
@@ -10,7 +11,7 @@ public class ApplicationSettings {
             return isDevelopmentMode;
         } else if (Application.exists()) {
             isDevelopmentMode =
-                    Application.DEVELOPMENT.equalsIgnoreCase(Application.get().getConfigurationType());
+                    Application.get().getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT;
             return isDevelopmentMode;
         } else {
             return true;

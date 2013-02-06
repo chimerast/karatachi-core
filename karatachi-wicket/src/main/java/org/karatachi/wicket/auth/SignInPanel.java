@@ -20,7 +20,6 @@ public class SignInPanel extends Panel {
 
         private String username = "";
         private String password = "";
-        private boolean rememberMe = true;
 
         public SignInForm(String id) {
             super(id, "feedback");
@@ -28,8 +27,7 @@ public class SignInPanel extends Panel {
 
         @Override
         protected void init(boolean confirm) {
-            add(new TextField<String>("username").setRequired(true).setPersistent(
-                    true));
+            add(new TextField<String>("username").setRequired(true));
         }
 
         @Override
@@ -39,13 +37,8 @@ public class SignInPanel extends Panel {
             parameters.put("password", password);
 
             if (AuthenticatedWebSession.getSession().authenticate(parameters)) {
-                if (!rememberMe) {
-                    getPage().removePersistedFormData(SignInForm.class, true);
-                }
-
-                if (!continueToOriginalDestination()) {
-                    setResponsePage(getApplication().getHomePage());
-                }
+                continueToOriginalDestination();
+                setResponsePage(getApplication().getHomePage());
             } else {
                 error(getLocalizer().getString("signInFailed", this));
             }

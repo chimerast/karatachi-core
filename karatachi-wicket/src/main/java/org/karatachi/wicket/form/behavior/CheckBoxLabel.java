@@ -1,9 +1,9 @@
 package org.karatachi.wicket.form.behavior;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 
-public class CheckBoxLabel extends AbstractBehavior {
+public class CheckBoxLabel extends Behavior {
     private static final long serialVersionUID = 1L;
 
     private String label;
@@ -18,7 +18,7 @@ public class CheckBoxLabel extends AbstractBehavior {
     }
 
     @Override
-    public void onRendered(Component component) {
+    public void afterRender(Component component) {
         String format = " <label for=\"%s\" style=\"%s\">%s</label>";
         component.getResponse().write(
                 String.format(format, component.getMarkupId(),

@@ -1,25 +1,28 @@
 package org.karatachi.wicket.ajax;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.util.time.Duration;
 import org.karatachi.wicket.script.AjaxLibrariesReference;
 
 public class ProgressBar extends Panel implements IHeaderContributor {
     private static final long serialVersionUID = 1L;
 
-    private static final ResourceReference CSS =
-            new ResourceReference(ProgressBar.class, "karatachi-progress.css");
+    private static final ResourceReference CSS = new CssResourceReference(
+            ProgressBar.class, "karatachi-progress.css");
 
     private final int width;
 
@@ -35,17 +38,17 @@ public class ProgressBar extends Panel implements IHeaderContributor {
 
         this.width = width;
 
-        add(new AttributeModifier("style", true, new Model<String>(
-                String.format("width: %dpx", this.width))));
+        add(new AttributeModifier("style", new Model<String>(String.format(
+                "width: %dpx", this.width))));
         add(new AjaxSelfUpdatingTimerBehavior(Duration.ONE_SECOND) {
             private static final long serialVersionUID = 1L;
 
             @Override
             protected void onPostProcessTarget(AjaxRequestTarget target) {
-                target.prependJavascript(String.format(
+                target.prependJavaScript(String.format(
                         "bar_%1$s_old = jQuery('#%1$s').width();",
                         bar.getMarkupId()));
-                target.appendJavascript(String.format(
+                target.appendJavaScript(String.format(
                         "bar_%1$s_new = jQuery('#%1$s').width();"
                                 + "jQuery('#%1$s').width(bar_%1$s_old);"
                                 + "jQuery('#%1$s').animate({width: bar_%1$s_new + 'px'}, 500, 'easeInOutQuart');",
@@ -56,8 +59,8 @@ public class ProgressBar extends Panel implements IHeaderContributor {
 
         bar = new WebMarkupContainer("bar");
         bar.setOutputMarkupId(true);
-        bar.add(new AttributeModifier("style", true, new PropertyModel<String>(
-                this, "barStyle")));
+        bar.add(new AttributeModifier("style", new PropertyModel<String>(this,
+                "barStyle")));
         add(bar);
 
         label = new Label("label", new PropertyModel<String>(this, "label"));
@@ -87,9 +90,10 @@ public class ProgressBar extends Panel implements IHeaderContributor {
     protected void onProcessTarget(AjaxRequestTarget target) {
     }
 
+    @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderCSSReference(CSS);
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery);
-        response.renderJavascriptReference(AjaxLibrariesReference.jquery_easing);
+        response.render(CssHeaderItem.forReference(CSS));
+        response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery));
+        response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_easing));
     }
 }

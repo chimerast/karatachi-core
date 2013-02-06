@@ -61,7 +61,7 @@ public class CheckTreePanel<T extends Serializable & Comparable<? super T>>
                                         return true;
                                     }
                                 });
-                                target.addComponent(container);
+                                target.add(container);
                             }
                             CheckTreePanel.this.onUpdate(target);
                         }
@@ -79,10 +79,10 @@ public class CheckTreePanel<T extends Serializable & Comparable<? super T>>
                             if (!node.isLeaf()) {
                                 node.setOpen(!node.isOpen());
                                 container.setVisible(node.isOpen());
-                                target.addComponent(container);
+                                target.add(container);
                             } else {
                                 node.setCheck(!node.isCheck());
-                                target.addComponent(check);
+                                target.add(check);
                                 CheckTreePanel.this.onUpdate(target);
                             }
                         }

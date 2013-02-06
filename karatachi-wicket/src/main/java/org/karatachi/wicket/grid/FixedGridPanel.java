@@ -4,18 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.Session;
+import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.markup.head.CssReferenceHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.karatachi.wicket.flex.FlexComponent;
 import org.karatachi.wicket.grid.FixedGrid.Position;
 import org.karatachi.wicket.script.AjaxLibrariesReference;
@@ -23,16 +28,16 @@ import org.karatachi.wicket.script.AjaxLibrariesReference;
 public class FixedGridPanel extends Panel implements IHeaderContributor {
     private static final long serialVersionUID = 1L;
 
-    private static final ResourceReference CSS = new ResourceReference(
+    private static final ResourceReference CSS = new CssResourceReference(
             FixedGridPanel.class, "karatachi-fixedgrid.css");
-    private static final JavascriptResourceReference SCRIPT =
-            new JavascriptResourceReference(FixedGridPanel.class,
+    private static final ResourceReference SCRIPT =
+            new JavaScriptResourceReference(FixedGridPanel.class,
                     "karatachi-selectablegrid.js");
 
-    private static final ResourceReference OLD_CSS = new ResourceReference(
+    private static final ResourceReference OLD_CSS = new CssResourceReference(
             FixedGridPanel.class, "old-karatachi-grid.css");
-    private static final JavascriptResourceReference OLD_SCRIPT =
-            new JavascriptResourceReference(FixedGridPanel.class,
+    private static final ResourceReference OLD_SCRIPT =
+            new JavaScriptResourceReference(FixedGridPanel.class,
                     "old-karatachi-grid.js");
 
     private final WebMarkupContainer grid_tl;
@@ -142,15 +147,16 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
     protected void onInitialize() {
         super.onInitialize();
 
-        add(new AbstractBehavior() {
+        add(new Behavior() {
             private static final long serialVersionUID = 1L;
 
             @Override
             public void onConfigure(Component component) {
+
                 String userAgent =
-                        ((WebClientInfo) RequestCycle.get().getClientInfo()).getUserAgent();
+                        ((WebClientInfo) Session.get().getClientInfo()).getUserAgent();
                 if (userAgent.contains("Trident/4.0")) {
-                    ((WebRequestCycle) RequestCycle.get()).getWebResponse().setHeader(
+                    ((WebResponse) RequestCycle.get().getResponse()).setHeader(
                             "X-UA-Compatible", "IE=7");
                 }
             }
@@ -161,28 +167,29 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
     public void renderHead(IHeaderResponse response) {
         WebClientInfo info = (WebClientInfo) getSession().getClientInfo();
         if (info.getUserAgent().indexOf("MSIE 6.0") != -1) {
-            response.renderCSSReference(OLD_CSS);
-            response.renderJavascriptReference(AjaxLibrariesReference.prototype);
-            response.renderJavascriptReference(OLD_SCRIPT);
-            response.renderJavascript(
+            response.render(CssReferenceHeaderItem.forReference(OLD_CSS));
+            response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.prototype));
+            response.render(JavaScriptHeaderItem.forReference(OLD_SCRIPT));
+            response.render(JavaScriptHeaderItem.forScript(
                     String.format("var %1$s; var %1$s_pos;", getMarkupId()),
-                    null);
-            response.renderOnDomReadyJavascript(String.format(
+                    null));
+            response.render(OnDomReadyHeaderItem.forScript(String.format(
                     "%s = new KaratachiGrid('%s', '%s', '%s', '%s', '%s', %d)",
                     getMarkupId(), getMarkupId(), grid_br.getMarkupId(),
                     grid_tl.getMarkupId(), grid_bl.getMarkupId(),
-                    grid_tr.getMarkupId(), alignCol));
+                    grid_tr.getMarkupId(), alignCol)));
         } else {
-            response.renderCSSReference(CSS);
-            response.renderJavascriptReference(AjaxLibrariesReference.jquery);
-            response.renderJavascriptReference(AjaxLibrariesReference.jquery_textselection);
-            response.renderJavascriptReference(AjaxLibrariesReference.jquery_zclip);
-            response.renderJavascriptReference(FlexComponent.SWFOBJECT_JS);
-            response.renderJavascriptReference(SCRIPT);
-            response.renderOnDomReadyJavascript(String.format(
+            response.render(CssReferenceHeaderItem.forReference(CSS));
+            response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery));
+            response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_textselection));
+            response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_zclip));
+            response.render(JavaScriptHeaderItem.forReference(FlexComponent.SWFOBJECT_JS));
+            response.render(JavaScriptHeaderItem.forReference(SCRIPT));
+            response.render(OnDomReadyHeaderItem.forScript(String.format(
                     "jQuery('#%s').fixedgrid({ zclip_swf : '%s', align : %d });",
                     getMarkupId(),
-                    urlFor(AjaxLibrariesReference.jquery_zclip_swf), alignCol));
+                    urlFor(AjaxLibrariesReference.jquery_zclip_swf, null),
+                    alignCol)));
         }
     }
 }

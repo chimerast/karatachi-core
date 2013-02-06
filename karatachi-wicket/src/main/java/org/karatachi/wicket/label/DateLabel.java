@@ -45,8 +45,13 @@ public class DateLabel extends Label {
         converter = new DateTimeConverter(dateStyle, timeStyle);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public IConverter getConverter(Class<?> type) {
-        return converter;
+    public <C> IConverter<C> getConverter(Class<C> type) {
+        if (type == Date.class) {
+            return (IConverter<C>) converter;
+        } else {
+            return super.getConverter(type);
+        }
     }
 }

@@ -2,12 +2,13 @@ package org.karatachi.wicket.converter;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.Locale;
 
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
 
-public class DateTimeConverter implements IConverter {
+public class DateTimeConverter implements IConverter<Date> {
     private static final long serialVersionUID = 1L;
 
     private final int dateStyle;
@@ -32,7 +33,7 @@ public class DateTimeConverter implements IConverter {
         }
     }
 
-    public Object convertToObject(String value, Locale locale) {
+    public Date convertToObject(String value, Locale locale) {
         try {
             return getFormatter(locale).parse(value);
         } catch (ParseException e) {
@@ -44,12 +45,7 @@ public class DateTimeConverter implements IConverter {
         }
     }
 
-    public String convertToString(Object value, Locale locale) {
-        if (value instanceof Number) {
-            if (((Number) value).longValue() < 0L) {
-                return "Indefinite";
-            }
-        }
+    public String convertToString(Date value, Locale locale) {
         return getFormatter(locale).format(value);
     }
 }

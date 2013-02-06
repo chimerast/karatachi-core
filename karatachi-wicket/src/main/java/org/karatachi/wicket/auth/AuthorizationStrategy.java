@@ -5,6 +5,7 @@ import java.lang.annotation.Annotation;
 import org.apache.wicket.Component;
 import org.apache.wicket.authorization.Action;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
+import org.apache.wicket.request.component.IRequestableComponent;
 
 public class AuthorizationStrategy<R, A extends Annotation> implements
         IAuthorizationStrategy {
@@ -14,8 +15,9 @@ public class AuthorizationStrategy<R, A extends Annotation> implements
         this.application = application;
     }
 
-    public <T extends Component> boolean isInstantiationAuthorized(
-            final Class<T> componentClass) {
+    @Override
+    public <T extends IRequestableComponent> boolean isInstantiationAuthorized(
+            Class<T> componentClass) {
         boolean authorized = true;
 
         Package componentPackage = componentClass.getPackage();

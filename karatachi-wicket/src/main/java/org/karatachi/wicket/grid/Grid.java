@@ -1,12 +1,13 @@
 package org.karatachi.wicket.grid;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.Loop;
+import org.apache.wicket.markup.html.list.LoopItem;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 
@@ -29,7 +30,7 @@ public class Grid extends Loop {
 
     @Override
     protected void populateItem(LoopItem item) {
-        final int row = item.getIteration() + 1;
+        final int row = item.getIndex() + 1;
 
         item.add(new Loop("cols", new LoadableDetachableModel<Integer>() {
             private static final long serialVersionUID = 1L;
@@ -45,7 +46,7 @@ public class Grid extends Loop {
 
             @Override
             protected void populateItem(LoopItem item) {
-                final int col = item.getIteration() + 1;
+                final int col = item.getIndex() + 1;
 
                 if (joined > 0) {
                     item.setVisible(false);
@@ -57,7 +58,7 @@ public class Grid extends Loop {
                     setCellAttribute(item, row, col,
                             cells.getObject().getCell(row, col));
                     if (cell != null && cell.getColspan() > 1) {
-                        item.add(new SimpleAttributeModifier("colspan",
+                        item.add(new AttributeModifier("colspan",
                                 Integer.toString(cell.getColspan())));
                         joined = cell.getColspan() - 1;
                     }
@@ -68,8 +69,11 @@ public class Grid extends Loop {
                             private static final long serialVersionUID = 1L;
 
                             @Override
-                            protected IAjaxCallDecorator getAjaxCallDecorator() {
-                                return link.getAjaxCallDecorator();
+                            protected void updateAjaxAttributes(
+                                    AjaxRequestAttributes attributes) {
+                                super.updateAjaxAttributes(attributes);
+
+                                link.updateAjaxAttributes(attributes);
                             }
 
                             @Override
@@ -102,12 +106,12 @@ public class Grid extends Loop {
 
         String style = cell.getStyle();
         if (style != null) {
-            component.add(new SimpleAttributeModifier("style", style));
+            component.add(new AttributeModifier("style", style));
         }
 
         String className = cell.getClassName();
         if (className != null) {
-            component.add(new SimpleAttributeModifier("class", className));
+            component.add(new AttributeModifier("class", className));
         }
 
         cell.setupComponent(component);

@@ -65,6 +65,8 @@ public class ProgressDialog extends ModalWindow {
     }
 
     private class ProgressDialogPage extends WebPage {
+        private static final long serialVersionUID = 1L;
+
         private ProgressDialogPage() {
             super(new CompoundPropertyModel<ProgressDialogParams>(params));
 

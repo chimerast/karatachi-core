@@ -19,13 +19,13 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.3.163</version>
+      <version>1.3.170</version>
     </dependency>
 
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.9</version>
     </dependency>
 
     <!--S2JTA,S2Txを使う場合必要 -->

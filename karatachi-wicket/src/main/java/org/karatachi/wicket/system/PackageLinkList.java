@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.parser.XmlTag;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.karatachi.classloader.PackageDir;
 
 public class PackageLinkList extends WebComponent {
@@ -24,8 +24,8 @@ public class PackageLinkList extends WebComponent {
     }
 
     @Override
-    protected void onComponentTagBody(final MarkupStream markupStream,
-            final ComponentTag openTag) {
+    public void onComponentTagBody(MarkupStream markupStream,
+            ComponentTag openTag) {
         StringBuilder sb = new StringBuilder();
         writeTree(sb, (ClassTreeNode) getDefaultModelObject());
         replaceComponentTagBody(markupStream, openTag, sb.toString());
@@ -46,8 +46,7 @@ public class PackageLinkList extends WebComponent {
 
         for (Class<? extends Page> clazz : node.classes) {
             sb.append("<dd>");
-            sb.append(String.format("<a href=\"%s\">", urlFor(
-                    getPage().getPageMap(), clazz, null)));
+            sb.append(String.format("<a href=\"%s\">", urlFor(clazz, null)));
             String className = clazz.getSimpleName();
             if (className.endsWith("Page")) {
                 className = className.substring(0, className.length() - 4);
@@ -70,7 +69,7 @@ public class PackageLinkList extends WebComponent {
     @Override
     protected void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
-        tag.setType(XmlTag.OPEN);
+        tag.setType(XmlTag.TagType.OPEN);
     }
 
     private class ClassTreeNode {

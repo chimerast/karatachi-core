@@ -8,8 +8,8 @@ import org.apache.wicket.markup.html.list.PageableListView;
 public abstract class LazyLoadingList<E> extends AbstractList<E> {
     private PageableListView<E> pageable;
     private boolean initialized;
-    private int offset;
-    private int limit;
+    private long offset;
+    private long limit;
     private int size;
     private List<E> cache;
 
@@ -20,9 +20,9 @@ public abstract class LazyLoadingList<E> extends AbstractList<E> {
     }
 
     private void init() {
-        this.offset = pageable.getCurrentPage() * pageable.getRowsPerPage();
-        this.limit = pageable.getRowsPerPage();
-        this.cache = load(offset, limit);
+        this.offset = pageable.getCurrentPage() * pageable.getItemsPerPage();
+        this.limit = pageable.getItemsPerPage();
+        this.cache = load((int) offset, (int) limit);
         this.initialized = true;
     }
 
@@ -35,7 +35,7 @@ public abstract class LazyLoadingList<E> extends AbstractList<E> {
         if (!initialized) {
             init();
         }
-        return cache.get(index - offset);
+        return cache.get((int) (index - offset));
     }
 
     @Override

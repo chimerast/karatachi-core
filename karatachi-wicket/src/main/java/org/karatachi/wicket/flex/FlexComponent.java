@@ -8,27 +8,30 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Response;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.markup.parser.XmlTag;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.Response;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 public class FlexComponent extends WebMarkupContainer implements
         IHeaderContributor {
     private static final long serialVersionUID = 1L;
 
-    public static final JavascriptResourceReference SWFOBJECT_JS =
-            new JavascriptResourceReference(FlexComponent.class, "swfobject.js");
+    public static final JavaScriptResourceReference SWFOBJECT_JS =
+            new JavaScriptResourceReference(FlexComponent.class, "swfobject.js");
     public static final ResourceReference EXPRESS_INSTALL_SWF =
-            new ResourceReference(FlexComponent.class, "expressInstall.swf");
+            new PackageResourceReference(FlexComponent.class,
+                    "expressInstall.swf");
 
     private String src;
 
@@ -58,7 +61,7 @@ public class FlexComponent extends WebMarkupContainer implements
     public FlexComponent(String id, ResourceReference reference,
             IModel<? extends Map<String, String>> model) {
         super(id, model);
-        commonInit(urlFor(reference).toString());
+        commonInit(urlFor(reference, null).toString());
     }
 
     public FlexComponent(String id, String src,
@@ -78,7 +81,7 @@ public class FlexComponent extends WebMarkupContainer implements
     }
 
     protected String getExpressInstallSwf() {
-        return urlFor(EXPRESS_INSTALL_SWF).toString();
+        return urlFor(EXPRESS_INSTALL_SWF, null).toString();
     }
 
     protected String getUnavailableMessage() {
@@ -99,7 +102,7 @@ public class FlexComponent extends WebMarkupContainer implements
     @Override
     protected final void onComponentTag(ComponentTag tag) {
         super.onComponentTag(tag);
-        tag.setType(XmlTag.OPEN);
+        tag.setType(XmlTag.TagType.OPEN);
         tag.setName("div");
 
         width = tag.getAttribute("width");
@@ -117,7 +120,7 @@ public class FlexComponent extends WebMarkupContainer implements
     }
 
     @Override
-    protected void onComponentTagBody(MarkupStream markupStream,
+    public void onComponentTagBody(MarkupStream markupStream,
             ComponentTag openTag) {
         replaceComponentTagBody(markupStream, openTag, getUnavailableMessage());
     }
@@ -129,14 +132,14 @@ public class FlexComponent extends WebMarkupContainer implements
 
     @Override
     public final void renderHead(IHeaderResponse response) {
-        response.renderJavascriptReference(SWFOBJECT_JS);
+        response.render(JavaScriptHeaderItem.forReference(SWFOBJECT_JS));
     }
 
-    private class FlexAppender extends AbstractBehavior {
+    private class FlexAppender extends Behavior {
         private static final long serialVersionUID = 1L;
 
         @Override
-        public void onRendered(Component component) {
+        public void afterRender(Component component) {
             Response response = component.getResponse();
             response.write("<script type=\"text/javascript\">");
 

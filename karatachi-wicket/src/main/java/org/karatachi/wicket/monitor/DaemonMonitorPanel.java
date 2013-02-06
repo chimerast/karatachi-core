@@ -77,7 +77,7 @@ public class DaemonMonitorPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 getDaemonGroup().upCount();
-                target.addComponent(daemonMonitor);
+                target.add(daemonMonitor);
             }
         }.setVisible(!uniqueDaemon));
         add(new AjaxLink<Void>("downCount") {
@@ -86,7 +86,7 @@ public class DaemonMonitorPanel extends Panel {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 getDaemonGroup().downCount();
-                target.addComponent(daemonMonitor);
+                target.add(daemonMonitor);
             }
         }.setVisible(!uniqueDaemon));
 

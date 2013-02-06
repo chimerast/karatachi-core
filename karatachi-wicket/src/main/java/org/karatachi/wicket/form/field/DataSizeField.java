@@ -16,8 +16,13 @@ public class DataSizeField extends TextField<Long> {
         super(id, model, Long.class);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public IConverter getConverter(Class<?> type) {
-        return new DataSizeConverter();
+    public <C> IConverter<C> getConverter(Class<C> type) {
+        if (type == Number.class) {
+            return (IConverter<C>) new DataSizeConverter();
+        } else {
+            return super.getConverter(type);
+        }
     }
 }

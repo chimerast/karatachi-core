@@ -2,9 +2,9 @@ package org.karatachi.wicket.auth;
 
 import java.util.Map;
 
-import org.apache.wicket.Request;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
 
 public abstract class AuthenticatedWebSession<R> extends WebSession {
     private static final long serialVersionUID = 1L;

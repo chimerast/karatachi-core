@@ -1,25 +1,29 @@
 package org.karatachi.wicket.script;
 
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.head.CssHeaderItem;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.markup.parser.XmlTag;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.CssResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
 public class SyntaxHilighterLabel extends WebComponent implements
         IHeaderContributor {
     private static final long serialVersionUID = 1L;
 
-    public static final JavascriptResourceReference syntaxhighlighter =
-            new JavascriptResourceReference(AjaxLibrariesReference.class,
+    public static final ResourceReference syntaxhighlighter =
+            new JavaScriptResourceReference(AjaxLibrariesReference.class,
                     "syntaxhighlighter/shCore.js");
     public static final ResourceReference clipboard =
-            new ResourceReference(AjaxLibrariesReference.class,
+            new PackageResourceReference(AjaxLibrariesReference.class,
                     "syntaxhighlighter/clipboard.swf");
 
     private final String brush;
@@ -46,7 +50,7 @@ public class SyntaxHilighterLabel extends WebComponent implements
     }
 
     @Override
-    protected void onComponentTagBody(final MarkupStream markupStream,
+    public void onComponentTagBody(final MarkupStream markupStream,
             final ComponentTag openTag) {
         replaceComponentTagBody(markupStream, openTag,
                 getDefaultModelObjectAsString());
@@ -57,24 +61,25 @@ public class SyntaxHilighterLabel extends WebComponent implements
         super.onComponentTag(tag);
         tag.setName("pre");
         tag.put("class", "brush: " + brush.toLowerCase());
-        tag.setType(XmlTag.OPEN);
+        tag.setType(XmlTag.TagType.OPEN);
     }
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.renderJavascriptReference(syntaxhighlighter);
-        response.renderJavascriptReference(new JavascriptResourceReference(
-                AjaxLibrariesReference.class, "syntaxhighlighter/shBrush"
-                        + brush + ".js"), brush);
+        response.render(JavaScriptHeaderItem.forReference(syntaxhighlighter));
+        response.render(JavaScriptHeaderItem.forReference(
+                new JavaScriptResourceReference(AjaxLibrariesReference.class,
+                        "syntaxhighlighter/shBrush" + brush + ".js"), brush));
 
-        response.renderCSSReference(new ResourceReference(
-                AjaxLibrariesReference.class, "syntaxhighlighter/shCore.css"));
-        response.renderCSSReference(new ResourceReference(
+        response.render(CssHeaderItem.forReference(new CssResourceReference(
+                AjaxLibrariesReference.class, "syntaxhighlighter/shCore.css")));
+        response.render(CssHeaderItem.forReference(new CssResourceReference(
                 AjaxLibrariesReference.class, "syntaxhighlighter/shTheme"
-                        + theme + ".css"));
+                        + theme + ".css")));
 
-        response.renderJavascript("SyntaxHighlighter.config.clipboardSwf='"
-                + urlFor(clipboard) + "'; SyntaxHighlighter.all()",
-                "syntaxhilighter-init");
+        response.render(JavaScriptHeaderItem.forScript(
+                "SyntaxHighlighter.config.clipboardSwf='"
+                        + urlFor(clipboard, null)
+                        + "'; SyntaxHighlighter.all()", "syntaxhilighter-init"));
     }
 }

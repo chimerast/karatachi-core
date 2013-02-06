@@ -1,10 +1,10 @@
 package org.karatachi.wicket.grid;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 
 public interface ILinkCell extends ICell {
-    public void onClick(AjaxRequestTarget target);
+    void onClick(AjaxRequestTarget target);
 
-    public IAjaxCallDecorator getAjaxCallDecorator();
+    void updateAjaxAttributes(AjaxRequestAttributes attributes);
 }

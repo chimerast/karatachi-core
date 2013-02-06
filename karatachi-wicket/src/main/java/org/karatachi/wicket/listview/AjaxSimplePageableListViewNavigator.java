@@ -17,11 +17,11 @@ public class AjaxSimplePageableListViewNavigator extends AjaxPagingNavigator {
 
     public String getHeadlineText() {
         PageableListView<?> pageable = (PageableListView<?>) getPageable();
-        int firstListItem =
-                pageable.getCurrentPage() * pageable.getRowsPerPage();
-        int endListItem = pageable.getList().size();
-        if (firstListItem + pageable.getRowsPerPage() < endListItem) {
-            endListItem = firstListItem + pageable.getRowsPerPage();
+        long firstListItem =
+                pageable.getCurrentPage() * pageable.getItemsPerPage();
+        long endListItem = pageable.getList().size();
+        if (firstListItem + pageable.getItemsPerPage() < endListItem) {
+            endListItem = firstListItem + pageable.getItemsPerPage();
         }
 
         if (getLocale().getLanguage().equals("ja")) {
@@ -34,13 +34,7 @@ public class AjaxSimplePageableListViewNavigator extends AjaxPagingNavigator {
     }
 
     @Override
-    protected void onBeforeRender() {
+    protected void onConfigure() {
         setVisible(getPageable().getPageCount() > 1);
-        super.onBeforeRender();
-    }
-
-    @Override
-    protected boolean callOnBeforeRenderIfNotVisible() {
-        return true;
     }
 }

@@ -57,6 +57,8 @@ public class ConfirmDialog extends ModalWindow {
     }
 
     private class ConfirmDialogPage extends WebPage {
+        private static final long serialVersionUID = 1L;
+
         private ConfirmDialogPage() {
             super(new CompoundPropertyModel<MessageDialogParams>(params));
 

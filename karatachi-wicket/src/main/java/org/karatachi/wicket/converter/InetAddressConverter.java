@@ -7,10 +7,10 @@ import java.util.Locale;
 import org.apache.wicket.util.convert.ConversionException;
 import org.apache.wicket.util.convert.IConverter;
 
-public class InetAddressConverter implements IConverter {
+public class InetAddressConverter implements IConverter<InetAddress> {
     private static final long serialVersionUID = 1L;
 
-    public Object convertToObject(String value, Locale locale) {
+    public InetAddress convertToObject(String value, Locale locale) {
         try {
             return InetAddress.getByName(value);
         } catch (UnknownHostException e) {
@@ -19,8 +19,7 @@ public class InetAddressConverter implements IConverter {
         }
     }
 
-    public String convertToString(Object value, Locale locale) {
-        InetAddress i = (InetAddress) value;
-        return i.getHostAddress();
+    public String convertToString(InetAddress value, Locale locale) {
+        return value.getHostAddress();
     }
 }

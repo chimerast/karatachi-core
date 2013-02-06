@@ -4,8 +4,10 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
+import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
@@ -62,6 +64,8 @@ public class InputDialog extends ModalWindow {
     }
 
     private class InputDialogPage extends WebPage implements IHeaderContributor {
+        private static final long serialVersionUID = 1L;
+
         private TextField<String> input;
 
         private InputDialogPage() {
@@ -100,10 +104,11 @@ public class InputDialog extends ModalWindow {
             });
         }
 
+        @Override
         public void renderHead(IHeaderResponse response) {
-            response.renderJavascriptReference(AjaxLibrariesReference.jquery);
-            response.renderOnDomReadyJavascript(String.format(
-                    "jQuery('#%s').focus();", input.getMarkupId()));
+            response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery));
+            response.render(OnDomReadyHeaderItem.forScript(String.format(
+                    "jQuery('#%s').focus();", input.getMarkupId())));
         }
     }
 }

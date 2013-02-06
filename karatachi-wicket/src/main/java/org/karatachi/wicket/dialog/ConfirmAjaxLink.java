@@ -1,7 +1,8 @@
 package org.karatachi.wicket.dialog;
 
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.calldecorator.AjaxPreprocessingCallDecorator;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 
 public abstract class ConfirmAjaxLink<T> extends AjaxLink<T> {
@@ -15,15 +16,16 @@ public abstract class ConfirmAjaxLink<T> extends AjaxLink<T> {
     }
 
     @Override
-    protected IAjaxCallDecorator getAjaxCallDecorator() {
-        return new AjaxPreprocessingCallDecorator(super.getAjaxCallDecorator()) {
+    protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+        super.updateAjaxAttributes(attributes);
+
+        attributes.getAjaxCallListeners().add(new AjaxCallListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public CharSequence preDecorateScript(CharSequence script) {
-                return "if (!confirm('" + message + "')) return false;"
-                        + script;
+            public CharSequence getPrecondition(Component component) {
+                return "return confirm('" + message + "');";
             }
-        };
+        });
     }
 }

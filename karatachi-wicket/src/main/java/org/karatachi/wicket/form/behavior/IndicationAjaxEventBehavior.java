@@ -1,11 +1,11 @@
 package org.karatachi.wicket.form.behavior;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.Response;
 import org.apache.wicket.ajax.AjaxEventBehavior;
-import org.apache.wicket.ajax.IAjaxCallDecorator;
-import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
+import org.apache.wicket.ajax.attributes.AjaxCallListener;
+import org.apache.wicket.ajax.attributes.AjaxRequestAttributes;
+import org.apache.wicket.request.Response;
+import org.apache.wicket.request.resource.ResourceReference;
 
 public abstract class IndicationAjaxEventBehavior extends AjaxEventBehavior {
     private static final long serialVersionUID = 1L;
@@ -24,17 +24,18 @@ public abstract class IndicationAjaxEventBehavior extends AjaxEventBehavior {
     }
 
     @Override
-    protected IAjaxCallDecorator getAjaxCallDecorator() {
-        return new AjaxCallDecorator() {
+    protected void updateAjaxAttributes(AjaxRequestAttributes attributes) {
+        super.updateAjaxAttributes(attributes);
+
+        attributes.getAjaxCallListeners().add(new AjaxCallListener() {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public CharSequence decorateScript(CharSequence script) {
+            public CharSequence getBeforeHandler(Component component) {
                 return String.format("showIndicator('%s', '%s');", markupId,
-                        markupId + "_indicator")
-                        + super.decorateScript(script);
+                        markupId + "_indicator");
             }
-        };
+        });
     }
 
     @Override
@@ -45,7 +46,7 @@ public abstract class IndicationAjaxEventBehavior extends AjaxEventBehavior {
                 markupId + "_indicator"));
         response.write(String.format(
                 "  <tr><td style=\"text-align: center; vertical-align: middle; border: none 0px transparent\"><img src=\"%s\" /></td></tr>",
-                getComponent().urlFor(indicator)));
+                getComponent().urlFor(indicator, null)));
         response.write("</table>");
     }
 }

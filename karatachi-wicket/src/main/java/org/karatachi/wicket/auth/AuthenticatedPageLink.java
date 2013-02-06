@@ -1,9 +1,9 @@
 package org.karatachi.wicket.auth;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class AuthenticatedPageLink extends BookmarkablePageLink<Void> {
     private static final long serialVersionUID = 1L;

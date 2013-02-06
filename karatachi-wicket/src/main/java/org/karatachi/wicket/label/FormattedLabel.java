@@ -30,9 +30,9 @@ public class FormattedLabel extends Label {
     }
 
     @Override
-    protected void onComponentTagBody(MarkupStream markupStream,
+    public void onComponentTagBody(MarkupStream markupStream,
             ComponentTag openTag) {
-        replaceComponentTagBody(markupStream, openTag, String.format(format,
-                getDefaultModelObject()));
+        replaceComponentTagBody(markupStream, openTag,
+                String.format(format, getDefaultModelObject()));
     }
 }

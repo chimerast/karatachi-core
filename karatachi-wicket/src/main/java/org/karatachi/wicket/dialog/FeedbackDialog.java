@@ -53,6 +53,8 @@ public class FeedbackDialog extends ModalWindow {
     }
 
     private class FeedbackDialogPage extends WebPage {
+        private static final long serialVersionUID = 1L;
+
         private FeedbackDialogPage() {
             super(new CompoundPropertyModel<MessageDialogParams>(params));
 

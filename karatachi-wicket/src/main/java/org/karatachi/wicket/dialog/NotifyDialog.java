@@ -56,6 +56,8 @@ public class NotifyDialog extends ModalWindow {
     }
 
     private class NotifyDialogPage extends WebPage {
+        private static final long serialVersionUID = 1L;
+
         private NotifyDialogPage() {
             super(new CompoundPropertyModel<MessageDialogParams>(params));
 

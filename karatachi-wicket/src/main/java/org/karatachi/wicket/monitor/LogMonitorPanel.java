@@ -31,7 +31,7 @@ public class LogMonitorPanel extends Panel {
             addTab(tabs, log, lines);
         }
 
-        add(new TabbedPanel("tabpanel", tabs));
+        add(new TabbedPanel<ITab>("tabpanel", tabs));
     }
 
     public String getTabName(String filename) {

@@ -2,6 +2,7 @@ package org.karatachi.wicket.auto;
 
 import java.io.Serializable;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
@@ -35,10 +36,10 @@ public class AutoResolveWebMarkupContainer<T extends Serializable> extends
     protected void init() {
     }
 
-    public boolean resolve(MarkupContainer container,
+    public Component resolve(MarkupContainer container,
             MarkupStream markupStream, ComponentTag tag) {
         if (tag.isAutoComponentTag()) {
-            return false;
+            return null;
         }
 
         String tagId = tag.getId();
@@ -55,12 +56,10 @@ public class AutoResolveWebMarkupContainer<T extends Serializable> extends
                 ComponentResolver.getResolver(wicketType, type);
 
         if (resolver != null) {
-            return container.autoAdd(resolver.createViewComponent(tagId),
-                    markupStream);
+            return resolver.createViewComponent(tagId);
         } else {
-            return container.autoAdd(
-                    ComponentResolver.getDefaultResolver().createViewComponent(
-                            tagId), markupStream);
+            return ComponentResolver.getDefaultResolver().createViewComponent(
+                    tagId);
         }
     }
 
