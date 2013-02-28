@@ -43,7 +43,6 @@ public abstract class ProgressDialogParams implements Runnable {
 
     public void setProgress(double progress) throws InterruptedException {
         this.progress = progress;
-        System.out.println(this);
         if (Thread.interrupted()) {
             throw new InterruptedException();
         }
