@@ -9,17 +9,22 @@ import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.h2.tools.RunScript;
 import org.karatachi.daemon.monitor.MBeanMonitorDaemon;
 import org.karatachi.example.component.SourceViewPage;
 import org.karatachi.example.web.net.DownloadTestPage;
+import org.karatachi.wicket.core.NoSerializePageManagerProvider;
 import org.karatachi.wicket.system.PackageMounter;
 import org.seasar.framework.container.SingletonS2Container;
-import org.seasar.wicket.S2WebApplication;
 
-public class ExampleApplication extends S2WebApplication {
+public class ExampleApplication extends WebApplication {
     @Override
     protected void init() {
+
+        setPageManagerProvider(new NoSerializePageManagerProvider(this,
+                getPageManagerContext(), 20));
+
         getRequestCycleSettings().setResponseRequestEncoding("UTF-8");
         getRequestCycleSettings().setGatherExtendedBrowserInfo(true);
 
@@ -28,12 +33,12 @@ public class ExampleApplication extends S2WebApplication {
         getDebugSettings().setAjaxDebugModeEnabled(false);
 
         PackageMounter.mount("org.karatachi.example.web");
-        mountBookmarkablePage("/source", SourceViewPage.class);
-        mountBookmarkablePage("/env", DownloadTestPage.class);
+        mountPage("/source", SourceViewPage.class);
+        mountPage("/env", DownloadTestPage.class);
 
         initializeDatabase();
 
-        setupMonitor();
+        // setupMonitor();
     }
 
     private void initializeDatabase() {
@@ -56,7 +61,6 @@ public class ExampleApplication extends S2WebApplication {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private void setupMonitor() {
         // MBeanDaemon(<デーモン名>, <DBテーブル名>)
         // DBのテーブルはinit.sqlを参照

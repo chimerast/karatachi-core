@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.karatachi.example.web.WebBasePage;
 import org.karatachi.system.SystemInfo;
 import org.karatachi.wicket.chart.MonitorChartImage;
@@ -18,7 +18,7 @@ public class JVMMonitorPage extends WebBasePage {
     public JVMMonitorPage(PageParameters parameters) {
         super(parameters);
 
-        int level = parameters.getInt("level", 1);
+        int level = parameters.get("level").toInt(1);
 
         String[] heap =
                 new String[] { "HeapMemoryUsage.init", "HeapMemoryUsage.used",
@@ -37,15 +37,15 @@ public class JVMMonitorPage extends WebBasePage {
                         "currentThreadCount", "maxThreads", "activeSessions" };
 
         add(new BookmarkablePageLink<Void>("level0", JVMMonitorPage.class,
-                new PageParameters("level=0")));
+                new PageParameters().add("level", 0)));
         add(new BookmarkablePageLink<Void>("level1", JVMMonitorPage.class,
-                new PageParameters("level=1")));
+                new PageParameters().add("level", 1)));
         add(new BookmarkablePageLink<Void>("level2", JVMMonitorPage.class,
-                new PageParameters("level=2")));
+                new PageParameters().add("level", 2)));
         add(new BookmarkablePageLink<Void>("level3", JVMMonitorPage.class,
-                new PageParameters("level=3")));
+                new PageParameters().add("level", 3)));
         add(new BookmarkablePageLink<Void>("level4", JVMMonitorPage.class,
-                new PageParameters("level=4")));
+                new PageParameters().add("level", 4)));
 
         add(new LocalMBeanChartImage("chart1", SystemInfo.HOST_NAME, heap,
                 level));

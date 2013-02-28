@@ -77,6 +77,7 @@ public class ProgressDialog extends ModalWindow {
 
                 @Override
                 protected void onProcessTarget(AjaxRequestTarget target) {
+                    System.out.println("dialog: " + params);
                     if (params.terminated) {
                         ProgressDialog.this.close(target);
                     }

@@ -2,12 +2,12 @@ package org.karatachi.example.component;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.wicket.Application;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.karatachi.classloader.PackageDir;
 import org.karatachi.example.web.WebBasePage;
 import org.karatachi.wicket.script.SyntaxHilighterLabel;
@@ -21,9 +21,9 @@ public class SourceViewPage extends WebBasePage {
         remove("packages");
         remove("source");
 
-        if (parameters.containsKey("class")) {
+        if (parameters.getNamedKeys().contains("class")) {
             try {
-                clazz = Class.forName(parameters.getString("class"));
+                clazz = Class.forName(parameters.get("class").toString());
             } catch (ClassNotFoundException ignore) {
             }
         }

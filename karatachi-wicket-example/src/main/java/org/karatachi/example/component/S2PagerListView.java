@@ -8,7 +8,6 @@ import org.karatachi.wicket.auto.AutoResolvePageableListView;
 import org.karatachi.wicket.listview.LazyLoadingList;
 import org.seasar.dao.pager.DefaultPagerCondition;
 import org.seasar.dao.pager.PagerCondition;
-import org.seasar.wicket.S2WicketFilter;
 
 public abstract class S2PagerListView<E> extends AutoResolvePageableListView<E> {
     private static final long serialVersionUID = 1L;
@@ -22,7 +21,7 @@ public abstract class S2PagerListView<E> extends AutoResolvePageableListView<E> 
                 throw new IllegalStateException();
             }
         }, rowsPerPage);
-        S2WicketFilter filter;
+
         setModel(new LoadableDetachableModel<List<E>>() {
             private static final long serialVersionUID = 1L;
 

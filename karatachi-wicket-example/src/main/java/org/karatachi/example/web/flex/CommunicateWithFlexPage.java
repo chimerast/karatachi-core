@@ -1,13 +1,16 @@
 package org.karatachi.example.web.flex;
 
-import org.apache.wicket.ResourceReference;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.resource.PackageResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.karatachi.example.web.WebBasePage;
 import org.karatachi.wicket.auto.SelfResolveForm;
 import org.karatachi.wicket.flex.FlexComponent;
@@ -15,8 +18,9 @@ import org.karatachi.wicket.flex.FlexComponent;
 public class CommunicateWithFlexPage extends WebBasePage {
     private static final long serialVersionUID = 1L;
 
-    private static final ResourceReference SWF_FILE = new ResourceReference(
-            CommunicateWithFlexPage.class, "CommunicateWithFlex.swf");
+    private static final ResourceReference SWF_FILE =
+            new PackageResourceReference(CommunicateWithFlexPage.class,
+                    "CommunicateWithFlex.swf");
 
     // swfobject.jsをラップしたコンポーネント
     private FlexComponent swf;
@@ -50,7 +54,7 @@ public class CommunicateWithFlexPage extends WebBasePage {
                 protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                     // FlexのcallAlert()をJavascript経由で呼び出す
                     // Wicket.$()はprototype.jsやjQueryの$()とほぼ同等
-                    target.appendJavascript(String.format(
+                    target.appendJavaScript(String.format(
                             "Wicket.$('%s').callAlert('%s')",
                             swf.getSwfMarkupId(), message));
                 }
@@ -65,24 +69,31 @@ public class CommunicateWithFlexPage extends WebBasePage {
         private static final long serialVersionUID = 1L;
 
         @Override
-        public void renderHead(IHeaderResponse response) {
-            super.renderHead(response);
+        public void renderHead(Component component, IHeaderResponse response) {
+            super.renderHead(component, response);
 
             // addMessage()関数をブラウザに登録
-            String pattern =
-                    "function addMessage(value) {"
-                            + "wicketAjaxGet('%s&params='+encodeURIComponent(value));"
-                            + "}";
-            response.renderJavascript(String.format(pattern, getCallbackUrl()),
-                    "swf-addmessage");
+            StringBuilder pattern = new StringBuilder();
+            pattern.append("function addMessage(value) {");
+            pattern.append("  var attributes = %s;");
+            pattern.append("  attributes.ep = {'params': value};");
+            pattern.append("  Wicket.Ajax.get(attributes);");
+            pattern.append("}");
+
+            response.render(JavaScriptHeaderItem.forScript(String.format(
+                    pattern.toString(), renderAjaxAttributes(component)),
+                    "swf-addmessage"));
         }
 
         @Override
         protected void respond(AjaxRequestTarget target) {
             // FlexからaddMessage()が呼ばれるとここが呼ばれる
             // パラメータでメッセージを受け取りメッセージログを更新
-            log = log + getRequest().getParameter("params") + "\n";
-            target.addComponent(get("log"));
+            String params =
+                    getRequest().getRequestParameters().getParameterValue(
+                            "params").toString();
+            log = log + params + "\n";
+            target.add(get("log"));
         }
     }
 }

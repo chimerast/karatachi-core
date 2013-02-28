@@ -1,23 +1,29 @@
 package org.karatachi.wicket.monitor.jmx;
 
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
+import java.util.Arrays;
+import java.util.List;
 
-import org.apache.wicket.MarkupContainer;
+import javax.swing.tree.DefaultTreeModel;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.wicket.Component;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.NoRecordsToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.tree.TableTree;
-import org.apache.wicket.extensions.markup.html.tree.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.tree.table.TreeColumn;
+import org.apache.wicket.extensions.markup.html.repeater.tree.theme.WindowsTheme;
+import org.apache.wicket.extensions.markup.html.repeater.util.TreeModelProvider;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 import org.karatachi.jmx.MBeanNode;
 import org.karatachi.jmx.MBeanServerWrapper;
 import org.karatachi.jmx.MBeanTree;
-import org.karatachi.jmx.MBeanTree.AttributeNode;
-import org.karatachi.jmx.MBeanTree.BeanNode;
-import org.karatachi.jmx.MBeanTree.DomainNode;
-import org.karatachi.jmx.MBeanTree.OperationNode;
 
-public class MBeanTreeTable extends TableTree {
+public class MBeanTreeTable extends TableTree<MBeanNode, Void> {
     private static final long serialVersionUID = 1L;
 
     private static final ResourceReference ICON_DOMAIN =
@@ -32,38 +38,65 @@ public class MBeanTreeTable extends TableTree {
     private static final ResourceReference ICON_OPERATION =
             new PackageResourceReference(MBeanTreeTable.class, "operation.png");
 
+    private static final List<AbstractColumn<MBeanNode, Void>> COLUMNS =
+            Arrays.asList(new TreeColumn<MBeanNode, Void>(Model.of("Name")),
+                    new ValueColumn());
+
     public MBeanTreeTable(String id) {
-        super(id, new IColumn[] { new NameColumn(), new ValueColumn() });
-        setDefaultModel(new Model<DefaultTreeModel>(new DefaultTreeModel(
-                new MBeanTree(new MBeanServerWrapper()))));
-        setRootLess(true);
-    }
+        super(id, COLUMNS, new TreeModelProvider<MBeanNode>(
+                new DefaultTreeModel(new MBeanTree(new MBeanServerWrapper())),
+                false) {
+            private static final long serialVersionUID = 1L;
 
-    @Override
-    protected MarkupContainer newNodeLink(MarkupContainer parent, String id,
-            TreeNode node) {
-        MarkupContainer ret = super.newNodeLink(parent, id, node);
-        ret.add(new SimpleAttributeModifier("title",
-                ((MBeanNode) node).getName()));
-        return ret;
-    }
-
-    @Override
-    protected ResourceReference getNodeIcon(TreeNode node) {
-        if (node instanceof DomainNode) {
-            return ICON_DOMAIN;
-        } else if (node instanceof BeanNode) {
-            return ICON_BEAN;
-        } else if (node instanceof AttributeNode) {
-            if (((AttributeNode) node).isEditable()) {
-                return ICON_ATTRIBUTE_EDIT;
-            } else {
-                return ICON_ATTRIBUTE;
+            @Override
+            public IModel<MBeanNode> model(MBeanNode object) {
+                return Model.of(object);
             }
-        } else if (node instanceof OperationNode) {
-            return ICON_OPERATION;
-        } else {
-            return super.getNodeIcon(node);
-        }
+        }, Integer.MAX_VALUE);
+
+        add(new WindowsTheme());
+
+        getTable().addTopToolbar(new HeadersToolbar<Void>(getTable(), null));
+        getTable().addBottomToolbar(new NoRecordsToolbar(getTable()));
     }
+
+    @Override
+    protected Component newContentComponent(String id, IModel<MBeanNode> model) {
+        String name;
+        try {
+            name = model.getObject().getName();
+        } catch (Exception e) {
+            name = "N/A";
+        }
+        return new Label(id, StringUtils.abbreviate(name, 40));
+    }
+    /*
+        @Override
+        protected MarkupContainer newNodeLink(MarkupContainer parent, String id,
+                TreeNode node) {
+            MarkupContainer ret = super.newNodeLink(parent, id, node);
+            ret.add(new SimpleAttributeModifier("title",
+                    ((MBeanNode) node).getName()));
+            return ret;
+        }
+
+        @Override
+        protected ResourceReference getNodeIcon(TreeNode node) {
+            if (node instanceof DomainNode) {
+                return ICON_DOMAIN;
+            } else if (node instanceof BeanNode) {
+                return ICON_BEAN;
+            } else if (node instanceof AttributeNode) {
+                if (((AttributeNode) node).isEditable()) {
+                    return ICON_ATTRIBUTE_EDIT;
+                } else {
+                    return ICON_ATTRIBUTE;
+                }
+            } else if (node instanceof OperationNode) {
+                return ICON_OPERATION;
+            } else {
+                return super.getNodeIcon(node);
+            }
+        }
+      */
 }

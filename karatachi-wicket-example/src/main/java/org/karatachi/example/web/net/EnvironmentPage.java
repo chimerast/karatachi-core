@@ -8,12 +8,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
+import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.apache.wicket.util.resource.AbstractStringResourceStream;
 import org.apache.wicket.util.resource.IResourceStream;
 import org.karatachi.example.web.WebBasePage;
@@ -27,7 +27,7 @@ public class EnvironmentPage extends WebBasePage {
     public EnvironmentPage() {
         // HTTPヘッダ
         final HttpServletRequest request =
-                ((WebRequest) getRequest()).getHttpServletRequest();
+                (HttpServletRequest) getRequest().getContainerRequest();
 
         add(new AutoResolveListView<String>(
                 "httpHeader",
@@ -44,7 +44,7 @@ public class EnvironmentPage extends WebBasePage {
 
         // Javascriptで取得したクライアント情報
         final Map<String, Object> clientInfo =
-                BeanUtil.createProperties(((WebClientInfo) getWebRequestCycle().getClientInfo()).getProperties());
+                BeanUtil.createProperties(((WebClientInfo) Session.get().getClientInfo()).getProperties());
         final List<String> clientInfoKeys =
                 new ArrayList<String>(clientInfo.keySet());
         Collections.sort(clientInfoKeys);
@@ -85,8 +85,8 @@ public class EnvironmentPage extends WebBasePage {
                                 return ret.toString();
                             }
                         };
-                getRequestCycle().setRequestTarget(
-                        new ResourceStreamRequestTarget(rs, "environment.tsv"));
+                getRequestCycle().scheduleRequestHandlerAfterCurrent(
+                        new ResourceStreamRequestHandler(rs, "environment.tsv"));
             }
         });
     }

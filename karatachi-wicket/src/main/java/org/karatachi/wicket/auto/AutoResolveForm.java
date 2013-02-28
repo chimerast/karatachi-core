@@ -72,12 +72,12 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
     }
 
     public AutoResolveForm(String id, String feedbackId, T object) {
-        super(id, new CompoundPropertyModel<T>(object));
+        super(id, object != null ? new CompoundPropertyModel<T>(object) : null);
         commonInit(feedbackId);
     }
 
     public AutoResolveForm(String id, String feedbackId, IModel<T> model) {
-        super(id, new CompoundPropertyModel<T>(model));
+        super(id, model != null ? new CompoundPropertyModel<T>(model) : null);
         commonInit(feedbackId);
     }
 
@@ -223,6 +223,8 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
             customizer.component(formcomponent, container, markupStream);
         }
 
+        addForRender(formcomponent, container, markupStream);
+
         return formcomponent;
     }
 
@@ -232,6 +234,13 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         if (formComponentCustomizer != null) {
             visitChildren(FormComponent.class, formComponentCustomizer);
         }
+    }
+
+    private void addForRender(Component component, MarkupContainer container,
+            MarkupStream markupStream) {
+        setAuto(true);
+        container.internalAdd(component);
+        setAuto(false);
     }
 
     @Override

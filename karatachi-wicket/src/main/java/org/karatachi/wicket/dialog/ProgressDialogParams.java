@@ -1,13 +1,19 @@
 package org.karatachi.wicket.dialog;
 
-import java.io.Serializable;
-
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class ProgressDialogParams implements Runnable, Serializable {
-    private static final long serialVersionUID = 1L;
+/**
+ * 裏でThreadを起動するダイアログのためのパラメータ。
+ * リクエスト間でオブジェクトを共有する必要があるため意図的にSerializableを外してある。
+ * このクラスを使用する際は、Application.init()でPageManagerProviderに
+ * {@link org.karatachi.wicket.core.NoSerializePageManagerProvider}
+ * を設定し、シリアライズを行わないようにする必要がある。
+ * 
+ * @see org.karatachi.wicket.core.NoSerializePageManagerProvider
+ */
+public abstract class ProgressDialogParams implements Runnable {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -37,6 +43,7 @@ public abstract class ProgressDialogParams implements Runnable, Serializable {
 
     public void setProgress(double progress) throws InterruptedException {
         this.progress = progress;
+        System.out.println(this);
         if (Thread.interrupted()) {
             throw new InterruptedException();
         }

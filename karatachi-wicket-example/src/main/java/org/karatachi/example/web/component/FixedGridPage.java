@@ -29,7 +29,7 @@ public class FixedGridPage extends WebBasePage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 rows++;
-                target.addComponent(grid);
+                target.add(grid);
             }
         });
     }

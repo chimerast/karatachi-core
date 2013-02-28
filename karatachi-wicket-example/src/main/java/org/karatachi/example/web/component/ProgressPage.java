@@ -29,7 +29,6 @@ public class ProgressPage extends WebBasePage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 dialog.show(target, new ProgressDialogParams("処理を行っています。") {
-                    private static final long serialVersionUID = 1L;
 
                     @Override
                     public void execute() throws InterruptedException {

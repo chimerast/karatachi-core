@@ -46,11 +46,11 @@ public class ProgressBar extends Panel implements IHeaderContributor {
             @Override
             protected void onPostProcessTarget(AjaxRequestTarget target) {
                 target.prependJavaScript(String.format(
-                        "bar_%1$s_old = jQuery('#%1$s').width();",
+                        "jQuery.data(document.body, 'old_width_%1$s', jQuery('#%1$s').width());",
                         bar.getMarkupId()));
                 target.appendJavaScript(String.format(
-                        "bar_%1$s_new = jQuery('#%1$s').width();"
-                                + "jQuery('#%1$s').width(bar_%1$s_old);"
+                        "var bar_%1$s_new = jQuery('#%1$s').width();"
+                                + "jQuery('#%1$s').width(jQuery.data(document.body, 'old_width_%1$s'));"
                                 + "jQuery('#%1$s').animate({width: bar_%1$s_new + 'px'}, 500, 'easeInOutQuart');",
                         bar.getMarkupId()));
                 onProcessTarget(target);

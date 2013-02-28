@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
@@ -105,6 +106,11 @@ public class DateField extends FormComponentPanel<Date> {
             year.setVisible(false);
             month.setVisible(false);
             break;
+        }
+
+        System.out.println(this);
+        for (Component c : visitChildren()) {
+            System.out.println(c.getId());
         }
     }
 

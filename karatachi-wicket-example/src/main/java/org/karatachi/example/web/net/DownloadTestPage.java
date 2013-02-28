@@ -8,15 +8,15 @@ import java.util.TreeMap;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.core.util.resource.PackageResourceStream;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.apache.wicket.request.target.resource.ResourceStreamRequestTarget;
-import org.apache.wicket.util.resource.PackageResourceStream;
+import org.apache.wicket.request.handler.resource.ResourceStreamRequestHandler;
 import org.karatachi.mail.Mailer;
 import org.karatachi.wicket.dialog.ProgressDialog;
 import org.karatachi.wicket.dialog.ProgressDialogParams;
@@ -28,7 +28,7 @@ public class DownloadTestPage extends WebPage {
     private ProgressDialog progress;
 
     public DownloadTestPage() {
-        getWebRequestCycle().getClientInfo();
+        Session.get().getClientInfo();
 
         add(progress = new ProgressDialog("progress"));
         add(new FeedbackPanel("feedback"));
@@ -59,8 +59,8 @@ public class DownloadTestPage extends WebPage {
                 PackageResourceStream rs =
                         new PackageResourceStream(DownloadTestPage.class,
                                 "test.pdf");
-                getRequestCycle().setRequestTarget(
-                        new ResourceStreamRequestTarget(rs, "test.pdf"));
+                getRequestCycle().scheduleRequestHandlerAfterCurrent(
+                        new ResourceStreamRequestHandler(rs, "test.pdf"));
             }
         });
 
@@ -88,8 +88,6 @@ public class DownloadTestPage extends WebPage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 progress.show(target, new ProgressDialogParams() {
-                    private static final long serialVersionUID = 1L;
-
                     @Override
                     public void execute() throws InterruptedException {
                         for (int i = 0; i < 10; ++i) {
@@ -112,8 +110,6 @@ public class DownloadTestPage extends WebPage {
             @Override
             public void onClick(AjaxRequestTarget target) {
                 progress.show(target, new ProgressDialogParams() {
-                    private static final long serialVersionUID = 1L;
-
                     @Override
                     public void execute() throws InterruptedException {
                         for (int i = 0; i < 10; ++i) {
@@ -134,10 +130,10 @@ public class DownloadTestPage extends WebPage {
     @SuppressWarnings("unchecked")
     private String getClientInfo() {
         HttpServletRequest request =
-                ((WebRequest) getRequest()).getHttpServletRequest();
+                (HttpServletRequest) getRequest().getContainerRequest();
         Map<String, Object> clientInfo =
                 new TreeMap<String, Object>(
-                        BeanUtil.createProperties(((WebClientInfo) getWebRequestCycle().getClientInfo()).getProperties()));
+                        BeanUtil.createProperties(((WebClientInfo) Session.get().getClientInfo()).getProperties()));
         StringBuilder ret = new StringBuilder();
         ret.append("* Header Info\n");
         for (String key : Collections.list((Enumeration<String>) request.getHeaderNames())) {
