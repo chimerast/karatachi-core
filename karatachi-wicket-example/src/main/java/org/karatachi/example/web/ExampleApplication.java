@@ -38,7 +38,7 @@ public class ExampleApplication extends WebApplication {
 
         initializeDatabase();
 
-        // setupMonitor();
+        setupMonitor();
     }
 
     private void initializeDatabase() {

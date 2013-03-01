@@ -36,6 +36,6 @@ public class DownloadDataDirectPage extends WebPage {
             }
         };
 
-        getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+        getRequestCycle().replaceAllRequestHandlers(handler);
     }
 }

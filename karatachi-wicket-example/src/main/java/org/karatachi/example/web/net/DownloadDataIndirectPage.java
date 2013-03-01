@@ -28,6 +28,6 @@ public class DownloadDataIndirectPage extends WebPage {
             }
         };
 
-        getRequestCycle().scheduleRequestHandlerAfterCurrent(handler);
+        getRequestCycle().replaceAllRequestHandlers(handler);
     }
 }

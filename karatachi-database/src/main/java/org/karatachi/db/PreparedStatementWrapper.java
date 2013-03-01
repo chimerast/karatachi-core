@@ -55,8 +55,7 @@ public final class PreparedStatementWrapper implements PreparedStatement {
     private void setInterruptable() throws SQLException {
         if (Thread.currentThread() instanceof AcceptInterruptable) {
             try {
-                ((AcceptInterruptable) Thread.currentThread())
-                        .setInterruptable(interruptable);
+                ((AcceptInterruptable) Thread.currentThread()).setInterruptable(interruptable);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new SQLException("Thread Interrupted", e);
@@ -75,26 +74,31 @@ public final class PreparedStatementWrapper implements PreparedStatement {
             StringBuffer sb = new StringBuffer(sql);
             for (int i = 0; i < 256; ++i) {
                 int pos = sb.indexOf("?");
-                if (pos == -1)
+                if (pos == -1) {
                     break;
+                }
                 String str = args[i];
-                if (str == null)
+                if (str == null) {
                     str = "null";
+                }
                 sb.replace(pos, pos + 1, str);
             }
 
             String logstr = "Execute SQL : sql = " + sb.toString();
-            if (logger.isTraceEnabled())
-                logstr = logstr + " from : "
-                        + Reflection.getAncestorMethodInfo(2);
+            if (logger.isTraceEnabled()) {
+                logstr =
+                        logstr + " from : "
+                                + Reflection.getAncestorMethodInfo(2);
+            }
 
             logger.debug(logstr);
         }
     }
 
     private void set(int parameterIndex, Object x) {
-        if (!logger.isDebugEnabled())
+        if (!logger.isDebugEnabled()) {
             return;
+        }
 
         if (x == null) {
             args[parameterIndex - 1] = "null";
@@ -109,11 +113,12 @@ public final class PreparedStatementWrapper implements PreparedStatement {
         } else if (x instanceof Time) {
             args[parameterIndex - 1] = String.format("'%tT'::time", x);
         } else if (x instanceof Timestamp) {
-            args[parameterIndex - 1] = String.format(
-                    "'%1$tF %1$tT'::timestamp", x);
+            args[parameterIndex - 1] =
+                    String.format("'%1$tF %1$tT'::timestamp", x);
         } else {
-            args[parameterIndex - 1] = String.format("'%s'::%s", x, x
-                    .getClass().getCanonicalName());
+            args[parameterIndex - 1] =
+                    String.format("'%s'::%s", x,
+                            x.getClass().getCanonicalName());
         }
     }
 
@@ -641,6 +646,14 @@ public final class PreparedStatementWrapper implements PreparedStatement {
 
     public void setQueryTimeout(int seconds) throws SQLException {
         statement.setQueryTimeout(seconds);
+    }
+
+    public void closeOnCompletion() throws SQLException {
+        statement.closeOnCompletion();
+    }
+
+    public boolean isCloseOnCompletion() throws SQLException {
+        return statement.isCloseOnCompletion();
     }
 
     public boolean isWrapperFor(Class<?> iface) throws SQLException {

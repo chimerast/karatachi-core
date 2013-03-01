@@ -3,6 +3,7 @@ package org.karatachi.db;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 
 import javax.sql.DataSource;
 
@@ -84,24 +85,29 @@ public final class DataSourceWrapper implements DataSource,
         }
     }
 
-    public int getLoginTimeout() throws SQLException {
-        return dataSource.getLoginTimeout();
-    }
-
     public PrintWriter getLogWriter() throws SQLException {
         return dataSource.getLogWriter();
     }
 
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
-        return dataSource.isWrapperFor(iface);
+    public void setLogWriter(PrintWriter out) throws SQLException {
+        dataSource.setLogWriter(out);
     }
 
     public void setLoginTimeout(int seconds) throws SQLException {
         dataSource.setLoginTimeout(seconds);
     }
 
-    public void setLogWriter(PrintWriter out) throws SQLException {
-        dataSource.setLogWriter(out);
+    public int getLoginTimeout() throws SQLException {
+        return dataSource.getLoginTimeout();
+    }
+
+    public java.util.logging.Logger getParentLogger()
+            throws SQLFeatureNotSupportedException {
+        return dataSource.getParentLogger();
+    }
+
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+        return dataSource.isWrapperFor(iface);
     }
 
     public <T> T unwrap(Class<T> iface) throws SQLException {

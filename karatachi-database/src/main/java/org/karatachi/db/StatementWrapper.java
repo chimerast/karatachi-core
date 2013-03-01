@@ -35,8 +35,7 @@ public final class StatementWrapper implements Statement {
     private void setInterruptable() throws SQLException {
         if (Thread.currentThread() instanceof AcceptInterruptable) {
             try {
-                ((AcceptInterruptable) Thread.currentThread())
-                        .setInterruptable(interruptable);
+                ((AcceptInterruptable) Thread.currentThread()).setInterruptable(interruptable);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new SQLException("Thread Interrupted", e);
@@ -53,9 +52,11 @@ public final class StatementWrapper implements Statement {
     private void logExecute(String sql) throws SQLException {
         if (logger.isDebugEnabled()) {
             String logstr = "Execute SQL : sql = " + sql;
-            if (logger.isTraceEnabled())
-                logstr = logstr + " from : "
-                        + Reflection.getAncestorMethodInfo(2);
+            if (logger.isTraceEnabled()) {
+                logstr =
+                        logstr + " from : "
+                                + Reflection.getAncestorMethodInfo(2);
+            }
             logger.debug(logstr);
         }
     }
@@ -277,6 +278,14 @@ public final class StatementWrapper implements Statement {
 
     public void setQueryTimeout(int seconds) throws SQLException {
         statement.setQueryTimeout(seconds);
+    }
+
+    public void closeOnCompletion() throws SQLException {
+        statement.closeOnCompletion();
+    }
+
+    public boolean isCloseOnCompletion() throws SQLException {
+        return statement.isCloseOnCompletion();
     }
 
     public boolean isWrapperFor(Class<?> iface) throws SQLException {

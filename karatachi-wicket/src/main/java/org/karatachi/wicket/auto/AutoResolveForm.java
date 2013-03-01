@@ -13,8 +13,6 @@ import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.head.JavaScriptHeaderItem;
-import org.apache.wicket.markup.head.OnDomReadyHeaderItem;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.Form;
@@ -32,7 +30,6 @@ import org.karatachi.wicket.form.behavior.CheckBoxLabel;
 import org.karatachi.wicket.form.behavior.ErrorHighlighter;
 import org.karatachi.wicket.form.behavior.Placeholder;
 import org.karatachi.wicket.form.behavior.ValidationMessage;
-import org.karatachi.wicket.script.AjaxLibrariesReference;
 
 public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         IHeaderContributor {
@@ -245,9 +242,6 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
 
     @Override
     public void renderHead(IHeaderResponse response) {
-        response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery));
-        response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_placeholder));
-        response.render(OnDomReadyHeaderItem.forScript("jQuery(':input[placeholder]').placeholder({ blankSubmit: true });"));
     }
 
     public static class ErrorMessageAppendingCustomizer implements
