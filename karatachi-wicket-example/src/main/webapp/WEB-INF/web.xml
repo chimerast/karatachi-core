@@ -17,10 +17,12 @@
       <param-name>debug</param-name>
       <param-value>/debug</param-value>
     </init-param>
+    <!--
     <init-param>
       <param-name>reloadingClassPattern</param-name>
       <param-value>org.karatachi.example.**,org.karatachi.wicket.**</param-value>
     </init-param>
+    -->
   </filter>
   <filter-mapping>
     <filter-name>s2wicketfilter</filter-name>
