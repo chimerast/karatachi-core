@@ -19,13 +19,10 @@ public class NoSerializePageStore implements IPageStore {
     public IManageablePage getPage(String sessionId, int pageId) {
         Map<Integer, IManageablePage> sessionCache =
                 getSessionCache(sessionId, false);
-        IManageablePage page = sessionCache.get(pageId);
-        if (page == null) {
-            throw new IllegalArgumentException(
-                    "Found this session, but there is no page with id "
-                            + pageId);
+        if(sessionCache != null) { 
+            return sessionCache.get(pageId);
         }
-        return page;
+        return null;
     }
 
     public void removePage(String sessionId, int pageId) {
@@ -59,9 +56,6 @@ public class NoSerializePageStore implements IPageStore {
             if (create) {
                 sessionCache = new HashMap<Integer, IManageablePage>();
                 cache.put(sessionId, sessionCache);
-            } else {
-                throw new IllegalArgumentException(
-                        "There are no pages stored for session id " + sessionId);
             }
         }
         return sessionCache;
