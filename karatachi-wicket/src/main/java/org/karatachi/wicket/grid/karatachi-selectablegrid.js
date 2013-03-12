@@ -69,7 +69,8 @@
       var bl_table = bl.find("table.inner")[0];
       var br_table = br.find("table.inner")[0];
 
-      var rows = (tl_table.rows.length - 1) + (bl_table.rows.length - 1);
+      var rows = (tl_table.rows.length - 1)
+          + (Math.max(bl_table.rows.length - 1, 0));
       var cols = (tl_table.rows[0].cells.length - 1)
           + (tr_table.rows[0].cells.length - 1);
 
