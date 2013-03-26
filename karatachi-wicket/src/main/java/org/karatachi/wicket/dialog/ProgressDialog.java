@@ -4,6 +4,8 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
@@ -27,6 +29,7 @@ public class ProgressDialog extends ModalWindow {
         setPageCreator(new ModalWindow.PageCreator() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public Page createPage() {
                 return new ProgressDialogPage();
             }
@@ -64,7 +67,8 @@ public class ProgressDialog extends ModalWindow {
         this.params.thread.start();
     }
 
-    private class ProgressDialogPage extends WebPage {
+    private class ProgressDialogPage extends WebPage implements
+            IHeaderContributor {
         private static final long serialVersionUID = 1L;
 
         private ProgressDialogPage() {
@@ -99,5 +103,13 @@ public class ProgressDialog extends ModalWindow {
                 }
             });
         }
+
+        @Override
+        public void renderHead(IHeaderResponse response) {
+            setHeader(response);
+        }
+    }
+
+    protected void setHeader(IHeaderResponse response) {
     }
 }
