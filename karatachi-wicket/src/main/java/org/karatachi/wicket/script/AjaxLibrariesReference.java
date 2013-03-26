@@ -1,6 +1,7 @@
 package org.karatachi.wicket.script;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.resource.JQueryResourceReference;
 
 public class AjaxLibrariesReference {
@@ -22,7 +23,7 @@ public class AjaxLibrariesReference {
     public static final JavaScriptResourceReference jquery_zclip =
             new JavaScriptResourceReference(AjaxLibrariesReference.class,
                     "jquery/jquery.zclip-1.1.1.js");
-    public static final JavaScriptResourceReference jquery_zclip_swf =
-            new JavaScriptResourceReference(AjaxLibrariesReference.class,
+    public static final PackageResourceReference jquery_zclip_swf =
+            new PackageResourceReference(AjaxLibrariesReference.class,
                     "jquery/ZeroClipboard.swf");
 }
