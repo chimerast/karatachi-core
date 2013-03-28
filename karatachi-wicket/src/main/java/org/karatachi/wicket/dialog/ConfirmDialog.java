@@ -4,11 +4,13 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-public class ConfirmDialog extends ModalWindow {
+public abstract class ConfirmDialog extends ModalWindow {
     private static final long serialVersionUID = 1L;
 
     private MessageDialogParams params;
@@ -26,6 +28,7 @@ public class ConfirmDialog extends ModalWindow {
         setPageCreator(new ModalWindow.PageCreator() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public Page createPage() {
                 return new ConfirmDialogPage();
             }
@@ -34,6 +37,7 @@ public class ConfirmDialog extends ModalWindow {
         setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public void onClose(AjaxRequestTarget target) {
                 if (params.result) {
                     params.onSuccess(target);
@@ -56,7 +60,8 @@ public class ConfirmDialog extends ModalWindow {
         super.show(target);
     }
 
-    private class ConfirmDialogPage extends WebPage {
+    private class ConfirmDialogPage extends WebPage implements
+            IHeaderContributor {
         private static final long serialVersionUID = 1L;
 
         private ConfirmDialogPage() {
@@ -86,5 +91,13 @@ public class ConfirmDialog extends ModalWindow {
                 }
             });
         }
+
+        @Override
+        public void renderHead(IHeaderResponse response) {
+            super.renderHead(response);
+            setHeader(response);
+        }
     }
+
+    abstract protected void setHeader(IHeaderResponse response);
 }

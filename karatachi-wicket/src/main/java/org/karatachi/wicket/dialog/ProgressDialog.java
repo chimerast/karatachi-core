@@ -11,7 +11,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.karatachi.wicket.ajax.ProgressBar;
 
-public class ProgressDialog extends ModalWindow {
+public abstract class ProgressDialog extends ModalWindow {
     private static final long serialVersionUID = 1L;
 
     private ProgressDialogParams params;
@@ -110,6 +110,5 @@ public class ProgressDialog extends ModalWindow {
         }
     }
 
-    protected void setHeader(IHeaderResponse response) {
-    }
+    abstract protected void setHeader(IHeaderResponse response);
 }

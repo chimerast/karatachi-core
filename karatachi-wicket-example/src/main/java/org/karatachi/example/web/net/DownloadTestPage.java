@@ -12,6 +12,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.core.util.resource.PackageResourceStream;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -30,7 +31,13 @@ public class DownloadTestPage extends WebPage {
     public DownloadTestPage() {
         Session.get().getClientInfo();
 
-        add(progress = new ProgressDialog("progress"));
+        add(progress = new ProgressDialog("progress") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void setHeader(IHeaderResponse response) {
+            }
+        });
         add(new FeedbackPanel("feedback"));
 
         add(new Link<Void>("sendmail") {

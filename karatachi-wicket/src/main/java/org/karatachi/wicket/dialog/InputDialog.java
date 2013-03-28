@@ -15,7 +15,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.karatachi.wicket.script.AjaxLibrariesReference;
 
-public class InputDialog extends ModalWindow {
+public abstract class InputDialog extends ModalWindow {
     private static final long serialVersionUID = 1L;
 
     private InputDialogParams params;
@@ -33,6 +33,7 @@ public class InputDialog extends ModalWindow {
         setPageCreator(new ModalWindow.PageCreator() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public Page createPage() {
                 return new InputDialogPage();
             }
@@ -41,6 +42,7 @@ public class InputDialog extends ModalWindow {
         setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public void onClose(AjaxRequestTarget target) {
                 if (params.result) {
                     params.onSuccess(target);
@@ -109,6 +111,10 @@ public class InputDialog extends ModalWindow {
             response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery));
             response.render(OnDomReadyHeaderItem.forScript(String.format(
                     "jQuery('#%s').focus();", input.getMarkupId())));
+            setHeader(response);
         }
     }
+
+    abstract protected void setHeader(IHeaderResponse response);
+
 }

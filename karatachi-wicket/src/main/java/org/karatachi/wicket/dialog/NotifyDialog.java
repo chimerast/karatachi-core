@@ -4,11 +4,13 @@ import org.apache.wicket.Page;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.CompoundPropertyModel;
 
-public class NotifyDialog extends ModalWindow {
+public abstract class NotifyDialog extends ModalWindow {
     private static final long serialVersionUID = 1L;
 
     private MessageDialogParams params;
@@ -30,6 +32,7 @@ public class NotifyDialog extends ModalWindow {
         setPageCreator(new ModalWindow.PageCreator() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public Page createPage() {
                 return new NotifyDialogPage();
             }
@@ -38,6 +41,7 @@ public class NotifyDialog extends ModalWindow {
         setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             private static final long serialVersionUID = 1L;
 
+            @Override
             public void onClose(AjaxRequestTarget target) {
                 params.onSuccess(target);
             }
@@ -55,7 +59,8 @@ public class NotifyDialog extends ModalWindow {
         super.show(target);
     }
 
-    private class NotifyDialogPage extends WebPage {
+    private class NotifyDialogPage extends WebPage implements
+            IHeaderContributor {
         private static final long serialVersionUID = 1L;
 
         private NotifyDialogPage() {
@@ -73,5 +78,13 @@ public class NotifyDialog extends ModalWindow {
                 }
             });
         }
+
+        @Override
+        public void renderHead(IHeaderResponse response) {
+            super.renderHead(response);
+            setHeader(response);
+        }
     }
+
+    abstract protected void setHeader(IHeaderResponse response);
 }

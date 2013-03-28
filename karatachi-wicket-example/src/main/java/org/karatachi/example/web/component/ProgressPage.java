@@ -2,6 +2,7 @@ package org.karatachi.example.web.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.karatachi.example.web.WebBasePage;
 import org.karatachi.wicket.ajax.ProgressBar;
@@ -45,6 +46,12 @@ public class ProgressPage extends WebBasePage {
                 });
             }
         });
-        add(dialog = new ProgressDialog("dialog"));
+        add(dialog = new ProgressDialog("dialog") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void setHeader(IHeaderResponse response) {
+            }
+        });
     }
 }
