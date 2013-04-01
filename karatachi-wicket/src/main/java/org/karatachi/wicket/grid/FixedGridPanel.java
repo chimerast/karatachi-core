@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AjaxRequestHandler;
 import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -16,6 +17,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.request.WebClientInfo;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.CssResourceReference;
@@ -152,12 +154,16 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
 
             @Override
             public void onConfigure(Component component) {
-
                 String userAgent =
                         ((WebClientInfo) Session.get().getClientInfo()).getUserAgent();
                 if (userAgent.contains("Trident/4.0")) {
-                    ((WebResponse) RequestCycle.get().getResponse()).setHeader(
-                            "X-UA-Compatible", "IE=7");
+                    AjaxRequestHandler handler =
+                            getRequestCycle().find(AjaxRequestHandler.class);
+                    if (handler == null) {
+                        Response response = RequestCycle.get().getResponse();
+                        WebResponse.class.cast(response).setHeader(
+                                "X-UA-Compatible", "IE=7");
+                    }
                 }
             }
         });
