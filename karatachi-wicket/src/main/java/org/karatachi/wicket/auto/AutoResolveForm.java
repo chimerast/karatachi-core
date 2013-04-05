@@ -1,6 +1,8 @@
 package org.karatachi.wicket.auto;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +53,7 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
     private List<IResolvedFormComponentCustomizer> resolvedFormComponentCustomizers =
             new ArrayList<IResolvedFormComponentCustomizer>();
     private FeedbackPanel feedback;
+    private List<Component> autoAddComponents = new ArrayList<Component>();
 
     public AutoResolveForm(String id) {
         this(id, null, (T) null);
@@ -80,6 +83,7 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
 
     private void commonInit(String feedbackId) {
         this.confirm = false;
+        setFormComponentCustomizer(new ErrorMessageAppendingCustomizer());
         if (feedbackId != null) {
             add(feedback = new ComponentFeedbackPanel(feedbackId, this));
         }
@@ -122,6 +126,7 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
         this.resolvedFormComponentCustomizers.add(resolvedFormComponentCustomizer);
     }
 
+    @Override
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public Component resolve(MarkupContainer container,
             MarkupStream markupStream, ComponentTag tag) {
@@ -235,9 +240,33 @@ public class AutoResolveForm<T> extends Form<T> implements IComponentResolver,
 
     private void addForRender(Component component, MarkupContainer container,
             MarkupStream markupStream) {
-        setAuto(true);
-        container.internalAdd(component);
-        setAuto(false);
+        container.autoAdd(component, markupStream);
+        autoAddComponents.add(component);
+    }
+
+    @Override
+    protected void onDetach() {
+        Method method = null;
+        try {
+            for (Method m : Component.class.getDeclaredMethods()) {
+                if (m.getName().equals("setAuto")) {
+                    method = m;
+                    break;
+                }
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        super.onDetach();
+        for (Component c : autoAddComponents) {
+            try {
+                method.setAccessible(true);
+                method.invoke(c, false);
+            } catch (IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

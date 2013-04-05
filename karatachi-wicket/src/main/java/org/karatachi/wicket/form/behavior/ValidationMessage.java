@@ -2,8 +2,8 @@ package org.karatachi.wicket.form.behavior;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
+import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.markup.html.form.FormComponent;
-import org.apache.wicket.util.string.StringList;
 
 public class ValidationMessage extends Behavior {
     private static final long serialVersionUID = 1L;
@@ -14,9 +14,11 @@ public class ValidationMessage extends Behavior {
         if (!formComponent.isValid()) {
             String error;
             if (formComponent.hasFeedbackMessage()) {
-                error =
-                        StringList.valueOf(
-                                formComponent.getFeedbackMessages().toList()).toString();
+                StringBuffer sb = new StringBuffer();
+                for (FeedbackMessage message : formComponent.getFeedbackMessages()) {
+                    sb.append(message.getMessage());
+                }
+                error = sb.toString();
             } else {
                 error = component.getString(getClass().getName());
             }
