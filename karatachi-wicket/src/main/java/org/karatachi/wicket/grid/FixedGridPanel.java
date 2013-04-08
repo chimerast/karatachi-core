@@ -39,11 +39,6 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
             new JavaScriptResourceReference(FixedGridPanel.class,
                     "jquery-wresize.js");
 
-    private final WebMarkupContainer grid_tl;
-    private final WebMarkupContainer grid_tr;
-    private final WebMarkupContainer grid_bl;
-    private final WebMarkupContainer grid_br;
-
     private int fixedRow = 0;
     private int fixedCol = 0;
 
@@ -64,10 +59,10 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
 
         setOutputMarkupId(true);
 
-        add(grid_tl = new GridContainer("grid_tl", Position.TOP_LEFT));
-        add(grid_tr = new GridContainer("grid_tr", Position.TOP_RIGHT));
-        add(grid_bl = new GridContainer("grid_bl", Position.BOTTOM_LEFT));
-        add(grid_br = new GridContainer("grid_br", Position.BOTTOM_RIGHT));
+        add(new GridContainer("grid_tl", Position.TOP_LEFT));
+        add(new GridContainer("grid_tr", Position.TOP_RIGHT));
+        add(new GridContainer("grid_bl", Position.BOTTOM_LEFT));
+        add(new GridContainer("grid_br", Position.BOTTOM_RIGHT));
         add(new MenuContainer("menu"));
     }
 
