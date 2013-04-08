@@ -54,7 +54,7 @@
       bl.height(bottomHeight);
     };
 
-    w.resize(resizeGrid);
+    w.wresize(resizeGrid);
     br.scroll(updateScroll);
 
     resizeGrid();
@@ -358,8 +358,7 @@
       };
     };
 
-    w.resize(reculcRect);
-
+    w.wresize(reculcRect);
     reculcRect();
 
     var scroll = null;
@@ -553,7 +552,7 @@
         alert("選択したセルのコピーには、\nAdobe Flashバージョン9以降のインストールが必要です。");
       };
     }
-
+    
     return this;
   };
 })(jQuery);
