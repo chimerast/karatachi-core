@@ -6,12 +6,10 @@ import java.lang.ref.WeakReference;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
 import org.apache.wicket.authorization.UnauthorizedInstantiationException;
-import org.apache.wicket.core.request.mapper.CryptoMapper;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.Request;
@@ -37,10 +35,6 @@ public abstract class AuthenticatedWebApplication<R, A extends Annotation>
                 new AuthorizationStrategy<R, A>(this));
         getSecuritySettings().setUnauthorizedComponentInstantiationListener(
                 this);
-
-        if (getConfigurationType() == RuntimeConfigurationType.DEPLOYMENT) {
-            setRootRequestMapper(new CryptoMapper(getRootRequestMapper(), this));
-        }
     }
 
     public final void onUnauthorizedInstantiation(final Component component) {
