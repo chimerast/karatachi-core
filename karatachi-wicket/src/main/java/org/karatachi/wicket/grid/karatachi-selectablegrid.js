@@ -53,8 +53,18 @@
       tr.width(rightWidth);
       bl.height(bottomHeight);
     };
+    
+    var isIE6 = function() {
+      if($.browser.msie) {
+        var version = parseInt( $.browser.version, 10 ); 
+        return version == 6;
+      } 
+      return false;
+    }
 
-    w.wresize(resizeGrid);
+    if(!isIE6()) {
+      w.resize(resizeGrid);
+    }
     br.scroll(updateScroll);
 
     resizeGrid();
@@ -358,7 +368,9 @@
       };
     };
 
-    w.wresize(reculcRect);
+    if(!isIE6()) {
+      w.resize(reculcRect);
+    }
     reculcRect();
 
     var scroll = null;
