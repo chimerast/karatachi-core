@@ -35,9 +35,6 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
     private static final ResourceReference SCRIPT =
             new JavaScriptResourceReference(FixedGridPanel.class,
                     "karatachi-selectablegrid.js");
-    private static final ResourceReference WRESIZE =
-            new JavaScriptResourceReference(FixedGridPanel.class,
-                    "jquery-wresize.js");
 
     private int fixedRow = 0;
     private int fixedCol = 0;
@@ -168,7 +165,6 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
         response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_textselection));
         response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_zclip));
         response.render(JavaScriptHeaderItem.forReference(FlexComponent.SWFOBJECT_JS));
-        response.render(JavaScriptHeaderItem.forReference(WRESIZE));
         response.render(JavaScriptHeaderItem.forReference(SCRIPT));
         response.render(OnDomReadyHeaderItem.forScript(String.format(
                 "jQuery('#%s').fixedgrid({ zclip_swf : '%s', align : %d });",
