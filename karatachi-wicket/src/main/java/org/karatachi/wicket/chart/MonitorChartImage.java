@@ -15,6 +15,7 @@ import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.DrawingSupplier;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.time.Second;
@@ -27,6 +28,8 @@ public abstract class MonitorChartImage extends ChartImage {
     private final String[] titles;
     private final int level;
     private final String sql;
+
+    private DrawingSupplier drawingSupplier;
 
     protected abstract Connection getConnection() throws SQLException;
 
@@ -45,6 +48,10 @@ public abstract class MonitorChartImage extends ChartImage {
                         table, host, level);
     }
 
+    public void setDrawingSupplier(DrawingSupplier drawingSupplier) {
+        this.drawingSupplier = drawingSupplier;
+    }
+
     public TimeTableXYDataset loadData() {
         TimeTableXYDataset ret = new TimeTableXYDataset();
         try {
@@ -56,7 +63,11 @@ public abstract class MonitorChartImage extends ChartImage {
 
                     ResultSet rs = stmt.executeQuery();
                     while (rs.next()) {
-                        ret.add(new Second(new Date(rs.getLong("time"))),
+                        long rounded =
+                                rs.getLong("time")
+                                        / MBeanMonitorDaemon.INTERVAL[level]
+                                        * MBeanMonitorDaemon.INTERVAL[level];
+                        ret.add(new Second(new Date(rounded)),
                                 rs.getDouble("value"), title);
                     }
                 }
@@ -89,6 +100,10 @@ public abstract class MonitorChartImage extends ChartImage {
         AxisSpace space = new AxisSpace();
         space.setLeft(80.0);
         plot.setFixedRangeAxisSpace(space);
+
+        if (drawingSupplier != null) {
+            plot.setDrawingSupplier(drawingSupplier);
+        }
 
         JFreeChart chart = new JFreeChart(plot);
         chart.getLegend().setItemFont(new Font(Font.DIALOG, Font.PLAIN, 10));
