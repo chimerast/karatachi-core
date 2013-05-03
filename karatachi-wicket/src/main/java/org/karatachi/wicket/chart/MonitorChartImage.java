@@ -17,7 +17,7 @@ import org.jfree.chart.axis.DateTickMarkPosition;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.time.Millisecond;
+import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeTableXYDataset;
 import org.karatachi.daemon.monitor.MBeanMonitorDaemon;
 
@@ -56,7 +56,7 @@ public abstract class MonitorChartImage extends ChartImage {
 
                     ResultSet rs = stmt.executeQuery();
                     while (rs.next()) {
-                        ret.add(new Millisecond(new Date(rs.getLong("time"))),
+                        ret.add(new Second(new Date(rs.getLong("time"))),
                                 rs.getDouble("value"), title);
                     }
                 }
@@ -77,8 +77,8 @@ public abstract class MonitorChartImage extends ChartImage {
                 (System.currentTimeMillis()
                         / MBeanMonitorDaemon.INTERVAL[level] - 1)
                         * MBeanMonitorDaemon.INTERVAL[level];
-        domainAxis.setRange(new Date(cur - MBeanMonitorDaemon.EXPIRE[level]),
-                new Date(cur));
+        domainAxis.setRange(new Date(cur - (MBeanMonitorDaemon.EXPIRE[level])
+                / 3), new Date(cur));
 
         NumberAxis rangeAxis = new NumberAxis();
 
