@@ -81,8 +81,9 @@ public class ExampleApplication extends WebApplication {
                     IOUtils.readLines(getClass().getResourceAsStream(
                             "monitor.mbean"));
             for (String line : lines) {
-                monitor.addAccessor(line.substring(line.lastIndexOf(":") + 1),
-                        line);
+                int i = line.indexOf("=");
+                monitor.addAccessor(line.substring(0, i).trim(),
+                        line.substring(i + 1).trim());
             }
         } catch (Exception e) {
             System.out.println("error: " + e.getMessage());
@@ -90,6 +91,8 @@ public class ExampleApplication extends WebApplication {
 
         // モニタリング開始
         monitor.startup();
+
+        new DatabasePoolMonitorDaemon().startup();
     }
 
     @Override

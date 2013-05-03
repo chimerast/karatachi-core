@@ -106,16 +106,17 @@ public class MBeanWrapper implements Serializable {
                     String type;
                     if ((type = objectName.getKeyProperty("type")) != null) {
                         if (!ret.containsKey(type)) {
-                            ret.put(type, new MBeanWrapper(server,
-                                    new ObjectName(String.format("%s:type=%s",
-                                            domain, type)), type));
+                            ret.put(type,
+                                    new MBeanWrapper(server, new ObjectName(
+                                            String.format("%s:type=%s", domain,
+                                                    type)), type));
                         }
                     } else if ((type = objectName.getKeyProperty("j2eeType")) != null) {
                         if (!ret.containsKey(type)) {
-                            ret.put(type, new MBeanWrapper(server,
-                                    new ObjectName(String.format(
-                                            "%s:j2eeType=%s", domain, type)),
-                                    type));
+                            ret.put(type,
+                                    new MBeanWrapper(server, new ObjectName(
+                                            String.format("%s:j2eeType=%s",
+                                                    domain, type)), type));
                         }
                     } else {
                         continue;

@@ -1,18 +1,19 @@
-java.lang:type=OperatingSystem:SystemLoadAverage
-java.lang:type=OperatingSystem:FreeSwapSpaceSize
-java.lang:type=OperatingSystem:FreePhysicalMemorySize
-java.lang:type=OperatingSYstem:CommittedVirtualMemorySize
-java.lang:type=Threading:ThreadCount
-java.lang:type=Threading:DaemonThreadCount
-java.lang:type=Memory:HeapMemoryUsage.init
-java.lang:type=Memory:HeapMemoryUsage.used
-java.lang:type=Memory:HeapMemoryUsage.committed
-java.lang:type=Memory:HeapMemoryUsage.max
-java.lang:type=Memory:NonHeapMemoryUsage.init
-java.lang:type=Memory:NonHeapMemoryUsage.used
-java.lang:type=Memory:NonHeapMemoryUsage.committed
-java.lang:type=Memory:NonHeapMemoryUsage.max
-Catalina:name=jk-8009,type=ThreadPool:currentThreadsBusy
-Catalina:name=jk-8009,type=ThreadPool:currentThreadCount
-Catalina:name=jk-8009,type=ThreadPool:maxThreads
-Catalina:host=localhost,path=/,type=Manager:activeSessions
+SystemLoadAverage          = java.lang:type=OperatingSystem:SystemLoadAverage
+FreeSwapSpaceSize          = java.lang:type=OperatingSystem:FreeSwapSpaceSize
+FreePhysicalMemorySize     = java.lang:type=OperatingSystem:FreePhysicalMemorySize
+CommittedVirtualMemorySize = java.lang:type=OperatingSystem:CommittedVirtualMemorySize
+ThreadCount                = java.lang:type=Threading:ThreadCount
+DaemonThreadCount          = java.lang:type=Threading:DaemonThreadCount
+HeapMemory                 = java.lang:type=Memory:HeapMemoryUsage.used
+HeapMemoryMax              = java.lang:type=Memory:HeapMemoryUsage.max
+NonHeapMemory              = java.lang:type=Memory:NonHeapMemoryUsage.used
+NonHeapMemoryMax           = java.lang:type=Memory:NonHeapMemoryUsage.max
+CodeCache                  = java.lang:name=Code Cache,type=MemoryPool:Usage.used
+EdenSpace                  = java.lang:name=PS Eden Space,type=MemoryPool:Usage.used
+SurvivorSpace              = java.lang:name=PS Survivor Space,type=MemoryPool:Usage.used
+OldGen                     = java.lang:name=PS Old Gen,type=MemoryPool:Usage.used
+PermGen                    = java.lang:name=PS Perm Gen,type=MemoryPool:Usage.used
+currentThreadsBusy         = Catalina:name="ajp-bio-8009",type=ThreadPool:currentThreadsBusy
+currentThreadCount         = Catalina:name="ajp-bio-8009",type=ThreadPool:currentThreadCount
+maxThreads                 = Catalina:name="ajp-bio-8009",type=ThreadPool:maxThreads
+activeSessions             = Catalina:context=/,host=localhost,type=Manager:activeSessions

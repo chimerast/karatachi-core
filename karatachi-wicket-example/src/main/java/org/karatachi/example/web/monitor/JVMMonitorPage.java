@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.protocol.http.RequestUtils;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.karatachi.example.web.WebBasePage;
 import org.karatachi.system.SystemInfo;
@@ -21,31 +22,45 @@ public class JVMMonitorPage extends WebBasePage {
         int level = parameters.get("level").toInt(1);
 
         String[] heap =
-                new String[] { "HeapMemoryUsage.init", "HeapMemoryUsage.used",
-                        "HeapMemoryUsage.committed", "HeapMemoryUsage.max" };
+                new String[] { "HeapMemoryMax", "HeapMemory", "EdenSpace",
+                        "SurvivorSpace", "OldGen" };
         String[] nonheap =
-                new String[] { "NonHeapMemoryUsage.init",
-                        "NonHeapMemoryUsage.used",
-                        "NonHeapMemoryUsage.committed",
-                        "NonHeapMemoryUsage.max" };
+                new String[] { "NonHeapMemoryMax", "NonHeapMemory",
+                        "CodeCache", "PermGen", };
         String[] system =
                 new String[] { "CommittedVirtualMemorySize",
                         "FreePhysicalMemorySize", "FreeSwapSpaceSize" };
         String[] thread =
-                new String[] { "SystemLoadAverage", "ThreadCount",
-                        "DaemonThreadCount", "currentThreadsBusy",
-                        "currentThreadCount", "maxThreads", "activeSessions" };
+                new String[] { "ThreadCount", "DaemonThreadCount",
+                        "currentThreadsBusy", "currentThreadCount",
+                        "maxThreads", "activeSessions" };
+        String[] load = new String[] { "SystemLoadAverage" };
+        String[] pool =
+                new String[] { "ActivePoolSize", "TxActivePoolSize",
+                        "MaxPoolSize" };
 
-        add(new BookmarkablePageLink<Void>("level0", JVMMonitorPage.class,
-                new PageParameters().add("level", 0)));
-        add(new BookmarkablePageLink<Void>("level1", JVMMonitorPage.class,
-                new PageParameters().add("level", 1)));
-        add(new BookmarkablePageLink<Void>("level2", JVMMonitorPage.class,
-                new PageParameters().add("level", 2)));
-        add(new BookmarkablePageLink<Void>("level3", JVMMonitorPage.class,
-                new PageParameters().add("level", 3)));
-        add(new BookmarkablePageLink<Void>("level4", JVMMonitorPage.class,
-                new PageParameters().add("level", 4)));
+        PageParameters newParams0 = new PageParameters();
+        PageParameters newParams1 = new PageParameters();
+        PageParameters newParams2 = new PageParameters();
+        PageParameters newParams3 = new PageParameters();
+        PageParameters newParams4 = new PageParameters();
+
+        RequestUtils.decodeParameters("level=0", newParams0);
+        RequestUtils.decodeParameters("level=1", newParams1);
+        RequestUtils.decodeParameters("level=2", newParams2);
+        RequestUtils.decodeParameters("level=3", newParams3);
+        RequestUtils.decodeParameters("level=4", newParams4);
+
+        add(new BookmarkablePageLink<Void>("link0", JVMMonitorPage.class,
+                newParams0));
+        add(new BookmarkablePageLink<Void>("link1", JVMMonitorPage.class,
+                newParams1));
+        add(new BookmarkablePageLink<Void>("link2", JVMMonitorPage.class,
+                newParams2));
+        add(new BookmarkablePageLink<Void>("link3", JVMMonitorPage.class,
+                newParams3));
+        add(new BookmarkablePageLink<Void>("link4", JVMMonitorPage.class,
+                newParams4));
 
         add(new LocalMBeanChartImage("chart1", SystemInfo.HOST_NAME, heap,
                 level));
@@ -54,6 +69,10 @@ public class JVMMonitorPage extends WebBasePage {
         add(new LocalMBeanChartImage("chart3", SystemInfo.HOST_NAME, system,
                 level));
         add(new LocalMBeanChartImage("chart4", SystemInfo.HOST_NAME, thread,
+                level));
+        add(new LocalMBeanChartImage("chart5", SystemInfo.HOST_NAME, load,
+                level));
+        add(new LocalMBeanChartImage("chart6", SystemInfo.HOST_NAME, pool,
                 level));
     }
 

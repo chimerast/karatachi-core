@@ -118,8 +118,12 @@ public class MBeanTree extends AbstractTreeNode {
         }
 
         @Override
-        public Object getValue() throws JMException {
-            return MBeanUtils.toSimpleObject(bean.get(info));
+        public Object getValue() {
+            try {
+                return MBeanUtils.toSimpleObject(bean.get(info));
+            } catch (Exception e) {
+                return "error: " + e.getMessage();
+            }
         }
 
         public void setValue(Object value) throws JMException {
@@ -231,38 +235,47 @@ abstract class AbstractTreeNode implements TreeNode, MBeanNode, Serializable {
         this.children = new Vector<TreeNode>();
     }
 
+    @Override
     public abstract String getName();
 
+    @Override
     public abstract Object getValue() throws JMException;
 
     protected void addChild(TreeNode node) {
         children.add(node);
     }
 
+    @Override
     public Enumeration<TreeNode> children() {
         return children.elements();
     }
 
+    @Override
     public boolean getAllowsChildren() {
         return false;
     }
 
+    @Override
     public TreeNode getChildAt(int childIndex) {
         return children.get(childIndex);
     }
 
+    @Override
     public int getChildCount() {
         return children.size();
     }
 
+    @Override
     public int getIndex(TreeNode node) {
         return children.indexOf(node);
     }
 
+    @Override
     public TreeNode getParent() {
         return parent;
     }
 
+    @Override
     public boolean isLeaf() {
         return children.size() == 0;
     }
