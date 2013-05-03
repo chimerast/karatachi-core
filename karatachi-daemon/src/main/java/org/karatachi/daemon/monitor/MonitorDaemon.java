@@ -14,9 +14,9 @@ public abstract class MonitorDaemon extends Daemon {
             IntervalTranslator.min(5), IntervalTranslator.hour(1),
             IntervalTranslator.day(1) };
     public static final long[] EXPIRE = new long[] {
-            IntervalTranslator.hour(1), IntervalTranslator.hour(4),
-            IntervalTranslator.day(1), IntervalTranslator.day(7),
-            IntervalTranslator.day(365) };
+            IntervalTranslator.hour(3), IntervalTranslator.hour(12),
+            IntervalTranslator.day(3), IntervalTranslator.day(30),
+            IntervalTranslator.day(365 * 3) };
 
     private final String insert;
     private final String count;
