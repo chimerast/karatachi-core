@@ -37,7 +37,7 @@ public abstract class AuthenticatedWebApplication<R, A extends Annotation>
                 this);
     }
 
-    public final void onUnauthorizedInstantiation(final Component component) {
+    public void onUnauthorizedInstantiation(final Component component) {
         if (component instanceof Page) {
             if (!AuthenticatedWebSession.<R> getSession().isSignedIn()) {
                 restartResponseAtSignInPage();
