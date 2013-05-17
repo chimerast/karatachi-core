@@ -27,7 +27,7 @@ public class EnumRadioChoice<E extends Enum<E>> extends RadioChoice<E> {
     public void commonInit(final Class<E> elementType) {
         ArrayList<E> choices = new ArrayList<E>();
 
-        Collection<E> elements = EnumSet.allOf(elementType);
+        Collection<E> elements = getElements(elementType);
         if (Comparable.class.isAssignableFrom(elementType)) {
             List<E> temp = new ArrayList<E>(elements);
             Collections.sort(temp);
@@ -50,4 +50,8 @@ public class EnumRadioChoice<E extends Enum<E>> extends RadioChoice<E> {
             }
         });
     }
+
+	protected EnumSet<E> getElements(final Class<E> elementType) {
+		return EnumSet.allOf(elementType);
+	}
 }
