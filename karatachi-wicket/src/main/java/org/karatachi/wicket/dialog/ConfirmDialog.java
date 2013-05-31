@@ -21,7 +21,37 @@ public abstract class ConfirmDialog extends ModalWindow {
         setWidthUnit("px");
         setHeightUnit("px");
 
-        setPageCreator(createPageCreator());
+        final AjaxLink<Void> okLink = new AjaxLink<Void>("ok") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                ConfirmDialog.this.params.result = true;
+                ConfirmDialog.this.params.onClosing(target);
+                ConfirmDialog.this.close(target);
+            }
+        };
+
+        final AjaxLink<Void> cancelLink = new AjaxLink<Void>("cancel") {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                ConfirmDialog.this.params.result = false;
+                ConfirmDialog.this.params.onClosing(target);
+                ConfirmDialog.this.close(target);
+            }
+        };
+
+        setPageCreator(new ModalWindow.PageCreator() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Page createPage() {
+                return ConfirmDialog.this.createPage(ConfirmDialog.this.params,
+                        okLink, cancelLink);
+            }
+        });
 
         setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             private static final long serialVersionUID = 1L;
@@ -38,44 +68,16 @@ public abstract class ConfirmDialog extends ModalWindow {
         });
     }
 
-    protected PageCreator createPageCreator() {
-        return new ModalWindow.PageCreator() {
+    protected ConfirmDialogPage createPage(MessageDialogParams params,
+            final AjaxLink<Void> okLink, final AjaxLink<Void> cancelLink) {
+        return new ConfirmDialogPage(ConfirmDialog.this.params, okLink,
+                cancelLink) {
             private static final long serialVersionUID = 1L;
 
             @Override
-            public Page createPage() {
-                AjaxLink<Void> okLink = new AjaxLink<Void>("ok") {
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        ConfirmDialog.this.params.result = true;
-                        ConfirmDialog.this.params.onClosing(target);
-                        ConfirmDialog.this.close(target);
-                    }
-                };
-
-                AjaxLink<Void> cancelLink = new AjaxLink<Void>("cancel") {
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void onClick(AjaxRequestTarget target) {
-                        ConfirmDialog.this.params.result = false;
-                        ConfirmDialog.this.params.onClosing(target);
-                        ConfirmDialog.this.close(target);
-                    }
-                };
-
-                return new ConfirmDialogPage(ConfirmDialog.this.params, okLink,
-                        cancelLink) {
-                    private static final long serialVersionUID = 1L;
-
-                    @Override
-                    public void renderHead(IHeaderResponse response) {
-                        super.renderHead(response);
-                        ConfirmDialog.this.setHeader(response);
-                    }
-                };
+            public void renderHead(IHeaderResponse response) {
+                super.renderHead(response);
+                ConfirmDialog.this.setHeader(response);
             }
         };
     }
