@@ -5,15 +5,11 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.head.IHeaderResponse;
-import org.apache.wicket.markup.html.IHeaderContributor;
-import org.apache.wicket.markup.html.WebPage;
-import org.apache.wicket.markup.html.basic.MultiLineLabel;
-import org.apache.wicket.model.CompoundPropertyModel;
 
 public abstract class ConfirmDialog extends ModalWindow {
     private static final long serialVersionUID = 1L;
 
-    private MessageDialogParams params;
+    MessageDialogParams params;
 
     public ConfirmDialog(String id) {
         super(id);
@@ -25,14 +21,7 @@ public abstract class ConfirmDialog extends ModalWindow {
         setWidthUnit("px");
         setHeightUnit("px");
 
-        setPageCreator(new ModalWindow.PageCreator() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public Page createPage() {
-                return new ConfirmDialogPage();
-            }
-        });
+        setPageCreator(createPageCreator());
 
         setWindowClosedCallback(new ModalWindow.WindowClosedCallback() {
             private static final long serialVersionUID = 1L;
@@ -49,6 +38,48 @@ public abstract class ConfirmDialog extends ModalWindow {
         });
     }
 
+    protected PageCreator createPageCreator() {
+        return new ModalWindow.PageCreator() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Page createPage() {
+                AjaxLink<Void> okLink = new AjaxLink<Void>("ok") {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        ConfirmDialog.this.params.result = true;
+                        ConfirmDialog.this.params.onClosing(target);
+                        ConfirmDialog.this.close(target);
+                    }
+                };
+
+                AjaxLink<Void> cancelLink = new AjaxLink<Void>("cancel") {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void onClick(AjaxRequestTarget target) {
+                        ConfirmDialog.this.params.result = false;
+                        ConfirmDialog.this.params.onClosing(target);
+                        ConfirmDialog.this.close(target);
+                    }
+                };
+
+                return new ConfirmDialogPage(ConfirmDialog.this.params, okLink,
+                        cancelLink) {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void renderHead(IHeaderResponse response) {
+                        super.renderHead(response);
+                        ConfirmDialog.this.setHeader(response);
+                    }
+                };
+            }
+        };
+    }
+
     @Override
     public void show(AjaxRequestTarget target) {
         throw new UnsupportedOperationException(
@@ -58,45 +89,6 @@ public abstract class ConfirmDialog extends ModalWindow {
     public void show(AjaxRequestTarget target, MessageDialogParams params) {
         this.params = params;
         super.show(target);
-    }
-
-    private class ConfirmDialogPage extends WebPage implements
-            IHeaderContributor {
-        private static final long serialVersionUID = 1L;
-
-        private ConfirmDialogPage() {
-            super(new CompoundPropertyModel<MessageDialogParams>(params));
-
-            add(new MultiLineLabel("message").setVisible(params.message != null));
-
-            add(new AjaxLink<Void>("ok") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    ConfirmDialog.this.params.result = true;
-                    ConfirmDialog.this.params.onClosing(target);
-                    ConfirmDialog.this.close(target);
-                }
-            });
-
-            add(new AjaxLink<Void>("cancel") {
-                private static final long serialVersionUID = 1L;
-
-                @Override
-                public void onClick(AjaxRequestTarget target) {
-                    ConfirmDialog.this.params.result = false;
-                    ConfirmDialog.this.params.onClosing(target);
-                    ConfirmDialog.this.close(target);
-                }
-            });
-        }
-
-        @Override
-        public void renderHead(IHeaderResponse response) {
-            super.renderHead(response);
-            setHeader(response);
-        }
     }
 
     abstract protected void setHeader(IHeaderResponse response);
