@@ -68,7 +68,7 @@
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
-    <version>0.5.7-SNAPSHOT</version>
+    <version>0.5.7</version>
   </parent>
   <properties>
     <wicket.version>6.6.0</wicket.version>
