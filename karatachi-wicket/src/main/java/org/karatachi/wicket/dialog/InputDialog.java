@@ -74,7 +74,8 @@ public abstract class InputDialog extends ModalWindow {
         });
     }
 
-    private InputDialogPage createPage(InputDialogParams params, Form<Void> form) {
+    protected InputDialogPage createPage(InputDialogParams params,
+            Form<Void> form) {
         return new InputDialogPage(params, form) {
             private static final long serialVersionUID = 1L;
 
