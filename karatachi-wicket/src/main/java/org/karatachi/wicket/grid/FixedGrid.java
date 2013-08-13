@@ -139,14 +139,31 @@ class FixedGrid extends Loop {
         item.add(component = createCellComponent("cell", r, c, cell));
         setCellAttribute(item, r, c, model.getObject().getCell(r, c));
 
-        int colspan;
-        if (cell != null && (colspan = cell.getColspan()) > 1) {
-            int width = 0;
-            for (int i = 0; i < colspan; ++i) {
-                width += owner.getWidth(c + i);
+        if (cell != null) {
+            int width;
+            if (cell.getColspan() > 1) {
+                int colspan = cell.getColspan();
+                width = 0;
+                for (int i = 0; i < colspan; ++i) {
+                    width += owner.getWidth(c + i);
+                }
+            } else {
+                width = owner.getWidth(c);
             }
+
+            int height;
+            if (cell.getRowspan() > 1) {
+                int rowspan = cell.getRowspan();
+                height = 0;
+                for (int i = 0; i < rowspan; ++i) {
+                    height += owner.getHeight(r + i);
+                }
+            } else {
+                height = owner.getHeight(r);
+            }
+
             component.add(new AttributeModifier("style", String.format(
-                    CELL_FORMAT, width, owner.getHeight(r))));
+                    CELL_FORMAT, width, height)));
         } else {
             component.add(new AttributeModifier("style", String.format(
                     CELL_FORMAT, owner.getWidth(c), owner.getHeight(r))));
