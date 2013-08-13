@@ -13,7 +13,7 @@
     <dependency>
       <groupId>org.seasar.wicket</groupId>
       <artifactId>s2wicket-libs</artifactId>
-      <version>6.5.0</version>
+      <version>6.9.0</version>
     </dependency>
 
     <dependency>
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.0.9</version>
+      <version>1.0.13</version>
     </dependency>
 
     <!--S2JTA,S2Txを使う場合必要 -->

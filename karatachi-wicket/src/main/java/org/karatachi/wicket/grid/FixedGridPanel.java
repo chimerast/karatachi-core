@@ -3,10 +3,6 @@ package org.karatachi.wicket.grid;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AjaxRequestHandler;
-import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.head.CssReferenceHeaderItem;
 import org.apache.wicket.markup.head.IHeaderResponse;
 import org.apache.wicket.markup.head.JavaScriptHeaderItem;
@@ -16,10 +12,6 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.protocol.http.request.WebClientInfo;
-import org.apache.wicket.request.Response;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.resource.CssResourceReference;
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
@@ -132,30 +124,6 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
             setOutputMarkupId(true);
             setMarkupId(FixedGridPanel.this.getMarkupId() + "_menu");
         }
-    }
-
-    @Override
-    protected void onInitialize() {
-        super.onInitialize();
-
-        add(new Behavior() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void onConfigure(Component component) {
-                String userAgent =
-                        ((WebClientInfo) Session.get().getClientInfo()).getUserAgent();
-                if (userAgent.contains("Trident/4.0")) {
-                    AjaxRequestHandler handler =
-                            getRequestCycle().find(AjaxRequestHandler.class);
-                    if (handler == null) {
-                        Response response = RequestCycle.get().getResponse();
-                        WebResponse.class.cast(response).setHeader(
-                                "X-UA-Compatible", "IE=7");
-                    }
-                }
-            }
-        });
     }
 
     @Override
