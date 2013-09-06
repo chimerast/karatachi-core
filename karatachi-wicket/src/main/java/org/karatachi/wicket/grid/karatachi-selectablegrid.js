@@ -7,10 +7,17 @@
       br_id : this.attr("id") + "_br",
       menu_id : this.attr("id") + "_menu",
       selected_color : "#e0e0ff",
+      isTableEmpty : function(){
+         return this.attr("id") == undefined ||
+                  this.attr("id") == null;
+       },
       align : 0
     }, options);
 
     var self = this;
+    if (settings.isTableEmpty.call(self)){
+      return;
+    }
     var tl = $("#" + settings.tl_id);
     var tr = $("#" + settings.tr_id);
     var bl = $("#" + settings.bl_id);
