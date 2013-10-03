@@ -7,15 +7,14 @@
       br_id : this.attr("id") + "_br",
       menu_id : this.attr("id") + "_menu",
       selected_color : "#e0e0ff",
-      isTableEmpty : function(){
-         return this.attr("id") == undefined ||
-                  this.attr("id") == null;
-       },
+      isTableEmpty : function() {
+        return this.attr("id") == undefined || this.attr("id") == null;
+      },
       align : 0
     }, options);
 
     var self = this;
-    if (settings.isTableEmpty.call(self)){
+    if (settings.isTableEmpty.call(self)) {
       return;
     }
     var tl = $("#" + settings.tl_id);
@@ -60,16 +59,16 @@
       tr.width(rightWidth);
       bl.height(bottomHeight);
     };
-    
+
     var isIE6 = function() {
-      if($.browser.msie) {
-        var version = parseInt( $.browser.version, 10 ); 
+      if ($.browser.msie) {
+        var version = parseInt($.browser.version, 10);
         return version == 6;
-      } 
+      }
       return false;
     }
 
-    if(!isIE6()) {
+    if (!isIE6()) {
       w.resize(resizeGrid);
     }
     br.scroll(updateScroll);
@@ -292,8 +291,9 @@
         switch (event.which) {
         case 3:
           menu.css({
-            left : event.pageX,
-            top : event.pageY
+            position : "fixed",
+            left : event.clientX,
+            top : event.clientY
           });
           menu.show();
           break;
@@ -375,7 +375,7 @@
       };
     };
 
-    if(!isIE6()) {
+    if (!isIE6()) {
       w.resize(reculcRect);
     }
     reculcRect();
@@ -571,7 +571,7 @@
         alert("選択したセルのコピーには、\nAdobe Flashバージョン9以降のインストールが必要です。");
       };
     }
-    
+
     return this;
   };
 })(jQuery);
