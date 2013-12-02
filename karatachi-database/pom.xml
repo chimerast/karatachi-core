@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.karatachi</groupId>
     <artifactId>karatachi</artifactId>
-    <version>0.5.13-SNAPSHOT</version>
+    <version>0.5.13</version>
   </parent>
 
   <!-- More Project Information -->
