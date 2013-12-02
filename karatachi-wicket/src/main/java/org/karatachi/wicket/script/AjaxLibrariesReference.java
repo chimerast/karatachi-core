@@ -2,15 +2,11 @@ package org.karatachi.wicket.script;
 
 import org.apache.wicket.request.resource.JavaScriptResourceReference;
 import org.apache.wicket.request.resource.PackageResourceReference;
-import org.apache.wicket.resource.JQueryResourceReference;
 
 public class AjaxLibrariesReference {
-    public static final JavaScriptResourceReference prototype =
-            new JavaScriptResourceReference(AjaxLibrariesReference.class,
-                    "prototype/prototype-1.7.1.js");
-
     public static final JavaScriptResourceReference jquery =
-            JQueryResourceReference.get();
+            new JavaScriptResourceReference(AjaxLibrariesReference.class,
+                    "jquery/jquery-1.10.2.js");
     public static final JavaScriptResourceReference jquery_textselection =
             new JavaScriptResourceReference(AjaxLibrariesReference.class,
                     "jquery/jquery.textselection-1.0.0.js");
