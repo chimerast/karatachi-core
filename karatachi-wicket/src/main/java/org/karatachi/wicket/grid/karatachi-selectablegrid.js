@@ -52,8 +52,11 @@
     };
 
     var resizeGrid = function() {
-      var rightWidth = self.width() - bl.width();
-      var bottomHeight = self.height() - tr.height();
+      var cellWidth = Math.max(bl.width(), tl.width());
+      var cellHeight = Math.max(tr.height(), tl.height());
+      
+      var rightWidth = self.width() - cellWidth;
+      var bottomHeight = self.height() - cellHeight;
       br.width(rightWidth);
       br.height(bottomHeight);
       tr.width(rightWidth);
