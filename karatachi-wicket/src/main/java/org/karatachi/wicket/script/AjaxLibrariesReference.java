@@ -7,6 +7,9 @@ public class AjaxLibrariesReference {
     public static final JavaScriptResourceReference jquery =
             new JavaScriptResourceReference(AjaxLibrariesReference.class,
                     "jquery/jquery-1.10.2.js");
+    public static final JavaScriptResourceReference jquery_migrate =
+            new JavaScriptResourceReference(AjaxLibrariesReference.class,
+                    "jquery/jquery.migrate-1.2.1.js");
     public static final JavaScriptResourceReference jquery_textselection =
             new JavaScriptResourceReference(AjaxLibrariesReference.class,
                     "jquery/jquery.textselection-1.0.0.js");

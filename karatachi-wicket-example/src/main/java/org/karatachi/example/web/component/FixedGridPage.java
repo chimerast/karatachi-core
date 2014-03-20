@@ -2,12 +2,15 @@ package org.karatachi.example.web.component;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.head.IHeaderResponse;
+import org.apache.wicket.markup.head.JavaScriptHeaderItem;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.karatachi.example.web.WebBasePage;
 import org.karatachi.wicket.grid.Cells;
 import org.karatachi.wicket.grid.DefaultCell;
 import org.karatachi.wicket.grid.FixedGridPanel;
 import org.karatachi.wicket.grid.ICell;
+import org.karatachi.wicket.script.AjaxLibrariesReference;
 
 public class FixedGridPage extends WebBasePage {
     private static final long serialVersionUID = 1L;
@@ -32,6 +35,12 @@ public class FixedGridPage extends WebBasePage {
                 target.add(grid);
             }
         });
+    }
+
+    @Override
+    public void renderHead(IHeaderResponse response) {
+        super.renderHead(response);
+        response.render(JavaScriptHeaderItem.forReference(AjaxLibrariesReference.jquery_migrate));
     }
 
     private class CellModel extends LoadableDetachableModel<Cells> {

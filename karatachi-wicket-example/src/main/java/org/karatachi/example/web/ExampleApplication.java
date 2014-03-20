@@ -15,6 +15,7 @@ import org.karatachi.daemon.monitor.MBeanMonitorDaemon;
 import org.karatachi.example.component.SourceViewPage;
 import org.karatachi.example.web.net.DownloadTestPage;
 import org.karatachi.wicket.core.NoSerializePageManagerProvider;
+import org.karatachi.wicket.script.AjaxLibrariesReference;
 import org.karatachi.wicket.system.PackageMounter;
 import org.seasar.framework.container.SingletonS2Container;
 
@@ -31,6 +32,9 @@ public class ExampleApplication extends WebApplication {
         getMarkupSettings().setDefaultMarkupEncoding("UTF-8");
 
         getDebugSettings().setAjaxDebugModeEnabled(false);
+
+        getJavaScriptLibrarySettings().setJQueryReference(
+                AjaxLibrariesReference.jquery);
 
         PackageMounter.mount("org.karatachi.example.web");
         mountPage("/source", SourceViewPage.class);

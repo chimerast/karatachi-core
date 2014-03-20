@@ -16,6 +16,8 @@ public class Grid extends Loop {
 
     private final IModel<Cells> cells;
 
+    private int[] rowjoined;
+
     public Grid(final IModel<Cells> model) {
         super("rows", new LoadableDetachableModel<Integer>() {
             private static final long serialVersionUID = 1L;
@@ -26,6 +28,12 @@ public class Grid extends Loop {
             }
         });
         cells = model;
+    }
+
+    @Override
+    protected void onBeforeRender() {
+        rowjoined = new int[cells.getObject().getCols()];
+        super.onBeforeRender();
     }
 
     @Override
@@ -42,25 +50,31 @@ public class Grid extends Loop {
         }) {
             private static final long serialVersionUID = 1L;
 
-            private int joined = 0;
+            private int coljoined = 0;
 
             @Override
             protected void populateItem(LoopItem item) {
                 final int col = item.getIndex() + 1;
 
-                if (joined > 0) {
+                if (coljoined > 0 || rowjoined[col - 1] > 0) {
                     item.setVisible(false);
-                    --joined;
+                    --coljoined;
+                    --rowjoined[col - 1];
                 } else {
                     ICell cell = cells.getObject().getCell(row, col);
                     item.add(createCellComponent("cell", row, col, cell).setRenderBodyOnly(
                             true));
                     setCellAttribute(item, row, col,
                             cells.getObject().getCell(row, col));
+                    if (cell != null && cell.getRowspan() > 1) {
+                        item.add(new AttributeModifier("rowspan",
+                                Integer.toString(cell.getRowspan())));
+                        rowjoined[col - 1] = cell.getRowspan() - 1;
+                    }
                     if (cell != null && cell.getColspan() > 1) {
                         item.add(new AttributeModifier("colspan",
                                 Integer.toString(cell.getColspan())));
-                        joined = cell.getColspan() - 1;
+                        coljoined = cell.getColspan() - 1;
                     }
 
                     if (cell instanceof ILinkCell) {
