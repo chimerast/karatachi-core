@@ -13,22 +13,31 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.apache.wicket.request.resource.ResourceReference;
 
-class FixedGrid extends Loop {
+public class FixedGrid extends Loop {
     private static final long serialVersionUID = 1L;
 
-    private static final AttributeModifier NOBORDER =
-            new AttributeModifier("style",
-                    "border: none 0px transparent !important; overflow: hidden !important;");
-    private static final String CELL_FORMAT =
+    public static final String DEFAULT_NOBORDER_STYLE =
+            "border: none 0px transparent !important; overflow: hidden !important;";
+    public static final String DEFAULT_CELL_STYLE =
             "width: %dpx !important; height: %dpx !important; overflow: hidden !important;";
-    private static final String SPACER_IMG_FORMAT =
-            "<img src=\"%s\" style=\"width: %dpx; height: %dpx\" />";
+    public static final String DEFAULT_SPACER_STYLE =
+            "width: %dpx; height: %dpx;";
+
+    private static final String SPACER_TAG_FORMAT =
+            "<img src=\"%s\" style=\"%s\" />";
     private static final ResourceReference SPACER =
             new PackageResourceReference(FixedGrid.class, "spacer.gif");
 
     private final IModel<Cells> model;
     private final FixedGridPanel owner;
     private final Position position;
+
+    private String noborderStyle;
+    private String cellStyle;
+    private String spacerStyle;
+
+    private AttributeModifier noborder;
+    private String spacerFormat;
 
     private int[] rowjoined;
 
@@ -40,6 +49,37 @@ class FixedGrid extends Loop {
         this.model = model;
         this.owner = owner;
         this.position = position;
+
+        this.noborderStyle = DEFAULT_NOBORDER_STYLE;
+        this.cellStyle = DEFAULT_CELL_STYLE;
+        this.spacerStyle = DEFAULT_SPACER_STYLE;
+
+        updateNoborder();
+        updateSpacerFormat();
+    }
+
+    public void setNoborderStyle(String noborderStyle) {
+        this.noborderStyle = noborderStyle;
+        updateNoborder();
+    }
+
+    public void setCellStyle(String cellStyle) {
+        this.cellStyle = cellStyle;
+    }
+
+    public void setSpacerStyle(String spacerStyle) {
+        this.spacerStyle = spacerStyle;
+        updateSpacerFormat();
+    }
+
+    private void updateNoborder() {
+        this.noborder = new AttributeModifier("style", noborderStyle);
+    }
+
+    private void updateSpacerFormat() {
+        this.spacerFormat =
+                String.format(SPACER_TAG_FORMAT, urlFor(SPACER, null),
+                        spacerStyle);
     }
 
     @Override
@@ -109,26 +149,24 @@ class FixedGrid extends Loop {
                     StringBuilder sb = new StringBuilder();
                     // 最後までスクロールをしたときの遊び
                     if (position == Position.TOP_RIGHT) {
-                        sb.append(String.format(SPACER_IMG_FORMAT,
-                                urlFor(SPACER, null), 40, 0));
+                        sb.append(String.format(spacerFormat, 40, 0));
                     }
                     item.add(new Label("cell", sb.toString()).setEscapeModelStrings(
                             false).setRenderBodyOnly(true));
-                    item.add(NOBORDER);
+                    item.add(noborder);
                 } else if (adjustedCol < adjustedCols) {
                     StringBuilder sb = new StringBuilder();
                     // 最後までスクロールをしたときの遊び
                     if (position == Position.BOTTOM_LEFT) {
-                        sb.append(String.format(SPACER_IMG_FORMAT,
-                                urlFor(SPACER, null), 0, 40));
+                        sb.append(String.format(spacerFormat, 0, 40));
                     }
                     item.add(new Label("cell", sb.toString()).setEscapeModelStrings(
                             false).setRenderBodyOnly(true));
-                    item.add(NOBORDER);
+                    item.add(noborder);
                 } else {
                     item.add(new Label("cell", "").setEscapeModelStrings(false).setEscapeModelStrings(
                             false).setRenderBodyOnly(true));
-                    item.add(NOBORDER);
+                    item.add(noborder);
                 }
             }
         });
@@ -163,10 +201,10 @@ class FixedGrid extends Loop {
             }
 
             component.add(new AttributeModifier("style", String.format(
-                    CELL_FORMAT, width, height)));
+                    cellStyle, width, height)));
         } else {
             component.add(new AttributeModifier("style", String.format(
-                    CELL_FORMAT, owner.getWidth(c), owner.getHeight(r))));
+                    cellStyle, owner.getWidth(c), owner.getHeight(r))));
         }
 
         if (cell instanceof ILinkCell) {
@@ -195,8 +233,7 @@ class FixedGrid extends Loop {
         StringBuilder sb = new StringBuilder();
         if (cell != null) {
             if (cell.getIndent() != 0) {
-                sb.append(String.format(SPACER_IMG_FORMAT,
-                        urlFor(SPACER, null), cell.getIndent(), 0));
+                sb.append(String.format(spacerFormat, cell.getIndent(), 0));
             }
             sb.append(cell.toString());
         } else {

@@ -39,6 +39,8 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
     private int defalutWidth = 100;
     private int defalutHeight = 20;
 
+    private GridContainer[] containers;
+
     public FixedGridPanel(String id, Cells cells) {
         this(id, new Model<Cells>(cells));
     }
@@ -48,10 +50,12 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
 
         setOutputMarkupId(true);
 
-        add(new GridContainer("grid_tl", Position.TOP_LEFT));
-        add(new GridContainer("grid_tr", Position.TOP_RIGHT));
-        add(new GridContainer("grid_bl", Position.BOTTOM_LEFT));
-        add(new GridContainer("grid_br", Position.BOTTOM_RIGHT));
+        this.containers = new GridContainer[4];
+
+        add(containers[0] = new GridContainer("grid_tl", Position.TOP_LEFT));
+        add(containers[1] = new GridContainer("grid_tr", Position.TOP_RIGHT));
+        add(containers[2] = new GridContainer("grid_bl", Position.BOTTOM_LEFT));
+        add(containers[3] = new GridContainer("grid_br", Position.BOTTOM_RIGHT));
         add(new MenuContainer("menu"));
     }
 
@@ -103,16 +107,41 @@ public class FixedGridPanel extends Panel implements IHeaderContributor {
         heights.put(row, height);
     }
 
+    public void setNoborderStyle(String noborderStyle) {
+        for (GridContainer container : containers) {
+            container.getGrid().setNoborderStyle(noborderStyle);
+        }
+    }
+
+    public void setCellStyle(String cellStyle) {
+        for (GridContainer container : containers) {
+            container.getGrid().setCellStyle(cellStyle);
+        }
+    }
+
+    public void setSpacerStyle(String spacerStyle) {
+        for (GridContainer container : containers) {
+            container.getGrid().setSpacerStyle(spacerStyle);
+        }
+    }
+
     private class GridContainer extends WebMarkupContainer {
         private static final long serialVersionUID = 1L;
+
+        private final FixedGrid grid;
 
         public GridContainer(String id, Position position) {
             super(id);
             setOutputMarkupId(true);
             setMarkupId(FixedGridPanel.this.getMarkupId() + "_"
                     + position.getCode());
-            add(new FixedGrid(FixedGridPanel.this.getModel(),
-                    FixedGridPanel.this, position));
+            add(grid =
+                    new FixedGrid(FixedGridPanel.this.getModel(),
+                            FixedGridPanel.this, position));
+        }
+
+        public FixedGrid getGrid() {
+            return grid;
         }
     }
 
