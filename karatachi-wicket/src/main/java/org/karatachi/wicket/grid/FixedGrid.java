@@ -245,7 +245,7 @@ public class FixedGrid extends Loop {
             IComponentBuilder builder = (IComponentBuilder) cell;
             return builder.createComponent(id, row, col, cellValue);
         } else {
-            return new Label(id, sb.toString()).setEscapeModelStrings(false);
+            return new Label(id, cellValue).setEscapeModelStrings(false);
         }
     }
 
