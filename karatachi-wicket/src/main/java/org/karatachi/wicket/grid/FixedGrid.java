@@ -239,7 +239,14 @@ public class FixedGrid extends Loop {
         } else {
             sb.append("N/A");
         }
-        return new Label(id, sb.toString()).setEscapeModelStrings(false);
+        String cellValue = sb.toString();
+        
+        if(cell instanceof IComponentBuilder) {
+            IComponentBuilder builder = (IComponentBuilder) cell;
+            return builder.createComponent(id, row, col, cellValue);
+        } else {
+            return new Label(id, sb.toString()).setEscapeModelStrings(false);
+        }
     }
 
     protected void setCellAttribute(Component component, int row, int col,
