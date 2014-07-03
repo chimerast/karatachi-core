@@ -90,8 +90,6 @@ public class FixedGrid extends Loop {
 
     @Override
     protected void populateItem(LoopItem item) {
-        final Cells cells = model.getObject();
-
         final int adjustedRows = getRows();
         final int adjustedCols = getCols();
 
@@ -132,6 +130,7 @@ public class FixedGrid extends Loop {
                         --coljoined;
                         --rowjoined[adjustedCol - 1];
                     } else {
+                        Cells cells = model.getObject();
                         ICell cell = cells.getCell(row, col);
                         populateCell(item, row, col, cell);
                         if (cell != null && cell.getRowspan() > 1) {
