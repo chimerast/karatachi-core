@@ -39,6 +39,6 @@ public class NoSerializePageManagerProvider extends DefaultPageManagerProvider {
 
     @Override
     protected IPageStore newPageStore(IDataStore dataStore) {
-        return new NoSerializePageStore();
+        return new NoSerializePageStore(pagesNumber);
     }
 }

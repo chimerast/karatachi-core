@@ -2,15 +2,21 @@ package org.karatachi.wicket.core;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.wicket.page.IManageablePage;
 import org.apache.wicket.pageStore.IPageStore;
 
 public class NoSerializePageStore implements IPageStore {
+    final int pageNumbers;
 
     private Map<String, Map<Integer, IManageablePage>> cache =
             new HashMap<String, Map<Integer, IManageablePage>>();
+
+    public NoSerializePageStore(int pageNumbers) {
+        this.pageNumbers = pageNumbers;
+    }
 
     public void destroy() {
         cache = null;
@@ -54,7 +60,14 @@ public class NoSerializePageStore implements IPageStore {
         Map<Integer, IManageablePage> sessionCache = cache.get(sessionId);
         if (sessionCache == null) {
             if (create) {
-                sessionCache = new HashMap<Integer, IManageablePage>();
+                sessionCache = new LinkedHashMap<Integer, IManageablePage>(pageNumbers) {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    protected boolean removeEldestEntry(Map.Entry<Integer, IManageablePage> eldest) {
+                        return size() > pageNumbers;
+                    }
+                };
                 cache.put(sessionId, sessionCache);
             }
         }
