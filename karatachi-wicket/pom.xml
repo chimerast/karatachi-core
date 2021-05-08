@@ -71,7 +71,7 @@
     <version>0.5.20-SNAPSHOT</version>
   </parent>
   <properties>
-    <wicket.version>6.9.0</wicket.version>
+    <wicket.version>7.17.0</wicket.version>
   </properties>
 
   <!-- More Project Information -->
